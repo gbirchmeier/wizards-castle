@@ -7,17 +7,17 @@ class Castle
     @rooms = Array.new(8*8*8, RoomContent.to_intcode(:empty_room)) # unlike BASIC, index starts at 0
 
     set_in_room(1,4,1,:entrance)
-    (1..7).each do |z|
-      xroom = set_in_random_room(:stairs_down,z)
+    (1..7).each do |floor|
+      xroom = set_in_random_room(:stairs_down,floor)
       xroom[2] = xroom[2]+1
       set_in_room(*xroom,:stairs_up)
     end
 
     monsters = [:kobold, :orc, :wolf, :goblin, :ogre, :troll, :bear, :minotaur, :gargoyle, :chimera, :balrog, :dragon]
     other_things = [:magic_pool, :chest, :gold, :flares, :warp, :sinkhole, :crystal_orb, :book, :vendor]
-    (1..8).each do |z|
-      monsters.each {|monster| set_in_random_room(monster,z)}
-      other_things.each {|thing| 3.times { set_in_random_room(thing,z)}}
+    (1..8).each do |floor|
+      monsters.each {|monster| set_in_random_room(monster,floor)}
+      other_things.each {|thing| 3.times { set_in_random_room(thing,floor)}}
     end
 
     treasures = [:ruby_red, :norn_stone, :pale_pearl, :opal_eye, :green_gem, :blue_flame, :palantir, :silmaril]
@@ -39,7 +39,6 @@ class Castle
 
   def self.room_index(row,col,floor)
     # Equivalent to FND from BASIC, except -1 because @rooms is indexing from 0.
-    # z is the level
     raise "value out of range: (#{row},#{col},#{floor})" if [row,col,floor].any?{|n| n<1 || n>8}
     64*(floor-1)+8*(row-1)+col-1
   end
