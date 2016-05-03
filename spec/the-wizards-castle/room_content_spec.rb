@@ -27,14 +27,14 @@ describe RoomContent do
 
   describe "simple methods and accessors" do
     let(:warp) { RoomContent.new(9) }
-    let(:lethargy) { RoomContent.new(1,1,0,0)
-    let(:leech_and_forget) { RoomContent.new(1,0,1,1)
+    let(:lethargy) { RoomContent.new(1,true,false,false) }
+    let(:leech_and_forget) { RoomContent.new(1,false,true,true) }
 
     it "#symbol" do expect(warp.symbol).to eq :warp end
     it "#intcode" do expect(warp.intcode).to eq 9 end
     it "#display" do expect(warp.display).to eq "W" end
 
-    describe "#cursed_with_lethargy?"
+    describe "#cursed_with_lethargy?" do
       it "none" do expect(warp.cursed_with_lethargy?).to eq false end
       it "lethargy" do expect(lethargy.cursed_with_lethargy?).to eq true end
       it "others" do expect(leech_and_forget.cursed_with_lethargy?).to eq false end

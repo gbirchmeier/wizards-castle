@@ -70,9 +70,12 @@ class RoomContent
 
   attr_reader :intcode
 
-  def initialize(intcode)
+  def initialize(intcode,curse_lethargy=false,curse_leech=false,curse_forget=false)
     raise "Unrecognized intcode" unless RoomContent.valid_intcode?(intcode)
     @intcode = intcode
+    @cursed_with_lethargy = curse_lethargy
+    @cursed_with_leech = curse_leech
+    @cursed_with_forgetfulness = curse_forget
   end
 
   def symbol
@@ -81,6 +84,18 @@ class RoomContent
 
   def display
     ROOM_DISPLAY_CHARACTERS[@intcode]
+  end
+
+  def cursed_with_lethargy?
+    @cursed_with_lethargy
+  end
+
+  def cursed_with_leech?
+    @cursed_with_leech
+  end
+
+  def cursed_with_forgetfulness?
+    @cursed_with_forgetfulness
   end
 
 end

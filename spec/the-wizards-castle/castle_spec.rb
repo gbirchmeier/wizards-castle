@@ -5,14 +5,15 @@ describe Castle do
 
   it "::get_room_index" do
     expect(Castle.room_index(1,1,1)).to eq 0
+    expect(Castle.room_index(1,2,1)).to eq 1
+    expect(Castle.room_index(2,1,1)).to eq 8
+    expect(Castle.room_index(1,1,2)).to eq (8*8)
+    expect(Castle.room_index(1,1,8)).to eq (8*8*7)
     expect(Castle.room_index(8,8,8)).to eq (8*8*8)-1
-    expect(Castle.room_index(8,8,1)).to eq 63
-    expect(Castle.room_index(1,1,2)).to eq 64
   end
 
   it "#room" do
-    castle.rooms[63] = 9
-    expect(castle.room(8,8,1).intcode).to eq 9
+    expect(castle.room(1,4,1).intcode).to eq 2 #entrance
   end
 
   it "#set_in_room" do
@@ -22,7 +23,7 @@ describe Castle do
 
   it "debug display" do
     c = Castle.new
-    puts c.debug_display.join("\n")
+#    puts c.debug_display.join("\n")
   end
 
 end
