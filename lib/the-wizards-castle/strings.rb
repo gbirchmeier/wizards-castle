@@ -41,12 +41,16 @@ END_ATT_PROMPT_INTRO
   INTELLIGENCE_PROMPT = "HOW MANY POINTS DO YOU WISH TO ADD TO YOUR INTELLIGENCE? "
   DEXTERITY_PROMPT = "HOW MANY POINTS DO YOU WISH TO ADD TO YOUR DEXTERITY? "
 
-  def self.gold_report(player)
+  def self.gold_report1(player)
     "OK, #{player.race.to_s.upcase}, YOU HAVE #{player.gp} GOLD PIECES (GP'S)."
   end
 
-  def self.gold_left_report(player)
+  def self.gold_report2(player)
     "OK, BOLD #{player.race.to_s.upcase}, YOU HAVE #{player.gp} GP'S LEFT."
+  end
+
+  def self.gold_report3(player)
+    "OK, #{player.race.to_s.upcase}, YOU HAVE #{player.gp} GOLD PIECES LEFT."
   end
 
   def self.armor_prompt
@@ -60,7 +64,7 @@ END_ARMOR_PROMPT
   end
 
   def self.armor_error(player)
-    monster = Castle::Monsters.sample.to_s.upcase
+    monster = Castle::MONSTERS.sample.to_s.upcase
     article = ["A","E","I","O","U"].include?(monster[0]) ? "AN" : "A"
     "** ARE YOU A #{player.race.to_s.upcase} OR #{article} #{monster}?"
   end
@@ -81,9 +85,20 @@ END_WEAPON_PROMPT
 
   LAMP_PROMPT = "DO YOU WANT TO BUY A LAMP FOR 20 GP'S? "
   YESNO_ERROR = "** PLEASE ANSWER YES OR NO"
-  FLARE_PROMPT = "FLARES COST 1 GP EACH. HOW MANY DO YOU WANT?"
+  FLARE_PROMPT = "FLARES COST 1 GP EACH. HOW MANY DO YOU WANT? "
   FLARE_ERROR = "** IF YOU DON'T WANT ANY, JUST TYPE 0 (ZERO)."
+  def self.flare_afford(player)
+    "** YOU CAN ONLY AFFORD #{player.gp} ."
+  end
 
+
+  def self.entering_the_castle(player)
+    "OK, #{player.race.to_s.upcase}, YOU ARE NOW ENTERING THE CASTLE!"
+  end
+
+  def self.you_are_here(player)
+    "YOU ARE AT ( #{player.location[0]} , #{player.location[1]} ) LEVEL #{player.location[2]} ."
+  end
 
 
 #OK, HOBBIT, YOU ARE NOW ENTERING THE CASTLE!                                    

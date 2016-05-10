@@ -25,20 +25,26 @@ class Runner
     ask_gender
     ask_attributes
     puts
-    puts Strings::gold_report(@player)
+    puts Strings.gold_report1(@player)
     puts
     ask_armor
-    puts Strings::gold_left_report(@player)
-    ask_weapon
+    puts Strings.gold_report2(@player)
     puts
+    ask_weapon
     ask_lamp
     puts
-    puts Strings::gold_left_report(@player)  # this should be yet a different one! argh.
-puts "todo: flare"
-
-puts @player.inspect
+    puts Strings.gold_report3(@player)
+    puts
+    puts ask_flares
+    puts Strings.entering_the_castle(@player)
+    puts
 
     @castle = Castle.new
+    puts Strings.you_are_here(@player)
+    puts
+    
+    puts "---"
+    puts @player.inspect
   end
 
   def ask_race
@@ -100,7 +106,7 @@ puts @player.inspect
     n=0
     while n+=1
       puts
-      answer = @prompter.ask("#{'** ' if n>1}#{Strings::STRENGTH_PROMPT}")[0]
+      answer = @prompter.ask("#{'** ' if n>1}#{Strings::STRENGTH_PROMPT}")
       next unless answer.match(/^\d+$/)
       answer = answer.to_i
       if answer>=0 && answer<=other_points
@@ -114,7 +120,7 @@ puts @player.inspect
     n=0
     while n+=1
       puts
-      answer = @prompter.ask("#{'** ' if n>1}#{Strings::INTELLIGENCE_PROMPT}")[0]
+      answer = @prompter.ask("#{'** ' if n>1}#{Strings::INTELLIGENCE_PROMPT}")
       next unless answer.match(/^\d+$/)
       answer = answer.to_i
       if answer>=0 && answer<=other_points
@@ -128,7 +134,7 @@ puts @player.inspect
     n=0
     while n+=1
       puts
-      answer = @prompter.ask("#{'** ' if n>1}#{Strings::DEXTERITY_PROMPT}")[0]
+      answer = @prompter.ask("#{'** ' if n>1}#{Strings::DEXTERITY_PROMPT}")
       next unless answer.match(/^\d+$/)
       answer = answer.to_i
       if answer>=0 && answer<=other_points
@@ -144,8 +150,9 @@ puts @player.inspect
     costs = { plate: 30, chainmail: 20, leather: 10, nothing: 0 }
     n=0
     while @player.armor.nil? && n+=1
-      puts "\n"+Strings.armor_error(@player) if n>1
+      puts Strings.armor_error(@player)+"\n" if n>1
       answer = @prompter.ask(Strings.armor_prompt)[0]
+      puts
       if allowed.has_key?(answer)
         armor = allowed[answer]
         @player.set_armor(armor)
@@ -160,8 +167,9 @@ puts @player.inspect
     costs = { sword: 30, mace: 20, dagger: 10, nothing: 0 }
     n=0
     while @player.weapon.nil? && n+=1
-      puts "\n"+Strings.weapon_error(@player) if n>1
+      puts Strings.weapon_error(@player)+"\n" if n>1
       answer = @prompter.ask(Strings.weapon_prompt)[0]
+      puts
       if allowed.has_key?(answer)
         weapon = allowed[answer]
         @player.set_weapon(weapon)
@@ -183,6 +191,25 @@ puts @player.inspect
       answer = @prompter.ask(Strings::LAMP_PROMPT)[0]
       if answer=="Y" || answer=="N"
         @player.gp(-20) if @player.set_lamp(answer=="Y")
+        break
+      end
+    end
+  end
+
+  def ask_flares
+    return if @player.gp < 1
+    loop do
+      answer = @prompter.ask(Strings::FLARE_PROMPT)
+      n = answer.to_i
+      if !answer.match(/^\d+$/)
+        puts
+        puts Strings::FLARE_ERROR
+      elsif n > @player.gp
+        puts
+        puts Strings.flare_afford(@player)
+      else
+        @player.flares(+n)
+        @player.gp(-n)
         break
       end
     end
