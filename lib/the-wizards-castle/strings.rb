@@ -45,6 +45,10 @@ END_ATT_PROMPT_INTRO
     "OK, #{player.race.to_s.upcase}, YOU HAVE #{player.gp} GOLD PIECES (GP'S)."
   end
 
+  def self.gold_left_report(player)
+    "OK, BOLD #{player.race.to_s.upcase}, YOU HAVE #{player.gp} GP'S LEFT."
+  end
+
   def self.armor_prompt
     s =<<END_ARMOR_PROMPT
 THESE ARE THE TYPES OF ARMOR YOU CAN BUY :
@@ -52,6 +56,7 @@ PLATE<30> CHAINMAIL<20> LEATHER<10> NOTHING<0>
 
 YOUR CHOICE? 
 END_ARMOR_PROMPT
+    s.chomp
   end
 
   def self.armor_error(player)
@@ -67,6 +72,7 @@ SWORD<30> MACE<20> DAGGER<10> NOTHING<0>
 
 YOUR CHOICE? 
 END_WEAPON_PROMPT
+    s.chomp
   end
 
   def self.weapon_error(player)

@@ -3,8 +3,10 @@ class Player
 
   RACES = [:elf,:dwarf,:human,:hobbit]
   GENDERS = [:male,:female]
+  ARMORS = [:plate,:chainmail,:leather,:nothing]
+  WEAPONS = [:sword,:mace,:dagger,:nothing]
 
-  attr_reader :race, :gender, :location
+  attr_reader :race, :gender, :location, :armor, :weapon
 
   def lamp?
     return @has_lamp
@@ -21,6 +23,8 @@ class Player
     @str = 0
     @int = 0
     @dex = 0
+    @armor = nil
+    @weapon = nil
   end
 
   def set_race r
@@ -36,6 +40,17 @@ class Player
 
   def set_lamp bool
     raise "Parameter is not a boolean: #{bool.inspect}" unless [true,false].include?(bool)
+    @has_lamp = bool
+  end
+
+  def set_armor a
+    raise "Unrecognized armor parameter" unless ARMORS.include?(a)
+    @armor = a
+  end
+
+  def set_weapon w
+    raise "Unrecognized weapon parameter" unless WEAPONS.include?(w)
+    @weapon = w
   end
 
   def flares n=0
