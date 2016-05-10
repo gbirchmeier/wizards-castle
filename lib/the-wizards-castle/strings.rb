@@ -100,6 +100,15 @@ END_WEAPON_PROMPT
     "YOU ARE AT ( #{player.location[0]} , #{player.location[1]} ) LEVEL #{player.location[2]} ."
   end
 
+  def self.stat_block(player)
+    s = []
+    s << "STRENGTH = #{player.str}  INTELLIGENCE = #{player.int}  DEXTERITY = #{player.dex}"
+    s << "TREASURES = #{player.treasure_count}  FLARES = #{player.flares}  GOLD PIECES = #{player.gp}"
+    s << "WEAPON = #{player.weapon.to_s.upcase}  ARMOR = #{player.armor.to_s.upcase}"
+    s.last << "  AND A LAMP" if player.lamp?
+    s.join("\n")
+  end
+
 
 #OK, HOBBIT, YOU ARE NOW ENTERING THE CASTLE!                                    
 #                                                                                

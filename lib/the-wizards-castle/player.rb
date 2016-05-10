@@ -5,6 +5,7 @@ class Player
   GENDERS = [:male,:female]
   ARMORS = [:plate,:chainmail,:leather,:nothing]
   WEAPONS = [:sword,:mace,:dagger,:nothing]
+  TREASURES = [:ruby_red,:norn_stone,:pale_pearl,:opal_eye,:green_gem,:blue_flame,:palantir,:silmaril]
 
   attr_reader :race, :gender, :location, :armor, :weapon
 
@@ -25,6 +26,7 @@ class Player
     @dex = 0
     @armor = nil
     @weapon = nil
+    @treasures = []
   end
 
   def set_race r
@@ -71,6 +73,26 @@ class Player
 
   def dex n=0
     @dex += n.to_i
+  end
+
+  def treasure_count
+    @treasures.length
+  end
+
+  def add_treasure(t)
+    raise "invalid treasure #{t.inspect}" unless TREASURES.include?(t)
+    raise "already have treasure #{t.inspect}" if @treasures.include?(t)
+    @treasures << t
+  end
+
+  def remove_treasure(t)
+    raise "don't have treasure #{t.inspect}" unless @treasures.include(t)
+    @treasure.delete(t)
+  end
+
+  def have_treasure?(t)
+    raise "invalid treasure #{t.inspect}" unless TREASURES.include?(t)
+    @treasures.include?(t)
   end
 
 end

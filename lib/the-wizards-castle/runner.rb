@@ -43,6 +43,9 @@ class Runner
     puts Strings.you_are_here(@player)
     puts
     
+    puts Strings.stat_block(@player)
+    puts
+
     puts "---"
     puts @player.inspect
   end
