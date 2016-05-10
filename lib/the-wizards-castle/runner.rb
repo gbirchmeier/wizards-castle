@@ -9,24 +9,30 @@ class Runner
   end
 
   def initialize
-    @cli = HighLine.new
+    @prompter = Prompter.new
     @castle = nil
     @player = nil
   end
 
   def start
     puts Strings::INTRO
-    # pause should go here
+    # pause should go here?
     puts Strings::CHARACTER_CREATION_HEADER
 
     @player = Player.new
     ask_race
+puts
     ask_gender
     ask_attributes
-#shop armor
-#shop weapon
-#shop lamp
-#shop flare
+    puts
+    puts Strings::gold_report(@player)
+    puts
+puts "todo: armor"
+puts "todo: weapon"
+puts "todo: lamp"
+    puts
+    puts Strings::gold_report(@player)
+puts "todo: flare"
 
 puts @player.inspect
 
@@ -43,7 +49,7 @@ puts @player.inspect
     n=0
     while @player.race.nil? && n+=1
       puts "\n"+Strings::RACE_ERROR if n>1
-      answer = @cli.ask(Strings::RACE_PROMPT).to_s.upcase[0]
+      answer = @prompter.ask(Strings::RACE_PROMPT)
       @player.set_race(allowed[answer]) if allowed.has_key?(answer)
     end
   end
@@ -55,8 +61,8 @@ puts @player.inspect
     }
     n=0
     while @player.gender.nil? && n+=1
-      puts Strings.gender_error(@player.race) if n>1
-      answer = @cli.ask(Strings::GENDER_PROMPT).to_s.upcase[0]
+      puts Strings.gender_error(@player) if n>1
+      answer = @prompter.ask(Strings::GENDER_PROMPT)
       @player.set_gender(allowed[answer]) if allowed.has_key?(answer)
     end
   end
@@ -92,7 +98,7 @@ puts @player.inspect
     n=0
     while n+=1
       puts
-      answer = @cli.ask("#{'** ' if n>1}#{Strings::STRENGTH_PROMPT}").to_s.strip
+      answer = @prompter.ask("#{'** ' if n>1}#{Strings::STRENGTH_PROMPT}")
       next unless answer.match(/^\d+$/)
       answer = answer.to_i
       if answer>=0 && answer<=other_points
@@ -106,7 +112,7 @@ puts @player.inspect
     n=0
     while n+=1
       puts
-      answer = @cli.ask("#{'** ' if n>1}#{Strings::INTELLIGENCE_PROMPT}").to_s.strip
+      answer = @prompter.ask("#{'** ' if n>1}#{Strings::INTELLIGENCE_PROMPT}")
       next unless answer.match(/^\d+$/)
       answer = answer.to_i
       if answer>=0 && answer<=other_points
@@ -120,7 +126,7 @@ puts @player.inspect
     n=0
     while n+=1
       puts
-      answer = @cli.ask("#{'** ' if n>1}#{Strings::DEXTERITY_PROMPT}").to_s.strip
+      answer = @prompter.ask("#{'** ' if n>1}#{Strings::DEXTERITY_PROMPT}")
       next unless answer.match(/^\d+$/)
       answer = answer.to_i
       if answer>=0 && answer<=other_points

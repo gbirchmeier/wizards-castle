@@ -14,10 +14,10 @@ class Player
   def initialize
     @race = nil
     @gender = nil
-    @gp = 0
+    @gp = 60
     @flares = 0
     @has_lamp = false
-    @location = nil
+    @location = [1,4,1]
     @str = 0
     @int = 0
     @dex = 0
@@ -43,7 +43,7 @@ class Player
   end
 
   def gp n=0
-    @flares += n.to_i
+    @gp += n.to_i
   end
 
   def str n=0

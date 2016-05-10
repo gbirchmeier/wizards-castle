@@ -3,6 +3,8 @@ class Castle
 
   attr_reader :backmap, :rooms
 
+  MONSTERS = [:kobold, :orc, :wolf, :goblin, :ogre, :troll, :bear, :minotaur, :gargoyle, :chimera, :balrog, :dragon]
+
   def initialize
     @rooms = Array.new(8*8*8, RoomContent.to_intcode(:empty_room)) # unlike BASIC, index starts at 0
 
@@ -13,10 +15,9 @@ class Castle
       set_in_room(*xroom,:stairs_up)
     end
 
-    monsters = [:kobold, :orc, :wolf, :goblin, :ogre, :troll, :bear, :minotaur, :gargoyle, :chimera, :balrog, :dragon]
     other_things = [:magic_pool, :chest, :gold, :flares, :warp, :sinkhole, :crystal_orb, :book, :vendor]
     (1..8).each do |floor|
-      monsters.each {|monster| set_in_random_room(monster,floor)}
+      MONSTERS.each {|monster| set_in_random_room(monster,floor)}
       other_things.each {|thing| 3.times { set_in_random_room(thing,floor)}}
     end
 
@@ -31,7 +32,7 @@ class Castle
     @curse_forgetfulness_location = set_in_random_room(:empty_room)
 
     set_in_random_room(:runestaff_and_monster)
-    @runestaff_monster = monsters[Random.rand(monsters.length)]
+    @runestaff_monster = MONSTERS[Random.rand(MONSTERS.length)]
 
     set_in_random_room(:orb_of_zot)
   end
