@@ -2,7 +2,6 @@ GEM
   remote: http://rubygems.org/
   specs:
     coderay (1.1.0)
-    colorize (0.7.5)
     diff-lcs (1.2.5)
     highline (1.6.21)
     method_source (0.8.2)
@@ -29,7 +28,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  colorize
   highline
   pry
   rspec
