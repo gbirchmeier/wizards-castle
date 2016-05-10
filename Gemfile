@@ -1,4 +1,9 @@
 source 'http://rubygems.org'
 
-gem 'rspec'
-gem 'pry'
+gem 'colorize'
+gem 'highline'
+
+group :test, :development do
+  gem 'rspec'
+  gem 'pry'
+end

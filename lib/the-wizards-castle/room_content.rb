@@ -59,11 +59,11 @@ class RoomContent
   end
 
   def self.to_symbol(intcode)
-    INT_TO_SYMBOL_MAP[intcode] or raise "Unrecognized intcode"
+    INT_TO_SYMBOL_MAP[intcode] or raise "Unrecognized intcode '#{intcode}'"
   end
 
   def self.to_intcode(symbol)
-    @@symbol_to_intcode_map[symbol] or raise "Unrecognized symbol"
+    @@symbol_to_intcode_map[symbol] or raise "Unrecognized symbol '#{symbol.inspect}'"
   end
 
 
@@ -71,7 +71,7 @@ class RoomContent
   attr_reader :intcode
 
   def initialize(intcode,curse_lethargy=false,curse_leech=false,curse_forget=false)
-    raise "Unrecognized intcode" unless RoomContent.valid_intcode?(intcode)
+    raise "Unrecognized intcode #{intcode}" unless RoomContent.valid_intcode?(intcode)
     @intcode = intcode
     @cursed_with_lethargy = curse_lethargy
     @cursed_with_leech = curse_leech
