@@ -45,6 +45,7 @@ class Castle
   end
 
   def room(row,col,floor)
+#TODO curses
     RoomContent.new(@rooms[Castle.room_index(row,col,floor)])
   end
 

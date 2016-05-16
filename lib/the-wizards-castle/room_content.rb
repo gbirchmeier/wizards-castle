@@ -1,89 +1,85 @@
 module TheWizardsCastle
 class RoomContent
 
-  INT_TO_SYMBOL_MAP = {
-     0 => :unset, # 0 wasn't used in the original BASIC version
-     1 => :empty_room,
-     2 => :entrance,
-     3 => :stairs_up,
-     4 => :stairs_down,
-     5 => :magic_pool,
-     6 => :chest,
-     7 => :gold,
-     8 => :flares,
-     9 => :warp,
-    10 => :sinkhole,
-    11 => :crystal_orb,
-    12 => :book,
-                       # monsters
-    13 => :kobold,
-    14 => :orc,
-    15 => :wolf,
-    16 => :goblin,
-    17 => :ogre,
-    18 => :troll,
-    19 => :bear,
-    20 => :minotaur,
-    21 => :gargoyle,
-    22 => :chimera,
-    23 => :balrog,
-    24 => :dragon,
-    25 => :vendor,       #not a monster
-                       #treasures
-    26 => :ruby_red,                #cure lethargy
-    27 => :norn_stone,
-    28 => :pale_pearl,              #cure leech
-    29 => :opal_eye,                #cure blindness
-    30 => :green_gem,               #cure forgetfulness
-    31 => :blue_flame,              #dissolves books
-    32 => :palantir,
-    33 => :silmaril,
+  ROOM_THINGS = {
+    unset:       { intcode: 0, mapchar: '?' },
+    empty_room:  { intcode: 1, mapchar: '.' },
+    entrance:    { intcode: 2, mapchar: 'E' },
+    stairs_up:   { intcode: 3, mapchar: 'U' },
+    stairs_down: { intcode: 4, mapchar: 'D' },
+    magic_pool:  { intcode: 5, mapchar: 'P' },
+    chest:       { intcode: 6, mapchar: 'C' },
+    gold:        { intcode: 7, mapchar: 'G' },
+    flares:      { intcode: 8, mapchar: 'F' },
+    warp:        { intcode: 9, mapchar: 'W' },
+    sinkhole:    { intcode: 10, mapchar: 'S' },
+    crystal_orb: { intcode: 11, mapchar: 'O' },
+    book:        { intcode: 12, mapchar: 'B' },
 
-    # the following were not implemented like this in BASIC, but it'll be better this way
-    34 => :orb_of_zot,
-    35 => :runestaff_and_monster
+    kobold:      { intcode: 13, mapchar: 'M' },
+    orc:         { intcode: 14, mapchar: 'M' },
+    wolf:        { intcode: 15, mapchar: 'M' },
+    goblin:      { intcode: 16, mapchar: 'M' },
+    ogre:        { intcode: 17, mapchar: 'M' },
+    troll:       { intcode: 18, mapchar: 'M' },
+    bear:        { intcode: 19, mapchar: 'M' },
+    minotaur:    { intcode: 20, mapchar: 'M' },
+    gargoyle:    { intcode: 21, mapchar: 'M' },
+    chimera:     { intcode: 22, mapchar: 'M' },
+    balrog:      { intcode: 23, mapchar: 'M' },
+    dragon:      { intcode: 24, mapchar: 'M' },
+
+    vendor:      { intcode: 25, mapchar: 'V' },
+
+    ruby_red:    { intcode: 26, mapchar: 'T' },  #lethargy
+    norn_stone:  { intcode: 27, mapchar: 'T' },
+    pale_pearl:  { intcode: 28, mapchar: 'T' },  #leech
+    opal_eye:    { intcode: 29, mapchar: 'T' },  #blindness
+    green_gem:   { intcode: 30, mapchar: 'T' },  #forgetfulness
+    blue_flame:  { intcode: 31, mapchar: 'T' },  #dissolves books
+    palantir:    { intcode: 32, mapchar: 'T' },
+    silmaril:    { intcode: 33, mapchar: 'T' },
+
+    # these two are divergences from the original BASIC impl
+    orb_of_zot:  { intcode: 34, mapchar: 'W' },
+    runestaff_and_monster: { intcode: 35, mapchar: 'M' }
   }
 
-  ROOM_DISPLAY_CHARACTERS = '?.EUDPCGFWSOBMMMMMMMMMMMMVTTTTTTTTWM'
-                           # 0123456789 123456789 123456789 12345'
-
-  @@symbol_to_intcode_map = INT_TO_SYMBOL_MAP.map{|k,v| [v,k]}.to_h
+  @@intcode_to_symbol_map = ROOM_THINGS.map{|k,h| [h[:intcode],k]}.to_h
 
 
   def self.valid_intcode?(intcode)
-    INT_TO_SYMBOL_MAP.has_key?(intcode)
+    @@intcode_to_symbol_map.has_key?(intcode)
   end
 
   def self.valid_symbol?(symbol)
-    @@symbol_to_intcode_map.has_key?(symbol)
+    ROOM_THINGS.has_key?(symbol)
   end
 
   def self.to_symbol(intcode)
-    INT_TO_SYMBOL_MAP[intcode] or raise "Unrecognized intcode '#{intcode}'"
+    @@intcode_to_symbol_map[intcode] or raise "Unrecognized intcode '#{intcode}'"
   end
 
   def self.to_intcode(symbol)
-    @@symbol_to_intcode_map[symbol] or raise "Unrecognized symbol '#{symbol.inspect}'"
+    raise "Unrecognized symbol '#{symbol.inspect}'" unless ROOM_THINGS.has_key?(symbol)
+    ROOM_THINGS[symbol][:intcode]
   end
 
 
 
-  attr_reader :intcode
+  attr_reader :symbol, :intcode
 
   def initialize(intcode,curse_lethargy=false,curse_leech=false,curse_forget=false)
     raise "Unrecognized intcode #{intcode}" unless RoomContent.valid_intcode?(intcode)
-    @intcode = intcode
+    @symbol = RoomContent.to_symbol(intcode)
+    @intcode = intcode  #TODO decide if I can take this out
     @cursed_with_lethargy = curse_lethargy
     @cursed_with_leech = curse_leech
     @cursed_with_forgetfulness = curse_forget
   end
 
-  def symbol
-    RoomContent.to_symbol(@intcode)
-  end
-
   def display
-    ROOM_DISPLAY_CHARACTERS[@intcode]
+    ROOM_THINGS[@symbol][:mapchar]
   end
 
   def cursed_with_lethargy?
