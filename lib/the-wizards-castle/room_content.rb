@@ -67,12 +67,11 @@ class RoomContent
 
 
 
-  attr_reader :symbol, :intcode
+  attr_reader :symbol
 
   def initialize(intcode,curse_lethargy=false,curse_leech=false,curse_forget=false)
     raise "Unrecognized intcode #{intcode}" unless RoomContent.valid_intcode?(intcode)
     @symbol = RoomContent.to_symbol(intcode)
-    @intcode = intcode  #TODO decide if I can take this out
     @cursed_with_lethargy = curse_lethargy
     @cursed_with_leech = curse_leech
     @cursed_with_forgetfulness = curse_forget

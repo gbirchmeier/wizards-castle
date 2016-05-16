@@ -31,7 +31,6 @@ describe RoomContent do
     let(:leech_and_forget) { RoomContent.new(1,false,true,true) }
 
     it "#symbol" do expect(warp.symbol).to eq :warp end
-    it "#intcode" do expect(warp.intcode).to eq 9 end
     it "#display" do expect(warp.display).to eq "W" end
 
     describe "#cursed_with_lethargy?" do

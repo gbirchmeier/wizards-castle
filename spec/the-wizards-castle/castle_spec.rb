@@ -13,7 +13,7 @@ describe Castle do
   end
 
   it "#room" do
-    expect(castle.room(1,4,1).intcode).to eq 2 #entrance
+    expect(castle.room(1,4,1).symbol).to eq :entrance
   end
 
   it "#set_in_room" do
