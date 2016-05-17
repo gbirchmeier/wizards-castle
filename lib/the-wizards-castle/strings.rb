@@ -109,6 +109,10 @@ END_WEAPON_PROMPT
     s.join("\n")
   end
 
+  def self.here_you_find(room_content)
+    "HERE YOU FIND #{room_content.text}"
+  end
+
 
 #OK, HOBBIT, YOU ARE NOW ENTERING THE CASTLE!                                    
 #                                                                                

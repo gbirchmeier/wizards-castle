@@ -38,13 +38,21 @@ class Runner
     puts ask_flares
     puts Strings.entering_the_castle(@player)
     puts
-
     @castle = Castle.new
+
+    run_turn
+  end
+
+  def run_turn
+    loc = @player.location
+    room = @castle.room(*loc)
+
     puts Strings.you_are_here(@player)
     puts
-    
     puts Strings.stat_block(@player)
     puts
+    puts Strings.here_you_find(room)
+
 
     puts "---"
     puts @player.inspect
