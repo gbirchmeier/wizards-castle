@@ -21,10 +21,8 @@ class Runner
 
     @player = Player.new
     ask_race
-    puts
     ask_gender
     ask_attributes
-    puts
     puts Strings.gold_report1(@player)
     puts
     ask_armor
@@ -32,10 +30,11 @@ class Runner
     puts
     ask_weapon
     ask_lamp
-    puts
-    puts Strings.gold_report3(@player)
-    puts
-    puts ask_flares
+    if @player.gp > 0
+      puts Strings.gold_report3(@player)
+      puts
+      ask_flares
+    end
     puts Strings.entering_the_castle(@player)
     puts
     @castle = Castle.new
@@ -45,13 +44,20 @@ class Runner
 
   def run_turn
     loc = @player.location
-    room = @castle.room(*loc)
+    room_content = @castle.room(*loc)
 
     puts Strings.you_are_here(@player)
     puts
     puts Strings.stat_block(@player)
     puts
-    puts Strings.here_you_find(room)
+
+    symbol_for_text =
+      if room_content.symbol==:runestaff_and_monster
+        @castle.runestaff_monster
+      else
+        room_content.symbol
+    end
+    puts Strings.here_you_find(symbol_for_text)
 
 
     puts "---"
@@ -67,9 +73,10 @@ class Runner
     }
     n=0
     while @player.race.nil? && n+=1
-      puts "\n"+Strings::RACE_ERROR if n>1
+      puts Strings::RACE_ERROR if n>1
       answer = @prompter.ask(Strings::RACE_PROMPT)[0]
       @player.set_race(allowed[answer]) if allowed.has_key?(answer)
+      puts
     end
   end
 
@@ -84,6 +91,7 @@ class Runner
       answer = @prompter.ask(Strings::GENDER_PROMPT)[0]
       @player.set_gender(allowed[answer]) if allowed.has_key?(answer)
     end
+    puts
   end
 
   def ask_attributes
@@ -111,7 +119,6 @@ class Runner
       other_points = 8
     end
 
-    puts
     puts Strings.attributes_prompt_header(@player,other_points)
 
     n=0
@@ -126,7 +133,10 @@ class Runner
         break
       end
     end
-    return if other_points < 1
+    if other_points < 1
+      puts
+      return
+    end
 
     n=0
     while n+=1
@@ -140,7 +150,10 @@ class Runner
         break
       end
     end
-    return if other_points < 1
+    if other_points < 1
+      puts
+      return
+    end
 
     n=0
     while n+=1
@@ -154,6 +167,7 @@ class Runner
         break
       end
     end
+    puts
   end
 
   def ask_armor
@@ -161,14 +175,13 @@ class Runner
     costs = { plate: 30, chainmail: 20, leather: 10, nothing: 0 }
     n=0
     while @player.armor.nil? && n+=1
-      puts Strings.armor_error(@player)+"\n" if n>1
+      puts Strings.armor_error(@player)+"\n\n" if n>1
       answer = @prompter.ask(Strings.armor_prompt)[0]
       puts
       if allowed.has_key?(answer)
         armor = allowed[answer]
         @player.set_armor(armor)
         @player.gp(-1 * costs[armor])
-        break
       end
     end
   end
@@ -178,14 +191,13 @@ class Runner
     costs = { sword: 30, mace: 20, dagger: 10, nothing: 0 }
     n=0
     while @player.weapon.nil? && n+=1
-      puts Strings.weapon_error(@player)+"\n" if n>1
+      puts Strings.weapon_error(@player)+"\n\n" if n>1
       answer = @prompter.ask(Strings.weapon_prompt)[0]
       puts
       if allowed.has_key?(answer)
         weapon = allowed[answer]
         @player.set_weapon(weapon)
         @player.gp(-1 * costs[weapon])
-        break
       end
     end
   end
@@ -202,6 +214,7 @@ class Runner
       answer = @prompter.ask(Strings::LAMP_PROMPT)[0]
       if answer=="Y" || answer=="N"
         @player.gp(-20) if @player.set_lamp(answer=="Y")
+        puts
         break
       end
     end
@@ -211,12 +224,11 @@ class Runner
     return if @player.gp < 1
     loop do
       answer = @prompter.ask(Strings::FLARE_PROMPT)
+      puts
       n = answer.to_i
       if !answer.match(/^\d+$/)
-        puts
         puts Strings::FLARE_ERROR
       elsif n > @player.gp
-        puts
         puts Strings.flare_afford(@player)
       else
         @player.flares(+n)

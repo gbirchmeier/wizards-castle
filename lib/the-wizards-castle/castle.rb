@@ -1,7 +1,7 @@
 module TheWizardsCastle
 class Castle
 
-  attr_reader :backmap, :rooms
+  attr_reader :rooms, :runestaff_monster
 
   MONSTERS = [:kobold, :orc, :wolf, :goblin, :ogre, :troll, :bear, :minotaur, :gargoyle, :chimera, :balrog, :dragon]
 
@@ -24,9 +24,10 @@ class Castle
     treasures = [:ruby_red, :norn_stone, :pale_pearl, :opal_eye, :green_gem, :blue_flame, :palantir, :silmaril]
     treasures.each {|treasure| set_in_random_room(treasure)}
 
-    # I can't believe I'm using the same empty_room hack that Stetson-BASIC is using
-    # Multiple curses can be in the same room, and the runestaff/orb may also be later placed into a curse room.
-    # (This is just how the old game implemented it.)
+    # Multiple curses can be in the same room, and the runestaff/orb
+    # may also be later placed into a curse room.
+    # This is just how the old game implemented it.
+    # (I can't believe I'm using the same empty_room hack that Stetson-BASIC is using)
     @curse_lethargy_location      = set_in_random_room(:empty_room)
     @curse_leech_location         = set_in_random_room(:empty_room)
     @curse_forgetfulness_location = set_in_random_room(:empty_room)

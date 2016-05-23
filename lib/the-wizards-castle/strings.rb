@@ -109,8 +109,8 @@ END_WEAPON_PROMPT
     s.join("\n")
   end
 
-  def self.here_you_find(room_content)
-    "HERE YOU FIND #{room_content.text}"
+  def self.here_you_find(symbol)
+    "HERE YOU FIND #{RoomContent::ROOM_THINGS[symbol][:text]}."
   end
 
 
