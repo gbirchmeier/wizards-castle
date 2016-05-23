@@ -45,6 +45,31 @@ class Castle
     64*(floor-1)+8*(row-1)+col-1
   end
 
+  def self.north(row,col,floor)
+    row==1 ? [8,col,floor] : [row-1,col,floor]
+  end
+
+  def self.south(row,col,floor)
+    row==8 ? [1,col,floor] : [row+1,col,floor]
+  end
+
+  def self.west(row,col,floor)
+    col==1 ? [row,8,floor] : [row,col-1,floor]
+  end
+
+  def self.east(row,col,floor)
+    col==8 ? [row,1,floor] : [row,col+1,floor]
+  end
+
+  def self.up(row,col,floor)
+    floor==1 ? [row,col,8] : [row,col,floor-1]
+  end
+
+  def self.down(row,col,floor)
+    floor==8 ? [row,col,1] : [row,col,floor+1]
+  end
+
+
   def room(row,col,floor)
 #TODO curses
     RoomContent.new(@rooms[Castle.room_index(row,col,floor)])
