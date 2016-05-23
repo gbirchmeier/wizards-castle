@@ -28,9 +28,9 @@ class Castle
     # may also be later placed into a curse room.
     # This is just how the old game implemented it.
     # (I can't believe I'm using the same empty_room hack that Stetson-BASIC is using)
-    @curse_lethargy_location      = set_in_random_room(:empty_room)
-    @curse_leech_location         = set_in_random_room(:empty_room)
-    @curse_forgetfulness_location = set_in_random_room(:empty_room)
+    @curse_location_lethargy      = set_in_random_room(:empty_room)
+    @curse_location_leech         = set_in_random_room(:empty_room)
+    @curse_location_forgetfulness = set_in_random_room(:empty_room)
 
     set_in_random_room(:runestaff_and_monster)
     @runestaff_monster = MONSTERS[Random.rand(MONSTERS.length)]
@@ -71,8 +71,10 @@ class Castle
 
 
   def room(row,col,floor)
-#TODO curses
-    RoomContent.new(@rooms[Castle.room_index(row,col,floor)])
+    lethargy      = [row,col,floor]==@curse_location_lethargy
+    leech         = [row,col,floor]==@curse_location_leech
+    forgetfulness = [row,col,floor]==@curse_location_forgetfulness
+    RoomContent.new(@rooms[Castle.room_index(row,col,floor)],lethargy,leech,forgetfulness)
   end
 
   def set_in_room(row,col,floor,symbol)
@@ -111,9 +113,9 @@ class Castle
     end
 
     lines << "==="
-    lines << "Curses: Lethargy=#{@curse_lethargy_location.join(',')}"
-    lines.last << " Leech=#{@curse_leech_location.join(',')}"
-    lines.last << " Forget=#{@curse_forgetfulness_location.join(',')}"
+    lines << "Curses: Lethargy=#{@curse_location_lethargy.join(',')}"
+    lines.last << " Leech=#{@curse_location_leech.join(',')}"
+    lines.last << " Forget=#{@curse_location_forgetfulness.join(',')}"
 
     lines << "Runestaff:  #{loc_runestaff.join(',')} (#{@runestaff_monster})"
     lines << "Orb of Zot: #{loc_orb_of_zot.join(',')}"

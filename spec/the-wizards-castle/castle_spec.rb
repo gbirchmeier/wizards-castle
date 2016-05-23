@@ -1,6 +1,12 @@
 module TheWizardsCastle
 describe Castle do
 
+  class Castle
+    attr_reader :curse_location_lethargy,
+      :curse_location_leech,
+      :curse_location_forgetfulness
+  end
+
   let(:castle) { Castle.new }
 
   it "::get_room_index" do
@@ -42,16 +48,31 @@ describe Castle do
     expect(Castle.up(5,3,1)).to eq [5,3,8]
   end
 
-  it "#room" do
-    expect(castle.room(1,4,1).symbol).to eq :entrance
+  context "#room" do
+    it "simple" do
+      expect(castle.room(1,4,1).symbol).to eq :entrance
+    end
+
+    it "curse-lethargy" do
+      loc = castle.curse_location_lethargy
+      expect(castle.room(*loc).cursed_with_lethargy?).to eq true
+    end
+
+    it "curse-leech" do
+      loc = castle.curse_location_leech
+      expect(castle.room(*loc).cursed_with_leech?).to eq true
+    end
+
+    it "curse-forgetfulness" do
+      loc = castle.curse_location_forgetfulness
+      expect(castle.room(*loc).cursed_with_forgetfulness?).to eq true
+    end
   end
 
   it "#set_in_room" do
     castle.set_in_room(8,8,1,:warp)
     expect(castle.rooms[63]).to eq 9 
   end
-
-
 
 end
 end
