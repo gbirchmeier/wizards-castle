@@ -15,3 +15,6 @@ require 'the-wizards-castle/strings.rb'
 
 
 TheWizardsCastle::Runner.run
+
+puts "---"
+puts "the end."

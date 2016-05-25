@@ -10,9 +10,12 @@ class Player
   attr_reader :race, :gender, :location, :armor, :weapon
 
   def lamp?
-    return @has_lamp
+    @has_lamp
   end
 
+  def vendor_rage?
+    @vendor_rage
+  end
 
   def initialize
     @race = nil
@@ -27,6 +30,14 @@ class Player
     @armor = nil
     @weapon = nil
     @treasures = []
+    @vendor_rage = false
+  end
+
+  def set_location(row,col,floor)
+    if row<1 || row>8 || col<1 || col>8 || floor<1 || floor>8
+      raise "Illegal location [#{row},#{col},#{floor}]"
+    end
+    @location = [row,col,floor]
   end
 
   def set_race r
@@ -35,7 +46,7 @@ class Player
   end
 
   def set_gender g
-    #maybe in a future version I'll allow user to change it
+    #maybe in a future version I'll allow non-binary genders
     raise "Unrecognized gender parameter" unless GENDERS.include?(g)
     @gender = g
   end
@@ -53,6 +64,11 @@ class Player
   def set_weapon w
     raise "Unrecognized weapon parameter" unless WEAPONS.include?(w)
     @weapon = w
+  end
+
+  def set_vendor_rage bool
+    raise "Parameter is not a boolean: #{bool.inspect}" unless [true,false].include?(bool)
+    @vendor_rage = bool
   end
 
   def flares n=0

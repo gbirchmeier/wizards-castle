@@ -113,6 +113,17 @@ END_WEAPON_PROMPT
     "HERE YOU FIND #{RoomContent::ROOM_THINGS[symbol][:text]}."
   end
 
+  def self.you_now_have(x)
+    "YOU NOW HAVE #{x}."
+  end
+
+  def self.standard_action_prompt
+    "ENTER YOUR COMMAND : "
+  end
+
+  def self.standard_action_error(player)
+    "** SILLY #{player.race.to_s.upcase}, THAT WASN'T A VALID COMMAND!"
+  end
 
 #OK, HOBBIT, YOU ARE NOW ENTERING THE CASTLE!                                    
 #                                                                                

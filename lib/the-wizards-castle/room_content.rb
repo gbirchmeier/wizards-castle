@@ -97,5 +97,13 @@ class RoomContent
     ROOM_THINGS[@symbol][:text]
   end
 
+  def monster?
+    ROOM_THINGS[@symbol][:mapchar]=='M'
+  end
+
+  def treasure?
+    ROOM_THINGS[@symbol][:treasure]=='T'
+  end
+
 end
 end

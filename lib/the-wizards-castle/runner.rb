@@ -39,12 +39,25 @@ class Runner
     puts
     @castle = Castle.new
 
-    run_turn
+    begin
+      last_direction = "N"
+      loop do
+        last_direction = run_new_location(last_direction)
+      end
+      # TODO look at @player to see if they quit/died
+    end
   end
 
-  def run_turn
+
+  def run_new_location(last_direction=nil)
+    # The player enters a new room.
+    # (last_direction is needed by the Orb-of-Zot shunt.)
+
     loc = @player.location
-    room_content = @castle.room(*loc)
+    rc = @castle.room(*loc)
+
+    # TODO map memory
+    # TODO exact Orb of Zot behavior
 
     puts Strings.you_are_here(@player)
     puts
@@ -52,17 +65,70 @@ class Runner
     puts
 
     symbol_for_text =
-      if room_content.symbol==:runestaff_and_monster
+      if rc.symbol==:runestaff_and_monster
         @castle.runestaff_monster
       else
-        room_content.symbol
+        rc.symbol
     end
     puts Strings.here_you_find(symbol_for_text)
+    puts
 
 
-    puts "---"
-    puts @player.inspect
+    case rc.symbol
+    when :gold
+      n = Random.rand(10)+1
+      puts Strings.you_now_have("#{@player.gp(+n)} GOLD")
+      puts
+      @castle.set_in_room(*loc,:empty_room)
+    when :flares
+      n = Random.rand(5)+1
+      puts Strings.you_now_have("#{@player.flares(+n)} FLARES")
+      puts
+      @castle.set_in_room(*loc,:empty_room)
+    when :warp
+      @player.set_location Castle.random_room
+      return last_direction
+    when :sinkhole
+      @player.set_location Castle.down(*loc)
+      return last_direction
+    else
+      if rc.treasure?
+        # TODO take it
+      elsif rc.monster? || (rc.symbol==:vendor && @player.vendor_rage?)
+        # TODO fight!
+      end
+    end
+
+
+    loop do
+      cmd = @prompter.ask(Strings.standard_action_prompt)[0]
+      puts
+      case cmd
+      when 'N'
+        #TODO special behavior if :entrance
+        @player.set_location *Castle.north(*loc)
+        return last_direction = cmd
+      when 'S'
+        @player.set_location *Castle.south(*loc)
+        return last_direction = cmd
+      when 'W'
+        @player.set_location *Castle.west(*loc)
+        return last_direction = cmd
+      when 'E'
+        @player.set_location *Castle.east(*loc)
+        return last_direction = cmd
+      else
+        puts Strings.standard_action_error(@player)
+        puts
+      end
+    end
   end
+
+
+
+
+
+  # Character creation prompts
 
   def ask_race
     allowed = {

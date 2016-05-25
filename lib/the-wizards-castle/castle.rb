@@ -69,6 +69,13 @@ class Castle
     floor==8 ? [row,col,1] : [row,col,floor+1]
   end
 
+  def self.random_room(floor=nil)
+    row = Random.rand(8)+1
+    col = Random.rand(8)+1
+    floor ||= Random.rand(8)+1
+    [row,col,floor]
+  end
+
 
   def room(row,col,floor)
     lethargy      = [row,col,floor]==@curse_location_lethargy
@@ -83,9 +90,7 @@ class Castle
 
   def set_in_random_room(symbol,floor=nil)
     10000.times do
-      row = Random.rand(8)+1
-      col = Random.rand(8)+1
-      floor ||= Random.rand(8)+1
+      row,col,floor = Castle.random_room(floor)
       if room(row,col,floor).symbol == :empty_room
         set_in_room(row,col,floor,symbol)
         return [row,col,floor]
