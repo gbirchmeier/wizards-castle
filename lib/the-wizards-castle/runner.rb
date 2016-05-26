@@ -1,7 +1,11 @@
 module TheWizardsCastle
 class Runner
 
-
+  module GameOverEnum
+    DIED = :died
+    QUIT = :quit
+    EXITED = :exited
+  end
 
   def self.run
     runner = Runner.new
@@ -12,6 +16,8 @@ class Runner
     @prompter = Prompter.new
     @castle = nil
     @player = nil
+    @last_direction = nil
+    @game_over = nil
   end
 
   def start
@@ -37,24 +43,29 @@ class Runner
     end
     puts Strings.entering_the_castle(@player)
     puts
-    @castle = Castle.new
 
-    begin
-      last_direction = "N"
-      loop do
-        last_direction = run_new_location(last_direction)
-      end
-      # TODO look at @player to see if they quit/died
+    @castle = Castle.new
+    @last_direction = "N" #needed by the Orb-of-Zot shunt
+    @game_over = nil
+
+    loop do
+      run_new_location
+      break if @game_over
     end
+
+    #TODO this message
+    puts "Game over because you #{@game_over.to_s}."
+
+    #TODO play again?
   end
 
 
-  def run_new_location(last_direction=nil)
+  def run_new_location
     # The player enters a new room.
-    # (last_direction is needed by the Orb-of-Zot shunt.)
 
     loc = @player.location
     rc = @castle.room(*loc)
+puts ">>> #{rc.symbol}"
 
     @player.remember_room(*loc)
     # TODO exact Orb of Zot behavior
@@ -88,10 +99,10 @@ class Runner
       @castle.set_in_room(*loc,:empty_room)
     when :warp
       @player.set_location *Castle.random_room
-      return last_direction
+      return
     when :sinkhole
       @player.set_location *Castle.down(*loc)
-      return last_direction
+      return
     else
       if rc.treasure?
         # TODO take it
@@ -106,21 +117,21 @@ class Runner
       cmd = @prompter.ask(Strings.standard_action_prompt)[0]
       puts
       case cmd
-      when 'N'
-        #TODO special behavior if :entrance
-        @player.set_location *Castle.north(*loc)
-        return last_direction = cmd
-      when 'S'
-        @player.set_location *Castle.south(*loc)
-        return last_direction = cmd
-      when 'W'
-        @player.set_location *Castle.west(*loc)
-        return last_direction = cmd
-      when 'E'
-        @player.set_location *Castle.east(*loc)
-        return last_direction = cmd
+      when 'N','S','E','W'
+        if cmd=='N' && rc.symbol==:entrance
+          @game_over = GameOverEnum::EXITED
+          return
+        end
+        @last_direction = cmd
+        @player.set_location *Castle.move(cmd,*loc)
+        return
       when 'M'
         display_map
+      when 'Q'
+        @game_over = GameOverEnum::QUIT
+        return
+      when 'H','U','D','DR','M','F','L','O','G','T'
+        puts "Command not implemented yet"
       else
         puts Strings.standard_action_error(@player)
         puts

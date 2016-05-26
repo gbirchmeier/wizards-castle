@@ -45,6 +45,16 @@ class Castle
     64*(floor-1)+8*(row-1)+col-1
   end
 
+  def self.move(dir,row,col,floor)
+    case dir[0]
+    when "N" then return Castle.north(row,col,floor)
+    when "S" then return Castle.south(row,col,floor)
+    when "E" then return Castle.east(row,col,floor)
+    when "W" then return Castle.west(row,col,floor)
+    else raise "Illegal direction '#{dir}'"
+    end
+  end
+
   def self.north(row,col,floor)
     row==1 ? [8,col,floor] : [row-1,col,floor]
   end
