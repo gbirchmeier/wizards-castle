@@ -114,9 +114,13 @@ puts ">>> #{rc.symbol}"
 
     ###   User-command loop
     loop do
-      cmd = @prompter.ask(Strings.standard_action_prompt)[0]
+      cmd = @prompter.ask(Strings.standard_action_prompt)[0..1]
+      cmd.chop! unless (cmd.length==1 || cmd=="DR")
       puts
+
       case cmd
+      when 'H'
+        puts "<<cmd placeholder>>"  #TODO
       when 'N','S','E','W'
         if cmd=='N' && rc.symbol==:entrance
           @game_over = GameOverEnum::EXITED
@@ -125,13 +129,37 @@ puts ">>> #{rc.symbol}"
         @last_direction = cmd
         @player.set_location *Castle.move(cmd,*loc)
         return
+      when 'U'
+        if rc.symbol==:stairs_up
+          @player.set_location *Castle.up(*loc)
+          return
+        end
+        puts Strings.stairs_up_error
+        puts
+      when 'D'
+        if rc.symbol==:stairs_down
+          @player.set_location *Castle.down(*loc)
+          return
+        end
+        puts Strings.stairs_down_error
+        puts
+      when 'DR'
+        puts "<<cmd placeholder>>"  #TODO
       when 'M'
         display_map
+      when 'F'
+        puts "<<cmd placeholder>>"  #TODO
+      when 'L'
+        puts "<<cmd placeholder>>"  #TODO
+      when 'O'
+        puts "<<cmd placeholder>>"  #TODO
+      when 'G'
+        puts "<<cmd placeholder>>"  #TODO
+      when 'T'
+        puts "<<cmd placeholder>>"  #TODO
       when 'Q'
         @game_over = GameOverEnum::QUIT
         return
-      when 'H','U','D','DR','M','F','L','O','G','T'
-        puts "Command not implemented yet"
       else
         puts Strings.standard_action_error(@player)
         puts

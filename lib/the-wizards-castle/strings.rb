@@ -125,6 +125,14 @@ END_WEAPON_PROMPT
     "** SILLY #{player.race.to_s.upcase}, THAT WASN'T A VALID COMMAND!"
   end
 
+  def self.stairs_up_error
+    "** THERE ARE NO STAIRS GOING UP FROM HERE!"
+  end
+
+  def self.stairs_down_error
+    "** THERE ARE NO STAIRS GOING DOWN FROM HERE!"
+  end
+
 
 
 #*** WIZARD'S CASTLE COMMAND AND INFORMATION SUMMARY ***                         
