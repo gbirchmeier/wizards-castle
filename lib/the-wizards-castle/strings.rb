@@ -125,17 +125,35 @@ END_WEAPON_PROMPT
     "** SILLY #{player.race.to_s.upcase}, THAT WASN'T A VALID COMMAND!"
   end
 
-#OK, HOBBIT, YOU ARE NOW ENTERING THE CASTLE!                                    
-#                                                                                
-#YOU ARE AT ( 1 , 4 ) LEVEL 1 .                                                  
-#                                                                                
-#STRENGTH = 6  INTELLIGENCE = 10  DEXTERITY = 12                                 
-#TREASURES = 0  FLARES = 0  GOLD PIECES = 30                                     
-#WEAPON = DAGGER  ARMOR = CHAINMAIL                                              
-#                                                                                
-#HERE YOU FIND THE ENTRANCE.                                                     
-#                                                                                
-#ENTER YOUR COMMAND :    
+
+
+#*** WIZARD'S CASTLE COMMAND AND INFORMATION SUMMARY ***                         
+#                                                                                  
+#THE FOLLOWING COMMANDS ARE AVAILABLE :                                          
+#                                                                                  
+#H/ELP     N/ORTH    S/OUTH    E/AST     W/EST     U/P                           
+#D/OWN     DR/INK    M/AP      F/LARE    L/AMP     O/PEN                         
+#G/AZE     T/ELEPORT Q/UIT                                                       
+#                                                                                  
+#THE CONTENTS OF ROOMS ARE AS FOLLOWS :                                          
+#                                                                                  
+#. = EMPTY ROOM      B = BOOK            C = CHEST                               
+#D = STAIRS DOWN     E = ENTRANCE/EXIT   F = FLARES                              
+#G = GOLD PIECES     M = MONSTER         O = CRYSTAL ORB                         
+#P = MAGIC POOL      S = SINKHOLE        T = TREASURE                            
+#U = STAIRS UP       V = VENDOR          W = WARP/ORB                            
+#                                                                                  
+#THE BENEFITS OF HAVING TREASURES ARE :                                          
+#                                                                                  
+#RUBY RED - AVOID LETHARGY     PALE PEARL - AVOID LEECH                          
+#GREEN GEM - AVOID FORGETTING  OPAL EYE - CURES BLINDNESS                        
+#BLUE FLAME - DISSOLVES BOOKS  NORN STONE - NO BENEFIT                           
+#PALANTIR - NO BENEFIT         SILMARIL - NO BENEFIT                             
+#                                                                                  
+#PRESS RETURN WHEN READY TO RESUME, HUMAN.                 
+
+
+
 
 
 end

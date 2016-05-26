@@ -56,7 +56,7 @@ class Runner
     loc = @player.location
     rc = @castle.room(*loc)
 
-    # TODO map memory
+    @player.remember_room(*loc)
     # TODO exact Orb of Zot behavior
 
     puts Strings.you_are_here(@player)
@@ -74,6 +74,7 @@ class Runner
     puts
 
 
+    ###   Room-entry events (pre-user action)
     case rc.symbol
     when :gold
       n = Random.rand(10)+1
@@ -86,10 +87,10 @@ class Runner
       puts
       @castle.set_in_room(*loc,:empty_room)
     when :warp
-      @player.set_location Castle.random_room
+      @player.set_location *Castle.random_room
       return last_direction
     when :sinkhole
-      @player.set_location Castle.down(*loc)
+      @player.set_location *Castle.down(*loc)
       return last_direction
     else
       if rc.treasure?
@@ -100,6 +101,7 @@ class Runner
     end
 
 
+    ###   User-command loop
     loop do
       cmd = @prompter.ask(Strings.standard_action_prompt)[0]
       puts
@@ -117,6 +119,8 @@ class Runner
       when 'E'
         @player.set_location *Castle.east(*loc)
         return last_direction = cmd
+      when 'M'
+        display_map
       else
         puts Strings.standard_action_error(@player)
         puts
@@ -126,6 +130,26 @@ class Runner
 
 
 
+
+  def display_map
+    floor = @player.location.last
+    lines = []
+    (1..8).each do |row|
+      lines << ''
+      (1..8).each do |col|
+        c = @player.knows_room?(row,col,floor) ? @castle.room(row,col,floor).display : "?"
+        if [row,col,floor]==@player.location
+          lines.last << "<#{c}>  "
+        else
+          lines.last << " #{c}   "
+        end
+      end
+      lines << ""
+    end
+    lines << Strings.you_are_here(@player)
+    puts lines
+    puts
+  end
 
 
   # Character creation prompts

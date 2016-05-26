@@ -18,6 +18,7 @@ class Player
   end
 
   def initialize
+    @room_memory = Array.new(8*8*8,false) #true means visited
     @race = nil
     @gender = nil
     @gp = 60
@@ -109,6 +110,20 @@ class Player
   def have_treasure?(t)
     raise "invalid treasure #{t.inspect}" unless TREASURES.include?(t)
     @treasures.include?(t)
+  end
+
+  def knows_room?(col,row,floor)
+    @room_memory[Castle.room_index(col,row,floor)]
+  end
+
+  def remember_room(col,row,floor)
+    @room_memory[Castle.room_index(col,row,floor)] = true
+  end
+
+  def forget_random_room
+    loc = Castle.random_room
+    idx = Castle.room_index(*loc)
+    @room_memory[idx] = false
   end
 
 end
