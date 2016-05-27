@@ -133,34 +133,56 @@ END_WEAPON_PROMPT
     "** THERE ARE NO STAIRS GOING DOWN FROM HERE!"
   end
 
+  def self.drink_error
+    "** IF YOU WANT A DRINK, FIND A POOL!"
+  end
 
 
-#*** WIZARD'S CASTLE COMMAND AND INFORMATION SUMMARY ***                         
-#                                                                                  
-#THE FOLLOWING COMMANDS ARE AVAILABLE :                                          
-#                                                                                  
-#H/ELP     N/ORTH    S/OUTH    E/AST     W/EST     U/P                           
-#D/OWN     DR/INK    M/AP      F/LARE    L/AMP     O/PEN                         
-#G/AZE     T/ELEPORT Q/UIT                                                       
-#                                                                                  
-#THE CONTENTS OF ROOMS ARE AS FOLLOWS :                                          
-#                                                                                  
-#. = EMPTY ROOM      B = BOOK            C = CHEST                               
-#D = STAIRS DOWN     E = ENTRANCE/EXIT   F = FLARES                              
-#G = GOLD PIECES     M = MONSTER         O = CRYSTAL ORB                         
-#P = MAGIC POOL      S = SINKHOLE        T = TREASURE                            
-#U = STAIRS UP       V = VENDOR          W = WARP/ORB                            
-#                                                                                  
-#THE BENEFITS OF HAVING TREASURES ARE :                                          
-#                                                                                  
-#RUBY RED - AVOID LETHARGY     PALE PEARL - AVOID LEECH                          
-#GREEN GEM - AVOID FORGETTING  OPAL EYE - CURES BLINDNESS                        
-#BLUE FLAME - DISSOLVES BOOKS  NORN STONE - NO BENEFIT                           
-#PALANTIR - NO BENEFIT         SILMARIL - NO BENEFIT                             
-#                                                                                  
-#PRESS RETURN WHEN READY TO RESUME, HUMAN.                 
+
+#*** WIZARD'S CASTLE COMMAND AND INFORMATION SUMMARY ***
+#
+#THE FOLLOWING COMMANDS ARE AVAILABLE :
+#
+#H/ELP     N/ORTH    S/OUTH    E/AST     W/EST     U/P
+#D/OWN     DR/INK    M/AP      F/LARE    L/AMP     O/PEN
+#G/AZE     T/ELEPORT Q/UIT
+#
+#THE CONTENTS OF ROOMS ARE AS FOLLOWS :
+#
+#. = EMPTY ROOM      B = BOOK            C = CHEST
+#D = STAIRS DOWN     E = ENTRANCE/EXIT   F = FLARES
+#G = GOLD PIECES     M = MONSTER         O = CRYSTAL ORB
+#P = MAGIC POOL      S = SINKHOLE        T = TREASURE
+#U = STAIRS UP       V = VENDOR          W = WARP/ORB
+#
+#THE BENEFITS OF HAVING TREASURES ARE :
+#
+#RUBY RED - AVOID LETHARGY     PALE PEARL - AVOID LEECH
+#GREEN GEM - AVOID FORGETTING  OPAL EYE - CURES BLINDNESS
+#BLUE FLAME - DISSOLVES BOOKS  NORN STONE - NO BENEFIT
+#PALANTIR - NO BENEFIT         SILMARIL - NO BENEFIT
+#
+#PRESS RETURN WHEN READY TO RESUME, HUMAN.
 
 
+
+#YOU TAKE A DRINK AND FEEL DUMBER.
+#
+#****************************************************************
+#
+#A NOBLE EFFORT, OH FORMERLY LIVING HUMAN!
+#
+#YOU DIED DUE TO LACK OF INTELLIGENCE.
+#
+#AT THE TIME YOU DIED, YOU HAD :
+#THE OPAL EYE
+#THE SILMARIL
+#DAGGER AND PLATE AND A LAMP
+#YOU ALSO HAD 0 FLARES AND 5 GOLD PIECES
+#
+#AND IT TOOK YOU 42 TURNS!
+#
+#ARE YOU FOOLISH ENOUGH TO WANT TO PLAY AGAIN?
 
 
 

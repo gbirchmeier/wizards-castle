@@ -48,6 +48,8 @@ class Runner
     @last_direction = "N" #needed by the Orb-of-Zot shunt
     @game_over = nil
 
+    #TODO turn counter
+
     loop do
       run_new_location
       break if @game_over
@@ -65,7 +67,6 @@ class Runner
 
     loc = @player.location
     rc = @castle.room(*loc)
-puts ">>> #{rc.symbol}"
 
     @player.remember_room(*loc)
     # TODO exact Orb of Zot behavior
@@ -112,8 +113,11 @@ puts ">>> #{rc.symbol}"
     end
 
 
+
     ###   User-command loop
     loop do
+      #TODO flavor
+
       cmd = @prompter.ask(Strings.standard_action_prompt)[0..1]
       cmd.chop! unless (cmd.length==1 || cmd=="DR")
       puts
@@ -144,7 +148,16 @@ puts ">>> #{rc.symbol}"
         puts Strings.stairs_down_error
         puts
       when 'DR'
-        puts "<<cmd placeholder>>"  #TODO
+        if rc.symbol==:magic_pool
+          drink
+        else
+          puts Strings.drink_error
+          puts
+        end
+        if @player.str<1 || @player.int<1 || @player.dex<1
+          @game_over = GameOverEnum::DIED
+          return
+        end
       when 'M'
         display_map
       when 'F'
@@ -158,6 +171,7 @@ puts ">>> #{rc.symbol}"
       when 'T'
         puts "<<cmd placeholder>>"  #TODO
       when 'Q'
+        #TODO real quit prompt
         @game_over = GameOverEnum::QUIT
         return
       else
@@ -187,6 +201,40 @@ puts ">>> #{rc.symbol}"
     end
     lines << Strings.you_are_here(@player)
     puts lines
+    puts
+  end
+
+  def drink
+    s = "YOU TAKE A DRINK AND "
+    case Random.rand(8)
+    when 0
+      s+="FEEL STRONGER."
+      @player.str(1+Random.rand(3))
+    when 1
+      s+="FEEL WEAKER"
+      @player.str(-1*(1+Random.rand(3)))
+    when 2
+      s+="FEEL SMARTER."
+      @player.int(1+Random.rand(3))
+    when 3
+      s+="FEEL DUMBER."
+      @player.int(-1*(1+Random.rand(3)))
+    when 4
+      s+="FEEL NIMBLER."
+      @player.dex(1+Random.rand(3))
+    when 5
+      s+="FEEL CLUMSIER."
+      @player.dex(-1*(1+Random.rand(3)))
+    when 6
+      newrace = (Player::RACES - [@player.race]).sample
+      s+="BECOME A #{newrace.to_s.upcase}"
+      @player.set_race(newrace)
+    when 7
+      newgender = @player.gender==:male ? :female : :male
+      s+="TURN INTO A #{newgender.to_s.upcase} #{@player.race.to_s.upcase}!"
+      @player.set_gender(newgender)
+    end
+    puts s
     puts
   end
 
