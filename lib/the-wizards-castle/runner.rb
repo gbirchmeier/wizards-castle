@@ -126,7 +126,9 @@ class Runner
 
       case cmd
       when 'H'
-        puts "<<cmd placeholder>>"  #TODO
+        print Strings.help(@player)
+        gets
+        puts
       when 'N','S','E','W'
         if cmd=='N' && rc.symbol==:entrance
           @game_over = GameOverEnum::EXITED
