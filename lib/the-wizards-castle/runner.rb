@@ -120,7 +120,9 @@ class Runner
 
       cmd = @prompter.ask(Strings.standard_action_prompt)[0..1]
       cmd.chop! unless (cmd.length==1 || cmd=="DR")
-      puts
+
+      # ugh, most commands have a newline, but not always
+      puts unless cmd=="F"
 
       case cmd
       when 'H'
@@ -161,7 +163,7 @@ class Runner
       when 'M'
         display_map
       when 'F'
-        puts "<<cmd placeholder>>"  #TODO
+        flare
       when 'L'
         puts "<<cmd placeholder>>"  #TODO
       when 'O'
@@ -238,6 +240,54 @@ class Runner
     puts
   end
 
+  def flare
+    # TODO if blind
+
+    if @player.flares < 1
+      puts Strings.out_of_flares
+      puts
+      return
+    end
+
+    @player.flares(-1)
+
+    locs = flare_locs
+    locs.each do |row|
+      puts
+      line = ""
+      row.each do |loc|
+        @player.remember_room(*loc)
+        c = @castle.room(*loc).display
+        line << " #{c}   "
+      end
+      puts line
+      puts
+    end
+    puts Strings.you_are_here(@player)
+    puts
+  end
+
+  def flare_locs
+    row,col,floor = @player.location
+    top_row = row==1 ? 8 : row-1
+    bottom_row = row==8 ? 1 : row+1
+    left_col = col==1 ? 8 : col-1
+    right_col = col==8 ? 1 : col+1
+    rv = Array.new
+    rv << [
+      [top_row,left_col,floor],     # top-left
+      [top_row,col,floor],          # top-middle
+      [top_row,right_col,floor]]    # top-right
+    rv << [
+      [row,left_col,floor],         # left
+      [row,col,floor],              # center
+      [row,right_col,floor]]        # right
+    rv << [
+      [bottom_row,left_col,floor],  # bottom-left
+      [bottom_row,col,floor],       # bottom-middle
+      [bottom_row,right_col,floor]] # bottom-right
+    rv
+  end
 
   # Character creation prompts
 

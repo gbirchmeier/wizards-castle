@@ -137,6 +137,9 @@ END_WEAPON_PROMPT
     "** IF YOU WANT A DRINK, FIND A POOL!"
   end
 
+  def self.out_of_flares
+    "** HEY, BRIGHT ONE, YOU'RE OUT OF FLARES!"
+  end
 
 
 #*** WIZARD'S CASTLE COMMAND AND INFORMATION SUMMARY ***

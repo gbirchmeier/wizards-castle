@@ -5,6 +5,13 @@ class Castle
 
   MONSTERS = [:kobold, :orc, :wolf, :goblin, :ogre, :troll, :bear, :minotaur, :gargoyle, :chimera, :balrog, :dragon]
 
+
+  #
+  # Locations: row/col/floor range from 1-8, just like what players see (i.e. indexed from 1, not 0.)
+  #
+
+
+
   def initialize
     @rooms = Array.new(8*8*8, RoomContent.to_intcode(:empty_room)) # unlike BASIC, index starts at 0
 
