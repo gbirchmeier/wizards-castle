@@ -22,7 +22,7 @@ class Runner
 
   def start
     puts Strings::INTRO
-    # pause should go here?
+    # TODO pause should go here?
     puts Strings::CHARACTER_CREATION_HEADER
 
     @player = Player.new
@@ -55,7 +55,7 @@ class Runner
       break if @game_over
     end
 
-    #TODO this message
+    #TODO game over messaging
     puts "Game over because you #{@game_over.to_s}."
 
     #TODO play again?
@@ -64,6 +64,8 @@ class Runner
 
   def run_new_location
     # The player enters a new room.
+
+    # TODO curses
 
     loc = @player.location
     rc = @castle.room(*loc)
@@ -106,7 +108,7 @@ class Runner
       return
     else
       if rc.treasure?
-        # TODO take it
+        # TODO take treasure
       elsif rc.monster? || (rc.symbol==:vendor && @player.vendor_rage?)
         # TODO fight!
       end
@@ -167,13 +169,13 @@ class Runner
       when 'F'
         flare
       when 'L'
-        puts "<<cmd placeholder>>"  #TODO
+        puts "<<cmd placeholder>>"  #TODO lamp
       when 'O'
-        puts "<<cmd placeholder>>"  #TODO
+        puts "<<cmd placeholder>>"  #TODO open chest/book
       when 'G'
-        puts "<<cmd placeholder>>"  #TODO
+        puts "<<cmd placeholder>>"  #TODO gaze
       when 'T'
-        puts "<<cmd placeholder>>"  #TODO
+        puts "<<cmd placeholder>>"  #TODO teleport
       when 'Q'
         #TODO real quit prompt
         @game_over = GameOverEnum::QUIT
@@ -243,7 +245,7 @@ class Runner
   end
 
   def flare
-    # TODO if blind
+    # TODO flares when blind
 
     if @player.flares < 1
       puts Strings.out_of_flares
