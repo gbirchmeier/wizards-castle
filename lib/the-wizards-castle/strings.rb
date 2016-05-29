@@ -141,6 +141,23 @@ END_WEAPON_PROMPT
     "** HEY, BRIGHT ONE, YOU'RE OUT OF FLARES!"
   end
 
+  def self.lamp_prompt
+    "WHERE DO YOU WANT TO SHINE THE LAMP (N,S,E,W)? "
+  end
+
+  def self.lamp_prompt_error(player)
+    "** THAT'S NOT A DIRECTION, #{player.race.to_s.upcase}!"
+  end
+
+  def self.lamp_shine(row,col,floor,room_content)
+    s =<<END_SHINE
+THE LAMP SHINES INTO ( #{row} , #{col} ) LEVEL #{floor} .
+
+THERE YOU WILL FIND #{room_content.text}.
+END_SHINE
+    s
+  end
+
   def self.help(player)
     s=<<END_HELP
 *** WIZARD'S CASTLE COMMAND AND INFORMATION SUMMARY ***

@@ -169,7 +169,7 @@ class Runner
       when 'F'
         flare
       when 'L'
-        puts "<<cmd placeholder>>"  #TODO lamp
+        shine_lamp
       when 'O'
         puts "<<cmd placeholder>>"  #TODO open chest/book
       when 'G'
@@ -291,6 +291,24 @@ class Runner
       [bottom_row,col,floor],       # bottom-middle
       [bottom_row,right_col,floor]] # bottom-right
     rv
+  end
+
+  def shine_lamp
+    # TODO lamp when blind
+    loop do
+      dir = @prompter.ask(Strings.lamp_prompt)[0]
+      puts
+      if ['N','W','E','S'].include?(dir)
+        target_loc = Castle.move(dir,*@player.location)
+        @player.remember_room(*target_loc)
+        rc = @castle.room(*target_loc)
+        puts Strings.lamp_shine(*target_loc,rc)
+        puts
+        break
+      end
+      puts Strings.lamp_prompt_error(@player)
+      puts
+    end
   end
 
   # Character creation prompts
