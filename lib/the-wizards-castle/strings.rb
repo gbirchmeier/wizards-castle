@@ -145,6 +145,10 @@ END_WEAPON_PROMPT
     "WHERE DO YOU WANT TO SHINE THE LAMP (N,S,E,W)? "
   end
 
+  def self.no_lamp_error(player)
+    "** YOU DON'T HAVE A LAMP, #{player.race.to_s.upcase}!"
+  end
+
   def self.lamp_prompt_error(player)
     "** THAT'S NOT A DIRECTION, #{player.race.to_s.upcase}!"
   end

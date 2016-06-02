@@ -295,6 +295,14 @@ class Runner
 
   def shine_lamp
     # TODO lamp when blind
+
+    unless @player.lamp?
+      puts Strings.no_lamp_error(@player)
+      puts
+      return
+    end
+
+    # TODO check if possess the lamp
     loop do
       dir = @prompter.ask(Strings.lamp_prompt)[0]
       puts
@@ -310,6 +318,7 @@ class Runner
       puts
     end
   end
+
 
   # Character creation prompts
 
