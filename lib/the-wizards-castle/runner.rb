@@ -65,7 +65,7 @@ class Runner
   def run_new_location
     # The player enters a new room.
 
-    # TODO curses
+    # TODO leech/forget effects
 
     loc = @player.location
     rc = @castle.room(*loc)
@@ -125,6 +125,12 @@ class Runner
 
       # ugh, most commands have a newline, but not always
       puts unless cmd=="F"
+
+      if ['F','L','G','M'].include?(cmd) && @player.blind?
+        puts Strings.blind_command_error(@player)
+        puts
+        next
+      end
 
       case cmd
       when 'H'
@@ -254,8 +260,6 @@ class Runner
   end
 
   def flare
-    # TODO flares when blind
-
     if @player.flares < 1
       puts Strings.out_of_flares
       puts
@@ -303,15 +307,12 @@ class Runner
   end
 
   def shine_lamp
-    # TODO lamp when blind
-
     unless @player.lamp?
       puts Strings.no_lamp_error(@player)
       puts
       return
     end
 
-    # TODO check if possess the lamp
     loop do
       dir = @prompter.ask(Strings.lamp_prompt)[0]
       puts
@@ -329,13 +330,6 @@ class Runner
   end
 
   def gaze
-    # TODO gaze when blind
-#    if @player.blind? #this doesn't exist yet
-#      puts Strings.blind_command_error(player)
-#      puts
-#      return
-#    end
-
     s = "YOU SEE "
     case Random.rand(6)
     when 0

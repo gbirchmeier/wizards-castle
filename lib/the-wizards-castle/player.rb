@@ -32,6 +32,8 @@ class Player
     @weapon = nil
     @treasures = []
     @vendor_rage = false
+
+    @blind = false
   end
 
   def set_location(row,col,floor)
@@ -53,7 +55,7 @@ class Player
   end
 
   def set_lamp bool
-    raise "Parameter is not a boolean: #{bool.inspect}" unless [true,false].include?(bool)
+    check_bool(bool)
     @has_lamp = bool
   end
 
@@ -67,8 +69,12 @@ class Player
     @weapon = w
   end
 
+  def vendor_rage?
+    @vendor_rage
+  end
+
   def set_vendor_rage bool
-    raise "Parameter is not a boolean: #{bool.inspect}" unless [true,false].include?(bool)
+    check_bool(bool)
     @vendor_rage = bool
   end
 
@@ -124,6 +130,19 @@ class Player
     loc = Castle.random_room
     idx = Castle.room_index(*loc)
     @room_memory[idx] = false
+  end
+
+  def blind?
+    @blind
+  end
+
+  def set_blind(bool)
+    check_bool(bool)
+  end
+
+private
+  def check_bool(bool)
+    raise "Parameter is not a boolean: #{bool.inspect}" unless [true,false].include?(bool)
   end
 
 end
