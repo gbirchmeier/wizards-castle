@@ -41,8 +41,8 @@ class RoomContent
     silmaril:    { intcode: 33, mapchar: 'T', text: "THE SILMARIL" },
 
     # these two are divergences from the original BASIC impl
-    orb_of_zot:  { intcode: 34, mapchar: 'W', text: "<ERROR>" },
-    runestaff_and_monster: { intcode: 35, mapchar: 'M', text: "<ERROR>" }
+    orb_of_zot:  { intcode: 34, mapchar: 'W', text: "A WARP" },
+    runestaff_and_monster: { intcode: 35, mapchar: 'M', text: "<ERROR-NO-MONSTER>" }
   }
 
   @@intcode_to_symbol_map = ROOM_THINGS.map{|k,h| [h[:intcode],k]}.to_h
@@ -69,12 +69,13 @@ class RoomContent
 
   attr_reader :symbol
 
-  def initialize(intcode,curse_lethargy=false,curse_leech=false,curse_forget=false)
+  def initialize(intcode,curse_lethargy=false,curse_leech=false,curse_forget=false,monster_type=nil)
     raise "Unrecognized intcode #{intcode}" unless RoomContent.valid_intcode?(intcode)
     @symbol = RoomContent.to_symbol(intcode)
     @cursed_with_lethargy = curse_lethargy
     @cursed_with_leech = curse_leech
     @cursed_with_forgetfulness = curse_forget
+    @monster_type = monster_type
   end
 
   def display
@@ -94,6 +95,7 @@ class RoomContent
   end
 
   def text
+    sym = (@symbol==:runestaff_and_monster && @monster_type) ? @monster_type : @symbol
     ROOM_THINGS[@symbol][:text]
   end
 

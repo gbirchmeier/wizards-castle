@@ -1,5 +1,8 @@
 module TheWizardsCastle
 module Strings
+  def self.random_monster_text
+    RoomContent::ROOM_THINGS[Castle::MONSTERS.sample][:text]
+  end
 
   INTRO =<<END_INTRO
 ****************************************************************
@@ -64,9 +67,7 @@ END_ARMOR_PROMPT
   end
 
   def self.armor_error(player)
-    monster = Castle::MONSTERS.sample.to_s.upcase
-    article = ["A","E","I","O","U"].include?(monster[0]) ? "AN" : "A"
-    "** ARE YOU A #{player.race.to_s.upcase} OR #{article} #{monster}?"
+    "** ARE YOU A #{player.race.to_s.upcase} OR #{self.random_monster_text}?"
   end
 
   def self.weapon_prompt
@@ -133,6 +134,10 @@ END_WEAPON_PROMPT
     "** THERE ARE NO STAIRS GOING DOWN FROM HERE!"
   end
 
+  def self.blind_command_error
+    "** YOU CAN'T SEE ANYTHING, YOU DUMB #{player.race.to_s.upcase}!"
+  end
+
   def self.drink_error
     "** IF YOU WANT A DRINK, FIND A POOL!"
   end
@@ -160,6 +165,10 @@ THE LAMP SHINES INTO ( #{row} , #{col} ) LEVEL #{floor} .
 THERE YOU WILL FIND #{room_content.text}.
 END_SHINE
     s
+  end
+
+  def self.no_crystal_orb_error
+    "** IT'S HARD TO GAZE WITHOUT AN ORB!"
   end
 
   def self.help(player)

@@ -173,7 +173,16 @@ class Runner
       when 'O'
         puts "<<cmd placeholder>>"  #TODO open chest/book
       when 'G'
-        puts "<<cmd placeholder>>"  #TODO gaze
+        if rc.symbol==:crystal_orb
+          gaze
+        else
+          puts Strings.no_crystal_orb_error
+          puts
+        end
+        if @player.str<1 || @player.int<1 || @player.dex<1
+          @game_over = GameOverEnum::DIED
+          return
+        end
       when 'T'
         puts "<<cmd placeholder>>"  #TODO teleport
       when 'Q'
@@ -319,6 +328,41 @@ class Runner
     end
   end
 
+  def gaze
+    # TODO gaze when blind
+#    if @player.blind? #this doesn't exist yet
+#      puts Strings.blind_command_error(player)
+#      puts
+#      return
+#    end
+
+    s = "YOU SEE "
+    case Random.rand(6)
+    when 0
+      @player.str(-1*Random.rand(2))
+      s += "YOURSELF IN A BLOODY HEAP!"
+    when 1
+      s += "YOURSELF DRINKING FROM A POOL AND BECOMING #{Strings.random_monster_text}!"
+    when 2
+      s += "#{Strings.random_monster_text} GAZING BACK AT YOU!"
+    when 3
+      # a random room
+      xloc = Castle.random_room
+      xrc = @castle.room(*xloc)
+      @player.remember_room(*xloc)
+      s += "#{xrc.text} AT ( #{xloc[0]} , #{xloc[1]} ) LEVEL #{xloc[2]} ."
+    when 4
+      zot_loc = Castle.random_room
+      if Random.rand(2)==0
+        zot_loc = @castle.orb_of_zot_location
+      end
+      s += "***THE ORB OF ZOT*** AT ( #{zot_loc[0]} , #{zot_loc[1]} ) LEVEL #{zot_loc[2]} ."
+    when 5
+      s += "A SOAP OPERA RERUN!"
+    end
+    puts s
+    puts
+  end
 
   # Character creation prompts
 
