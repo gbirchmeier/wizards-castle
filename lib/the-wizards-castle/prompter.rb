@@ -4,7 +4,7 @@ class Prompter
   def ask(allowed_array,prompt_hash)
     # prompt_hash is {:prompt,:success,:error}
     loop do
-      print prompt_hash[:prompt]
+      emit prompt_hash[:prompt]
       input = gets.strip.upcase
 
       rv = nil
@@ -15,11 +15,11 @@ class Prompter
       end
 
       if rv
-        print prompt_hash[:success]
+        emit prompt_hash[:success]
         return rv
       end
 
-      print prompt_hash[:error]
+      emit prompt_hash[:error] 
     end
   end
 
@@ -28,22 +28,27 @@ class Prompter
     # prompt_hash is {:prompt,:success,:error,:out_of_range}
     # Negative ints are treated as errors.
     loop do
-      print prompt_hash[:prompt]
+      emit prompt_hash[:prompt]
       input = gets.strip
 
       if input.match(/^\d+$/)
         i = input.to_i
         if i>=min && i<=max
-          print prompt_hash[:success]
+          emit prompt_hash[:success]
           return i
         end
-        print prompt_hash[:out_of_range]
+        emit prompt_hash[:out_of_range]
       else
-        print prompt_hash[:error]
+        emit prompt_hash[:error]
       end
     end
   end
 
+private
+  def emit x
+    output = x.is_a?(Proc) ? x.call : x
+    print output
+  end
 
 end
 end

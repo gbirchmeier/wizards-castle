@@ -41,16 +41,13 @@ class Runner
     ask_race
     ask_gender
     ask_attributes
-#    puts Strings.gold_report1(@player)
-#    puts
-#    ask_armor
-#    puts Strings.gold_report2(@player)
-#    puts
-#    ask_weapon
+    @printer.gold_report1
+    ask_armor
+    @printer.gold_report2
+    ask_weapon
 #    ask_lamp
 #    if @player.gp > 0
-#      puts Strings.gold_report3(@player)
-#      puts
+    @printer.gold_report3
 #      ask_flares
 #    end
   end
@@ -461,33 +458,19 @@ class Runner
   def ask_armor
     allowed = Player::ARMORS.collect{|x| [x.to_s[0].upcase,x]}.to_h
     costs = { plate: 30, chainmail: 20, leather: 10, nothing: 0 }
-    n=0
-    while @player.armor.nil? && n+=1
-      puts Strings.armor_error(@player)+"\n\n" if n>1
-      answer = @prompter.ask(Strings.armor_prompt)[0]
-      puts
-      if allowed.has_key?(answer)
-        armor = allowed[answer]
-        @player.set_armor(armor)
-        @player.gp(-1 * costs[armor])
-      end
-    end
+    answer = @prompter.ask(allowed.keys, @printer.prompt_armor)
+    armor = allowed[answer]
+    @player.set_armor(armor)
+    @player.gp(-1 * costs[armor])
   end
 
   def ask_weapon
     allowed = Player::WEAPONS.collect{|x| [x.to_s[0].upcase,x]}.to_h
     costs = { sword: 30, mace: 20, dagger: 10, nothing: 0 }
-    n=0
-    while @player.weapon.nil? && n+=1
-      puts Strings.weapon_error(@player)+"\n\n" if n>1
-      answer = @prompter.ask(Strings.weapon_prompt)[0]
-      puts
-      if allowed.has_key?(answer)
-        weapon = allowed[answer]
-        @player.set_weapon(weapon)
-        @player.gp(-1 * costs[weapon])
-      end
-    end
+    answer = @prompter.ask(allowed.keys, @printer.prompt_weapon)
+    weapon = allowed[answer]
+    @player.set_weapon(weapon)
+    @player.gp(-1 * costs[weapon])
   end
 
   def ask_lamp

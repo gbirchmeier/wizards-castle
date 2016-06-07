@@ -68,48 +68,43 @@ END_ATT_HEADER
     return prompt_add_to_attribute("DEXTERITY")
   end
 
-#  def self.gold_report1(player)
-#    "OK, #{player.race.to_s.upcase}, YOU HAVE #{player.gp} GOLD PIECES (GP'S)."
-#  end
-#
-#  def self.gold_report2(player)
-#    "OK, BOLD #{player.race.to_s.upcase}, YOU HAVE #{player.gp} GP'S LEFT."
-#  end
-#
-#  def self.gold_report3(player)
-#    "OK, #{player.race.to_s.upcase}, YOU HAVE #{player.gp} GOLD PIECES LEFT."
-#  end
-#
-#  def self.armor_prompt
-#    s =<<END_ARMOR_PROMPT
-#THESE ARE THE TYPES OF ARMOR YOU CAN BUY :
-#PLATE<30> CHAINMAIL<20> LEATHER<10> NOTHING<0>
-#
-#YOUR CHOICE? 
-#END_ARMOR_PROMPT
-#    s.chomp
-#  end
-#
-#  def self.armor_error(player)
-#    "** ARE YOU A #{player.race.to_s.upcase} OR #{self.random_monster_text}?"
-#  end
-#
-#  def self.weapon_prompt
-#    s =<<END_WEAPON_PROMPT
-#THESE ARE THE TYPES OF WEAPONS YOU CAN BUY :
-#SWORD<30> MACE<20> DAGGER<10> NOTHING<0>
-#
-#YOUR CHOICE? 
-#END_WEAPON_PROMPT
-#    s.chomp
-#  end
-#
-#  def self.weapon_error(player)
-#    "** IS YOUR IQ REALLY #{player.int} ?"
-#  end
-#
-#
-#
+  def gold_report1
+    puts "OK, #{player_race}, YOU HAVE #{@player.gp} GOLD PIECES (GP'S)."
+    puts
+  end
+
+  def gold_report2
+    puts "OK, BOLD #{player_race}, YOU HAVE #{@player.gp} GP'S LEFT."
+    puts
+  end
+
+  def gold_report3
+    puts "OK, #{player_race}, YOU HAVE #{@player.gp} GOLD PIECES LEFT."
+    puts
+  end
+
+  def prompt_armor
+    prompt =  "THESE ARE THE TYPES OF ARMOR YOU CAN BUY :\n" +
+              "PLATE<30> CHAINMAIL<20> LEATHER<10> NOTHING<0>\n" +
+              "\n" + "YOUR CHOICE? "
+    { prompt: prompt,
+      error: Proc.new { "\n** ARE YOU A #{player_race} OR #{random_monster_text}?\n\n" },
+      success: "\n"
+    }
+  end
+
+  def prompt_weapon
+    prompt = "THESE ARE THE TYPES OF WEAPONS YOU CAN BUY :\n" +
+             "SWORD<30> MACE<20> DAGGER<10> NOTHING<0>\n" +
+             "\n" + "YOUR CHOICE? "
+    { prompt: prompt,
+      error: "** IS YOUR IQ REALLY #{@player.int} ?\n\n",
+      success: "\n"
+    }
+  end
+
+
+
 #  def str_lamp_prompt
 #    "DO YOU WANT TO BUY A LAMP FOR 20 GP'S? "
 #  end

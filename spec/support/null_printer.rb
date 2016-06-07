@@ -31,5 +31,23 @@ class NullPrinter
   def prompt_add_to_dexterity
   end
 
+
+  def gold_report1
+  end
+
+  def gold_report2
+  end
+
+  def gold_report3
+  end
+
+  def prompt_armor
+    {}
+  end
+
+  def prompt_weapon
+    {}
+  end
+
 end
 end

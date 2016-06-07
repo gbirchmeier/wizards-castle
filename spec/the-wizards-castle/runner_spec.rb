@@ -87,6 +87,26 @@ describe Runner do
         expect(@runner.player.dex).to eq 16
       end
     end
+
+    context "buy stuff" do
+      before(:each) do
+        expect(@runner.player.gp).to eq 60
+      end
+
+      it "ask_armor" do
+        @prompter.push "C"
+        @runner.ask_armor
+        expect(@runner.player.gp).to eq 40
+        expect(@runner.player.armor).to eq :chainmail
+      end
+
+      it "ask_weapon" do
+        @prompter.push "D"
+        @runner.ask_weapon
+        expect(@runner.player.gp).to eq 50 
+        expect(@runner.player.weapon).to eq :dagger
+      end
+    end
   end
 
 end
