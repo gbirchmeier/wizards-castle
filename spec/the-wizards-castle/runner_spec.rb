@@ -9,7 +9,7 @@ describe Runner do
     before(:each) do
       @prompter = TestPrompter.new
       @runner = Runner.new
-      @runner.setup(prompter: @prompter, player: Player.new)
+      @runner.setup(prompter: @prompter, player: Player.new, printer: NullPrinter.new)
     end
 
     context "#ask_race" do

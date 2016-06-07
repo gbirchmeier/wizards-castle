@@ -33,7 +33,7 @@ class Prompter
 
       if input.match(/^\d+$/)
         i = input.to_i
-        if i<=min && i>=max
+        if i>=min && i<=max
           print prompt_hash[:success]
           return i
         end

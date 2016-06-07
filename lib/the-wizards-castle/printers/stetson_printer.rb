@@ -5,10 +5,6 @@ class StetsonPrinter
     @player = player
   end
 
-  def random_monster_text
-    RoomContent::ROOM_THINGS[Castle::MONSTERS.sample][:text]
-  end
-
 
   def intro
     s =<<END_INTRO
@@ -55,8 +51,9 @@ END_INTRO
 OK, #{@player.race.to_s.upcase}, YOU HAVE THE FOLLOWING ATTRIBUTES :
 STRENGTH = #{@player.str}  INTELLIGENCE = #{@player.int}  DEXTERITY = #{@player.dex}
 AND #{@player.custom_attribute_points} OTHER POINTS TO ALLOCATE AS YOU WISH.
+
 END_ATT_HEADER
-    puts s
+    print s
   end
     
   def prompt_add_to_strength
@@ -271,12 +268,16 @@ private
     @player.race.to_s.upcase
   end
 
+  def random_monster_text
+    RoomContent::ROOM_THINGS[Castle::MONSTERS.sample][:text]
+  end
+
   def prompt_add_to_attribute(att)
     s = "HOW MANY POINTS DO YOU WISH TO ADD TO YOUR #{att}? "
     { prompt: s,
       success: "\n",
-      error: "\n** #{s}",
-      out_of_range: "\n** #{s}"
+      error: "\n** ",
+      out_of_range: "\n** "
     }
   end
 

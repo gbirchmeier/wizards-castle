@@ -431,7 +431,7 @@ class Runner
     if @player.custom_attribute_points > 0
       max = 18-@player.str
       max = @player.custom_attribute_points if max>@player.custom_attribute_points
-      n = @prompter.ask_integer(0,18-@player.str,@printer.prompt_add_to_strength)
+      n = @prompter.ask_integer(0,max,@printer.prompt_add_to_strength)
       @player.custom_attribute_points(-n)
       @player.str(+n)
     end
@@ -441,7 +441,7 @@ class Runner
     if @player.custom_attribute_points > 0
       max = 18-@player.int
       max = @player.custom_attribute_points if max>@player.custom_attribute_points
-      n = @prompter.ask_integer(0,18-@player.int,@printer.prompt_add_to_intelligence)
+      n = @prompter.ask_integer(0,max,@printer.prompt_add_to_intelligence)
       @player.custom_attribute_points(-n)
       @player.int(+n)
     end
@@ -451,7 +451,7 @@ class Runner
     if @player.custom_attribute_points > 0
       max = 18-@player.dex
       max = @player.custom_attribute_points if max>@player.custom_attribute_points
-      n = @prompter.ask_integer(0,18-@player.dex,@printer.prompt_add_to_dexterity)
+      n = @prompter.ask_integer(0,max,@printer.prompt_add_to_dexterity)
       @player.custom_attribute_points(-n)
       @player.dex(+n)
     end
