@@ -85,6 +85,8 @@ class Player
 
   def gp n=0
     @gp += n.to_i
+    @gp=0 if @gp<0
+    @gp
   end
 
   def str n=0
