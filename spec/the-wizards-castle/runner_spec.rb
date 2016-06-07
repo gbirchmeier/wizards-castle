@@ -106,7 +106,23 @@ describe Runner do
         expect(@runner.player.gp).to eq 50 
         expect(@runner.player.weapon).to eq :dagger
       end
+
+      context "#ask_lamp" do
+        it "yes" do
+          @prompter.push "Y"
+          @runner.ask_lamp
+          expect(@runner.player.lamp?).to eq true
+          expect(@runner.player.gp).to eq 40
+        end
+        it "no" do
+          @prompter.push "N"
+          @runner.ask_lamp
+          expect(@runner.player.lamp?).to eq false
+          expect(@runner.player.gp).to eq 60
+        end
+      end
     end
+
   end
 
 end

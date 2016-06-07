@@ -83,6 +83,7 @@ END_ATT_HEADER
     puts
   end
 
+
   def prompt_armor
     prompt =  "THESE ARE THE TYPES OF ARMOR YOU CAN BUY :\n" +
               "PLATE<30> CHAINMAIL<20> LEATHER<10> NOTHING<0>\n" +
@@ -104,17 +105,15 @@ END_ATT_HEADER
   end
 
 
+  def prompt_lamp
+    { prompt: "DO YOU WANT TO BUY A LAMP FOR 20 GP'S? ",
+      error: "** PLEASE ANSWER YES OR NO",
+      success: "\n"
+    }
+  end
 
-#  def str_lamp_prompt
-#    "DO YOU WANT TO BUY A LAMP FOR 20 GP'S? "
-#  end
-#
-#  def lamp_prompt_error
-#    puts "** PLEASE ANSWER YES OR NO"
-#  end
-#
-#
-#
+
+
 #  def str_flare_prompt
 #    "FLARES COST 1 GP EACH. HOW MANY DO YOU WANT? "
 #  end

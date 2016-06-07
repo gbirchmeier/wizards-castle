@@ -45,7 +45,7 @@ class Runner
     ask_armor
     @printer.gold_report2
     ask_weapon
-#    ask_lamp
+    ask_lamp
 #    if @player.gp > 0
     @printer.gold_report3
 #      ask_flares
@@ -456,6 +456,8 @@ class Runner
 
 
   def ask_armor
+    #TODO this is only correct for char creation when you can afford everything
+    # unaffordable choices should not be shown or allowed
     allowed = Player::ARMORS.collect{|x| [x.to_s[0].upcase,x]}.to_h
     costs = { plate: 30, chainmail: 20, leather: 10, nothing: 0 }
     answer = @prompter.ask(allowed.keys, @printer.prompt_armor)
@@ -465,6 +467,8 @@ class Runner
   end
 
   def ask_weapon
+    #TODO this is only correct for char creation when you can afford everything
+    # unaffordable choices should not be shown or allowed
     allowed = Player::WEAPONS.collect{|x| [x.to_s[0].upcase,x]}.to_h
     costs = { sword: 30, mace: 20, dagger: 10, nothing: 0 }
     answer = @prompter.ask(allowed.keys, @printer.prompt_weapon)
@@ -474,21 +478,10 @@ class Runner
   end
 
   def ask_lamp
-    if @player.gp < 20
-      @player.set_lamp(false)
-      return
-    end
+    return if @player.gp < 20
 
-    n=0
-    while n+=1
-      puts "\n#{Strings::YESNO_ERROR}\n" if n>1
-      answer = @prompter.ask(Strings::LAMP_PROMPT)[0]
-      if answer=="Y" || answer=="N"
-        @player.gp(-20) if @player.set_lamp(answer=="Y")
-        puts
-        break
-      end
-    end
+    answer = @prompter.ask(["Y","N"], @printer.prompt_lamp)
+    @player.gp(-20) if @player.set_lamp(answer=="Y")
   end
 
   def ask_flares
