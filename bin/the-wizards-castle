@@ -1,18 +1,7 @@
 #!/usr/bin/env ruby
-
-require 'pry'
-require 'highline'
-require 'the-wizards-castle/castle.rb'
-require 'the-wizards-castle/player.rb'
-require 'the-wizards-castle/prompter.rb'
-require 'the-wizards-castle/room_content.rb'
-require 'the-wizards-castle/runner.rb'
-require 'the-wizards-castle/strings.rb'
-
-
+require 'the-wizards-castle'
 
 # run this with "ruby -Ilib ./bin/the-wizards-castle"
-
 
 TheWizardsCastle::Runner.run
 

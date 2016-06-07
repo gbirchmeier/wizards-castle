@@ -9,38 +9,54 @@ class Runner
 
   def self.run
     runner = Runner.new
-    runner.start
+    runner.setup
+    runner.character_creation
+#    runner.start
   end
 
+
+  attr_accessor :prompter, :castle, :player, :printer
+
+
   def initialize
-    @prompter = Prompter.new
+    @prompter = nil
     @castle = nil
     @player = nil
+    @printer = nil
+
     @last_direction = nil
     @game_over = nil
   end
 
-  def start
-    puts Strings::INTRO
-    # TODO pause should go here?
-    puts Strings::CHARACTER_CREATION_HEADER
+  def setup(h={})
+    @prompter = h[:prompter] || Prompter.new
+    @castle = h[:castle] || Castle.new
+    @player = h[:player] || Player.new
+    @printer = h[:printer] || StetsonPrinter.new(@player)
+  end
 
-    @player = Player.new
+  def character_creation
+    @printer.intro
+    @printer.character_creation_header
     ask_race
     ask_gender
     ask_attributes
-    puts Strings.gold_report1(@player)
-    puts
-    ask_armor
-    puts Strings.gold_report2(@player)
-    puts
-    ask_weapon
-    ask_lamp
-    if @player.gp > 0
-      puts Strings.gold_report3(@player)
-      puts
-      ask_flares
-    end
+#    puts Strings.gold_report1(@player)
+#    puts
+#    ask_armor
+#    puts Strings.gold_report2(@player)
+#    puts
+#    ask_weapon
+#    ask_lamp
+#    if @player.gp > 0
+#      puts Strings.gold_report3(@player)
+#      puts
+#      ask_flares
+#    end
+  end
+
+
+  def start
     puts Strings.entering_the_castle(@player)
     puts
 
@@ -367,12 +383,30 @@ class Runner
       'M' => :human,
       'H' => :hobbit
     }
-    n=0
-    while @player.race.nil? && n+=1
-      puts Strings::RACE_ERROR if n>1
-      answer = @prompter.ask(Strings::RACE_PROMPT)[0]
-      @player.set_race(allowed[answer]) if allowed.has_key?(answer)
-      puts
+    answer = @prompter.ask(allowed.keys, @printer.prompt_race)
+    @player.set_race(allowed[answer])
+
+    case @player.race
+    when :hobbit
+      @player.str(+4)
+      @player.int(+8)
+      @player.dex(+12)
+      @player.custom_attribute_points(+4)
+    when :elf
+      @player.str(+6)
+      @player.int(+8)
+      @player.dex(+10)
+      @player.custom_attribute_points(+8)
+    when :human
+      @player.str(+8)
+      @player.int(+8)
+      @player.dex(+8)
+      @player.custom_attribute_points(+8)
+    when :dwarf
+      @player.str(+10)
+      @player.int(+8)
+      @player.dex(+6)
+      @player.custom_attribute_points(+8)
     end
   end
 
@@ -381,90 +415,48 @@ class Runner
       'M' => :male,
       'F' => :female
     }
-    n=0
-    while @player.gender.nil? && n+=1
-      puts Strings.gender_error(@player) if n>1
-      answer = @prompter.ask(Strings::GENDER_PROMPT)[0]
-      @player.set_gender(allowed[answer]) if allowed.has_key?(answer)
-    end
-    puts
+    answer = @prompter.ask(allowed.keys, @printer.prompt_gender)
+    @player.set_gender(allowed[answer])
   end
+
 
   def ask_attributes
-    other_points = 0
-    case @player.race
-    when :hobbit
-      @player.str(+4)
-      @player.int(+8)
-      @player.dex(+12)
-      other_points = 4
-    when :elf
-      @player.str(+6)
-      @player.int(+8)
-      @player.dex(+10)
-      other_points = 8
-    when :human
-      @player.str(+8)
-      @player.int(+8)
-      @player.dex(+8)
-      other_points = 8
-    when :dwarf
-      @player.str(+10)
-      @player.int(+8)
-      @player.dex(+6)
-      other_points = 8
-    end
-
-    puts Strings.attributes_prompt_header(@player,other_points)
-
-    n=0
-    while n+=1
-      puts
-      answer = @prompter.ask("#{'** ' if n>1}#{Strings::STRENGTH_PROMPT}")
-      next unless answer.match(/^\d+$/)
-      answer = answer.to_i
-      if answer>=0 && answer<=other_points
-        other_points -= answer
-        @player.str(+answer)
-        break
-      end
-    end
-    if other_points < 1
-      puts
-      return
-    end
-
-    n=0
-    while n+=1
-      puts
-      answer = @prompter.ask("#{'** ' if n>1}#{Strings::INTELLIGENCE_PROMPT}")
-      next unless answer.match(/^\d+$/)
-      answer = answer.to_i
-      if answer>=0 && answer<=other_points
-        other_points -= answer
-        @player.int(+answer)
-        break
-      end
-    end
-    if other_points < 1
-      puts
-      return
-    end
-
-    n=0
-    while n+=1
-      puts
-      answer = @prompter.ask("#{'** ' if n>1}#{Strings::DEXTERITY_PROMPT}")
-      next unless answer.match(/^\d+$/)
-      answer = answer.to_i
-      if answer>=0 && answer<=other_points
-        other_points -= answer
-        @player.dex(+answer)
-        break
-      end
-    end
-    puts
+    @printer.attributes_header
+    ask_strength
+    ask_intelligence
+    ask_dexterity
   end
+
+  def ask_strength
+    if @player.custom_attribute_points > 0
+      max = 18-@player.str
+      max = @player.custom_attribute_points if max>@player.custom_attribute_points
+      n = @prompter.ask_integer(0,18-@player.str,@printer.prompt_add_to_strength)
+      @player.custom_attribute_points(-n)
+      @player.str(+n)
+    end
+  end
+
+  def ask_intelligence
+    if @player.custom_attribute_points > 0
+      max = 18-@player.int
+      max = @player.custom_attribute_points if max>@player.custom_attribute_points
+      n = @prompter.ask_integer(0,18-@player.int,@printer.prompt_add_to_intelligence)
+      @player.custom_attribute_points(-n)
+      @player.int(+n)
+    end
+  end
+
+  def ask_dexterity
+    if @player.custom_attribute_points > 0
+      max = 18-@player.dex
+      max = @player.custom_attribute_points if max>@player.custom_attribute_points
+      n = @prompter.ask_integer(0,18-@player.dex,@printer.prompt_add_to_dexterity)
+      @player.custom_attribute_points(-n)
+      @player.dex(+n)
+    end
+  end
+
 
   def ask_armor
     allowed = Player::ARMORS.collect{|x| [x.to_s[0].upcase,x]}.to_h

@@ -28,6 +28,7 @@ class Player
     @str = 0
     @int = 0
     @dex = 0
+    @custom_attribute_points = 0
     @armor = nil
     @weapon = nil
     @treasures = []
@@ -96,6 +97,10 @@ class Player
 
   def dex n=0
     @dex += n.to_i
+  end
+
+  def custom_attribute_points n=0
+    @custom_attribute_points += n
   end
 
   def treasure_count
