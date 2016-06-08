@@ -75,6 +75,132 @@ class Runner
   end
 
 
+
+  ##############################
+  # Character creation prompts
+
+  def ask_race
+    allowed = {
+      'E' => :elf,
+      'D' => :dwarf,
+      'M' => :human,
+      'H' => :hobbit
+    }
+    answer = @prompter.ask(allowed.keys, @printer.prompt_race)
+    @player.set_race(allowed[answer])
+
+    case @player.race
+    when :hobbit
+      @player.str(+4)
+      @player.int(+8)
+      @player.dex(+12)
+      @player.custom_attribute_points(+4)
+    when :elf
+      @player.str(+6)
+      @player.int(+8)
+      @player.dex(+10)
+      @player.custom_attribute_points(+8)
+    when :human
+      @player.str(+8)
+      @player.int(+8)
+      @player.dex(+8)
+      @player.custom_attribute_points(+8)
+    when :dwarf
+      @player.str(+10)
+      @player.int(+8)
+      @player.dex(+6)
+      @player.custom_attribute_points(+8)
+    end
+  end
+
+  def ask_gender
+    allowed = {
+      'M' => :male,
+      'F' => :female
+    }
+    answer = @prompter.ask(allowed.keys, @printer.prompt_gender)
+    @player.set_gender(allowed[answer])
+  end
+
+
+  def ask_attributes
+    @printer.attributes_header
+    ask_strength
+    ask_intelligence
+    ask_dexterity
+  end
+
+  def ask_strength
+    if @player.custom_attribute_points > 0
+      max = 18-@player.str
+      max = @player.custom_attribute_points if max>@player.custom_attribute_points
+      n = @prompter.ask_integer(0,max,@printer.prompt_add_to_strength)
+      @player.custom_attribute_points(-n)
+      @player.str(+n)
+    end
+  end
+
+  def ask_intelligence
+    if @player.custom_attribute_points > 0
+      max = 18-@player.int
+      max = @player.custom_attribute_points if max>@player.custom_attribute_points
+      n = @prompter.ask_integer(0,max,@printer.prompt_add_to_intelligence)
+      @player.custom_attribute_points(-n)
+      @player.int(+n)
+    end
+  end
+
+  def ask_dexterity
+    if @player.custom_attribute_points > 0
+      max = 18-@player.dex
+      max = @player.custom_attribute_points if max>@player.custom_attribute_points
+      n = @prompter.ask_integer(0,max,@printer.prompt_add_to_dexterity)
+      @player.custom_attribute_points(-n)
+      @player.dex(+n)
+    end
+  end
+
+
+  def ask_armor
+    #TODO this is only correct for char creation when you can afford everything
+    # unaffordable choices should not be shown or allowed
+    allowed = Player::ARMORS.collect{|x| [x.to_s[0].upcase,x]}.to_h
+    costs = { plate: 30, chainmail: 20, leather: 10, nothing: 0 }
+    answer = @prompter.ask(allowed.keys, @printer.prompt_armor)
+    armor = allowed[answer]
+    @player.set_armor(armor)
+    @player.gp(-1 * costs[armor])
+  end
+
+  def ask_weapon
+    #TODO this is only correct for char creation when you can afford everything
+    # unaffordable choices should not be shown or allowed
+    allowed = Player::WEAPONS.collect{|x| [x.to_s[0].upcase,x]}.to_h
+    costs = { sword: 30, mace: 20, dagger: 10, nothing: 0 }
+    answer = @prompter.ask(allowed.keys, @printer.prompt_weapon)
+    weapon = allowed[answer]
+    @player.set_weapon(weapon)
+    @player.gp(-1 * costs[weapon])
+  end
+
+  def ask_lamp
+    return if @player.gp < 20
+
+    answer = @prompter.ask(["Y","N"], @printer.prompt_lamp)
+    @player.gp(-20) if @player.set_lamp(answer=="Y")
+  end
+
+  def ask_flares
+    return if @player.gp < 1
+    n = @prompter.ask_integer(0,@player.gp,@printer.prompt_flares)
+    @player.flares(+n)
+    @player.gp(-n)
+  end
+
+  # End of character creation prompts
+  #####################################
+
+
   def run_new_location
     # The player enters a new room.
 
@@ -371,125 +497,6 @@ class Runner
     puts
   end
 
-  # Character creation prompts
-
-  def ask_race
-    allowed = {
-      'E' => :elf,
-      'D' => :dwarf,
-      'M' => :human,
-      'H' => :hobbit
-    }
-    answer = @prompter.ask(allowed.keys, @printer.prompt_race)
-    @player.set_race(allowed[answer])
-
-    case @player.race
-    when :hobbit
-      @player.str(+4)
-      @player.int(+8)
-      @player.dex(+12)
-      @player.custom_attribute_points(+4)
-    when :elf
-      @player.str(+6)
-      @player.int(+8)
-      @player.dex(+10)
-      @player.custom_attribute_points(+8)
-    when :human
-      @player.str(+8)
-      @player.int(+8)
-      @player.dex(+8)
-      @player.custom_attribute_points(+8)
-    when :dwarf
-      @player.str(+10)
-      @player.int(+8)
-      @player.dex(+6)
-      @player.custom_attribute_points(+8)
-    end
-  end
-
-  def ask_gender
-    allowed = {
-      'M' => :male,
-      'F' => :female
-    }
-    answer = @prompter.ask(allowed.keys, @printer.prompt_gender)
-    @player.set_gender(allowed[answer])
-  end
-
-
-  def ask_attributes
-    @printer.attributes_header
-    ask_strength
-    ask_intelligence
-    ask_dexterity
-  end
-
-  def ask_strength
-    if @player.custom_attribute_points > 0
-      max = 18-@player.str
-      max = @player.custom_attribute_points if max>@player.custom_attribute_points
-      n = @prompter.ask_integer(0,max,@printer.prompt_add_to_strength)
-      @player.custom_attribute_points(-n)
-      @player.str(+n)
-    end
-  end
-
-  def ask_intelligence
-    if @player.custom_attribute_points > 0
-      max = 18-@player.int
-      max = @player.custom_attribute_points if max>@player.custom_attribute_points
-      n = @prompter.ask_integer(0,max,@printer.prompt_add_to_intelligence)
-      @player.custom_attribute_points(-n)
-      @player.int(+n)
-    end
-  end
-
-  def ask_dexterity
-    if @player.custom_attribute_points > 0
-      max = 18-@player.dex
-      max = @player.custom_attribute_points if max>@player.custom_attribute_points
-      n = @prompter.ask_integer(0,max,@printer.prompt_add_to_dexterity)
-      @player.custom_attribute_points(-n)
-      @player.dex(+n)
-    end
-  end
-
-
-  def ask_armor
-    #TODO this is only correct for char creation when you can afford everything
-    # unaffordable choices should not be shown or allowed
-    allowed = Player::ARMORS.collect{|x| [x.to_s[0].upcase,x]}.to_h
-    costs = { plate: 30, chainmail: 20, leather: 10, nothing: 0 }
-    answer = @prompter.ask(allowed.keys, @printer.prompt_armor)
-    armor = allowed[answer]
-    @player.set_armor(armor)
-    @player.gp(-1 * costs[armor])
-  end
-
-  def ask_weapon
-    #TODO this is only correct for char creation when you can afford everything
-    # unaffordable choices should not be shown or allowed
-    allowed = Player::WEAPONS.collect{|x| [x.to_s[0].upcase,x]}.to_h
-    costs = { sword: 30, mace: 20, dagger: 10, nothing: 0 }
-    answer = @prompter.ask(allowed.keys, @printer.prompt_weapon)
-    weapon = allowed[answer]
-    @player.set_weapon(weapon)
-    @player.gp(-1 * costs[weapon])
-  end
-
-  def ask_lamp
-    return if @player.gp < 20
-
-    answer = @prompter.ask(["Y","N"], @printer.prompt_lamp)
-    @player.gp(-20) if @player.set_lamp(answer=="Y")
-  end
-
-  def ask_flares
-    return if @player.gp < 1
-    n = @prompter.ask_integer(0,@player.gp,@printer.prompt_flares)
-    @player.flares(+n)
-    @player.gp(-n)
-  end
 
 end
 end
