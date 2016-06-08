@@ -1,10 +1,6 @@
 module TheWizardsCastle
 describe Runner do
 
-  class Runner
-    attr_accessor :player, :prompter
-  end
-
   context "character creation" do
     before(:each) do
       @prompter = TestPrompter.new
@@ -121,9 +117,23 @@ describe Runner do
           expect(@runner.player.gp).to eq 60
         end
       end
-    end
 
-  end
+      context "#ask_flares" do
+        it "0" do
+          @prompter.push 0
+          @runner.ask_flares
+          expect(@runner.player.flares).to eq 0
+          expect(@runner.player.gp).to eq 60
+        end
+        it "25" do
+          @prompter.push 25
+          @runner.ask_flares
+          expect(@runner.player.flares).to eq 25
+          expect(@runner.player.gp).to eq 35
+        end
+      end
 
+    end #buy stuff
+  end #character creation
 end
 end

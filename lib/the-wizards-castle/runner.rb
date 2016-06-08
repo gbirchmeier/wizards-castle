@@ -46,10 +46,10 @@ class Runner
     @printer.gold_report2
     ask_weapon
     ask_lamp
-#    if @player.gp > 0
-    @printer.gold_report3
-#      ask_flares
-#    end
+    if @player.gp > 0
+      @printer.gold_report3
+      ask_flares
+    end
   end
 
 
@@ -486,20 +486,9 @@ class Runner
 
   def ask_flares
     return if @player.gp < 1
-    loop do
-      answer = @prompter.ask(Strings::FLARE_PROMPT)
-      puts
-      n = answer.to_i
-      if !answer.match(/^\d+$/)
-        puts Strings::FLARE_ERROR
-      elsif n > @player.gp
-        puts Strings.flare_afford(@player)
-      else
-        @player.flares(+n)
-        @player.gp(-n)
-        break
-      end
-    end
+    n = @prompter.ask_integer(0,@player.gp,@printer.prompt_flares)
+    @player.flares(+n)
+    @player.gp(-n)
   end
 
 end

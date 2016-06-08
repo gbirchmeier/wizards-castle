@@ -52,5 +52,9 @@ class NullPrinter
   def prompt_lamp
     {}
   end
+
+  def prompt_flares
+    {}
+  end
 end
 end

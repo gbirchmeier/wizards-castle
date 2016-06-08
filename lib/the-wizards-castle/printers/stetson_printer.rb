@@ -113,21 +113,17 @@ END_ATT_HEADER
   end
 
 
+  def prompt_flares
+    { prompt: "FLARES COST 1 GP EACH. HOW MANY DO YOU WANT? ",
+      success: "\n",
+      error: "\n** IF YOU DON'T WANT ANY, JUST TYPE 0 (ZERO).\n\n",
+      out_of_range: "\n** YOU CAN ONLY AFFORD #{@player.gp} ."
+    }
+  end
 
-#  def str_flare_prompt
-#    "FLARES COST 1 GP EACH. HOW MANY DO YOU WANT? "
-#  end
-#
-#  def flare_prompt_input_error
-#    puts "** IF YOU DON'T WANT ANY, JUST TYPE 0 (ZERO)."
-#  end
-#
-#  def flare_prompt_afford_error
-#    puts "** YOU CAN ONLY AFFORD #{@player.gp} ."
-#  end
-#
-#
-#
+
+
+
 #  def self.entering_the_castle(player)
 #    "OK, #{player.race.to_s.upcase}, YOU ARE NOW ENTERING THE CASTLE!"
 #  end
