@@ -24,6 +24,21 @@ context "#enter_room" do
     expect(@runner.player.flares).to be > old_flare_count
   end
 
+  it "warp" do
+    @runner.castle.set_in_room(2,2,2,:warp)
+    @runner.player.set_location(2,2,2)
+    allow(Castle).to receive(:random_room).and_return([5,5,5])
+    expect(@runner.enter_room).to eq Runner::PlayerStatus::PLAYING
+    expect(@runner.player.location).to eq [5,5,5]
+  end
+
+  it "sinkhole" do
+    @runner.castle.set_in_room(2,2,2,:sinkhole)
+    @runner.player.set_location(2,2,2)
+    expect(@runner.enter_room).to eq Runner::PlayerStatus::PLAYING
+    expect(@runner.player.location).to eq [2,2,3]
+  end
+
 
 end
 end
