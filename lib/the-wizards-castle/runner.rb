@@ -1,7 +1,8 @@
 module TheWizardsCastle
 class Runner
 
-  module GameOverEnum
+  module PlayerStatus
+    PLAYING = :playing
     DIED = :died
     QUIT = :quit
     EXITED = :exited
@@ -11,7 +12,7 @@ class Runner
     runner = Runner.new
     runner.setup
     runner.character_creation
-#    runner.start
+    runner.start
   end
 
 
@@ -23,9 +24,6 @@ class Runner
     @castle = nil
     @player = nil
     @printer = nil
-
-    @last_direction = nil
-    @game_over = nil
   end
 
   def setup(h={})
@@ -52,24 +50,22 @@ class Runner
     end
   end
 
-
   def start
-    puts Strings.entering_the_castle(@player)
-    puts
+    @player.set_location(1,4,1) #entrance
+    @printer.entering_the_castle
 
-    @castle = Castle.new
-    @last_direction = "N" #needed by the Orb-of-Zot shunt
-    @game_over = nil
-
-    #TODO turn counter
-
+    status = PlayerStatus::PLAYING
     loop do
-      run_new_location
-      break if @game_over
+      break unless status==PlayerStatus::PLAYING
+      status = enter_room
+      break unless status==PlayerStatus::PLAYING
+      status = player_action
+      # hack
+      status = PlayerStatus::QUIT
     end
 
     #TODO game over messaging
-    puts "Game over because you #{@game_over.to_s}."
+    puts "Game over because you #{status.to_s}."
 
     #TODO play again?
   end
@@ -201,21 +197,23 @@ class Runner
   #####################################
 
 
-  def run_new_location
-    # The player enters a new room.
+  def enter_room
+    # returns a Player::Status
 
-    # TODO leech/forget effects
+    if @player.blind?
+      @printer.you_are_here_blind
+    else
+      @printer.you_are_here
+    end
+
+    @printer.stat_block
+
+    # TODO @web_counter = 0
 
     loc = @player.location
     rc = @castle.room(*loc)
 
     @player.remember_room(*loc)
-    # TODO exact Orb of Zot behavior
-
-    puts Strings.you_are_here(@player)
-    puts
-    puts Strings.stat_block(@player)
-    puts
 
     symbol_for_text =
       if rc.symbol==:runestaff_and_monster
@@ -223,42 +221,49 @@ class Runner
       else
         rc.symbol
     end
-    puts Strings.here_you_find(symbol_for_text)
-    puts
+    @printer.here_you_find(symbol_for_text)
 
-
-    ###   Room-entry events (pre-user action)
     case rc.symbol
     when :gold
       n = Random.rand(10)+1
-      puts Strings.you_now_have("#{@player.gp(+n)} GOLD")
-      puts
+      @player.gp(+n)
+      @printer.new_gold_count
       @castle.set_in_room(*loc,:empty_room)
     when :flares
       n = Random.rand(5)+1
-      puts Strings.you_now_have("#{@player.flares(+n)} FLARES")
-      puts
+      @player.flares(+n)
+      @printer.new_flare_count
       @castle.set_in_room(*loc,:empty_room)
     when :warp
       @player.set_location *Castle.random_room
-      return
+      return PlayerStatus::PLAYING
     when :sinkhole
       @player.set_location *Castle.down(*loc)
-      return
-    else
-      if rc.treasure?
-        # TODO take treasure
-      elsif rc.monster? || (rc.symbol==:vendor && @player.vendor_rage?)
-        # TODO fight!
-      end
+      return PlayerStatus::PLAYING
+    when :orb_of_zot
+      puts "TODO the orb of zot is here"
+      #"IT'S NOW YOURS!"
+      return PlayerStatus::PLAYING
     end
 
+    if rc.treasure?
+      # TODO take treasure
+      #"IT'S NOW YOURS!"
+    elsif rc.monster? || (rc.symbol==:vendor && @player.vendor_rage?)
+      # TODO fight!
+    elsif rc.symbol==:vendor
+      # TODO shop from vendor  line 6220
+    end
 
+    PlayerStatus::PLAYING
+  end
 
-    ###   User-command loop
+  def player_action
+    # TODO leech/forget effects
+
     loop do
-      #TODO flavor
 
+      # TODO flavor
       cmd = @prompter.ask(Strings.standard_action_prompt)[0..1]
       cmd.chop! unless (cmd.length==1 || cmd=="DR")
 
@@ -281,7 +286,6 @@ class Runner
           @game_over = GameOverEnum::EXITED
           return
         end
-        @last_direction = cmd
         @player.set_location *Castle.move(cmd,*loc)
         return
       when 'U'
@@ -332,13 +336,15 @@ class Runner
         puts "<<cmd placeholder>>"  #TODO teleport
       when 'Q'
         #TODO real quit prompt
-        @game_over = GameOverEnum::QUIT
+        @game_over = PlayerStatus::QUIT
         return
       else
         puts Strings.standard_action_error(@player)
         puts
       end
-    end
+    end #loop
+
+    PlayerStatus::PLAYING
   end
 
 

@@ -122,33 +122,49 @@ END_ATT_HEADER
   end
 
 
+  def entering_the_castle
+    puts "OK, #{player_race}, YOU ARE NOW ENTERING THE CASTLE!"
+    puts
+  end
+
+  def you_are_here
+    row,col,floor = @player.location
+    puts "YOU ARE AT ( #{row} , #{col} ) LEVEL #{floor} ."
+    puts
+  end
+
+  def you_are_here_blind
+    puts
+  end
+
+  def stat_block
+    s =<<END_STAT_BLOCK
+STRENGTH = #{@player.str}  INTELLIGENCE = #{@player.int}  DEXTERITY = #{@player.dex}"
+TREASURES = #{@player.treasure_count}  FLARES = #{@player.flares}  GOLD PIECES = #{@player.gp}"
+WEAPON = #{@player.weapon.to_s.upcase}  ARMOR = #{@player.armor.to_s.upcase}
+END_STAT_BLOCK
+    s << "  AND A LAMP" if @player.lamp?
+    s << "\n\n"
+    print s
+  end
+
+  def here_you_find(symbol)
+    puts "HERE YOU FIND #{RoomContent::ROOM_THINGS[symbol][:text]}."
+    puts
+  end
 
 
-#  def self.entering_the_castle(player)
-#    "OK, #{player.race.to_s.upcase}, YOU ARE NOW ENTERING THE CASTLE!"
-#  end
-#
-#  def self.you_are_here(player)
-#    "YOU ARE AT ( #{player.location[0]} , #{player.location[1]} ) LEVEL #{player.location[2]} ."
-#  end
-#
-#  def self.stat_block(player)
-#    s = []
-#    s << "STRENGTH = #{player.str}  INTELLIGENCE = #{player.int}  DEXTERITY = #{player.dex}"
-#    s << "TREASURES = #{player.treasure_count}  FLARES = #{player.flares}  GOLD PIECES = #{player.gp}"
-#    s << "WEAPON = #{player.weapon.to_s.upcase}  ARMOR = #{player.armor.to_s.upcase}"
-#    s.last << "  AND A LAMP" if player.lamp?
-#    s.join("\n")
-#  end
-#
-#  def self.here_you_find(symbol)
-#    "HERE YOU FIND #{RoomContent::ROOM_THINGS[symbol][:text]}."
-#  end
-#
-#  def self.you_now_have(x)
-#    "YOU NOW HAVE #{x}."
-#  end
-#
+  def new_gold_count
+    puts "YOU NOW HAVE #{@player.gp} GOLD"
+    puts
+  end
+
+  def new_flare_count
+    puts "YOU NOW HAVE #{@player.flares} FLARES"
+    puts
+  end
+
+
 #  def self.standard_action_prompt
 #    "ENTER YOUR COMMAND : "
 #  end

@@ -56,5 +56,26 @@ class NullPrinter
   def prompt_flares
     {}
   end
+
+  def entering_the_castle
+  end
+
+  def you_are_here
+  end
+
+  def you_are_here_blind
+  end
+
+  def stat_block
+  end
+
+  def here_you_find(symbol)
+  end
+
+  def new_gold_count
+  end
+
+  def new_flare_count
+  end
 end
 end
