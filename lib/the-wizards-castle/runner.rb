@@ -241,8 +241,10 @@ class Runner
       @player.set_location *Castle.down(*loc)
       return PlayerStatus::PLAYING
     when :orb_of_zot
-      puts "TODO the orb of zot is here"
-      #"IT'S NOW YOURS!"
+      @printer.found_orb_of_zot
+      @player.set_runestaff(false)
+      @player.set_orb_of_zot(true)
+      @castle.set_in_room(*loc,:empty_room)
       return PlayerStatus::PLAYING
     end
 

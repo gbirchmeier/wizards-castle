@@ -165,6 +165,15 @@ END_STAT_BLOCK
   end
 
 
+  def found_orb_of_zot
+    puts "GREAT UNMITIGATED ZOT!"
+    puts
+    puts "YOU JUST FOUND ***THE ORB OF ZOT***!"
+    puts
+    puts "THE RUNESTAFF HAS DISAPPEARED!"
+  end
+
+
 #  def self.standard_action_prompt
 #    "ENTER YOUR COMMAND : "
 #  end

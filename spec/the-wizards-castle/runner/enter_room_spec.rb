@@ -14,6 +14,7 @@ context "#enter_room" do
     @runner.player.set_location(2,2,2)
     expect(@runner.enter_room).to eq Runner::PlayerStatus::PLAYING
     expect(@runner.player.gp).to be > old_gold_count
+    expect(@runner.castle.room(2,2,2).symbol).to eq :empty_room
   end
 
   it "flares" do
@@ -22,6 +23,7 @@ context "#enter_room" do
     @runner.player.set_location(2,2,2)
     expect(@runner.enter_room).to eq Runner::PlayerStatus::PLAYING
     expect(@runner.player.flares).to be > old_flare_count
+    expect(@runner.castle.room(2,2,2).symbol).to eq :empty_room
   end
 
   it "warp" do
@@ -37,6 +39,16 @@ context "#enter_room" do
     @runner.player.set_location(2,2,2)
     expect(@runner.enter_room).to eq Runner::PlayerStatus::PLAYING
     expect(@runner.player.location).to eq [2,2,3]
+  end
+
+  it "orb-of-zot" do
+    @runner.castle.set_in_room(2,2,2,:orb_of_zot)
+    @runner.player.set_location(2,2,2)
+    @runner.player.set_runestaff(true)
+    expect(@runner.enter_room).to eq Runner::PlayerStatus::PLAYING
+    expect(@runner.player.orb_of_zot?).to eq true
+    expect(@runner.player.runestaff?).to eq false
+    expect(@runner.castle.room(2,2,2).symbol).to eq :empty_room
   end
 
 

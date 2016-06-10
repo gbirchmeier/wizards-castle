@@ -77,5 +77,8 @@ class NullPrinter
 
   def new_flare_count
   end
+
+  def found_orb_of_zot
+  end
 end
 end

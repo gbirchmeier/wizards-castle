@@ -17,6 +17,14 @@ class Player
     @vendor_rage
   end
 
+  def runestaff?
+    @runestaff
+  end
+
+  def orb_of_zot?
+    @orb_of_zot
+  end
+
   def initialize
     @room_memory = Array.new(8*8*8,false) #true means visited
     @race = nil
@@ -32,8 +40,9 @@ class Player
     @armor = nil
     @weapon = nil
     @treasures = []
+    @runestaff = false
+    @orb_of_zot = false
     @vendor_rage = false
-
     @blind = false
   end
 
@@ -116,6 +125,7 @@ class Player
   end
 
   def remove_treasure(t)
+    raise "invalid treasure #{t.inspect}" unless TREASURES.include?(t)
     raise "don't have treasure #{t.inspect}" unless @treasures.include(t)
     @treasure.delete(t)
   end
@@ -145,6 +155,17 @@ class Player
 
   def set_blind(bool)
     check_bool(bool)
+    @blind = bool
+  end
+
+  def set_runestaff(bool)
+    check_bool(bool)
+    @runestaff = bool
+  end
+
+  def set_orb_of_zot(bool)
+    check_bool(bool)
+    @orb_of_zot = bool
   end
 
 private
