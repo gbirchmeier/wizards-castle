@@ -174,6 +174,12 @@ END_STAT_BLOCK
   end
 
 
+  def got_a_treasure(treasure_symbol)
+    puts "IT'S NOW YOURS!"
+    puts
+  end
+
+
 #  def self.standard_action_prompt
 #    "ENTER YOUR COMMAND : "
 #  end

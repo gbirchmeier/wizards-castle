@@ -104,7 +104,7 @@ class RoomContent
   end
 
   def treasure?
-    ROOM_THINGS[@symbol][:treasure]=='T'
+    ROOM_THINGS[@symbol][:mapchar]=='T'
   end
 
 end

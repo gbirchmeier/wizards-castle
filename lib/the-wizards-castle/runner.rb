@@ -249,8 +249,9 @@ class Runner
     end
 
     if rc.treasure?
-      # TODO take treasure
-      #"IT'S NOW YOURS!"
+      @player.add_treasure(rc.symbol)
+      @printer.got_a_treasure(rc.symbol)
+      @castle.set_in_room(*loc,:empty_room)
     elsif rc.monster? || (rc.symbol==:vendor && @player.vendor_rage?)
       # TODO fight!
     elsif rc.symbol==:vendor

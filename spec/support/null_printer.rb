@@ -80,5 +80,8 @@ class NullPrinter
 
   def found_orb_of_zot
   end
+
+  def got_a_treasure(treasure_symbol)
+  end
 end
 end

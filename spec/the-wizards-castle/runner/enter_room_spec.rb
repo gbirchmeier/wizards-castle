@@ -51,6 +51,13 @@ context "#enter_room" do
     expect(@runner.castle.room(2,2,2).symbol).to eq :empty_room
   end
 
+  it "treasure" do
+    @runner.castle.set_in_room(2,2,2,:blue_flame)
+    @runner.player.set_location(2,2,2)
+    expect(@runner.enter_room).to eq Runner::PlayerStatus::PLAYING
+    expect(@runner.player.have_treasure?(:blue_flame)).to eq true
+    expect(@runner.castle.room(2,2,2).symbol).to eq :empty_room
+  end
 
 end
 end
