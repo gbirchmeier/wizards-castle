@@ -63,6 +63,26 @@ context "#player_action" do
     end
   end
 
+  context("stairs") do
+    before(:each) do
+      @runner.castle.set_in_room(2,2,2,:stairs_down)
+      @runner.castle.set_in_room(2,2,3,:stairs_up)
+    end
+
+    it "U" do
+      @prompter.push "U"
+      @runner.player.set_location(2,2,3)
+      expect(@runner.player_action).to eq Runner::PlayerStatus::NEW_ROOM
+      expect(@runner.player.location).to eq [2,2,2]
+    end
+    it "D" do
+      @prompter.push "D"
+      @runner.player.set_location(2,2,2)
+      expect(@runner.player_action).to eq Runner::PlayerStatus::NEW_ROOM
+      expect(@runner.player.location).to eq [2,2,3]
+    end
+  end
+
 end
 end
 end

@@ -188,15 +188,17 @@ END_STAT_BLOCK
     }
   end
 
-#
-#  def self.stairs_up_error
-#    "** THERE ARE NO STAIRS GOING UP FROM HERE!"
-#  end
-#
-#  def self.stairs_down_error
-#    "** THERE ARE NO STAIRS GOING DOWN FROM HERE!"
-#  end
-#
+
+  def stairs_up_error
+    puts "** THERE ARE NO STAIRS GOING UP FROM HERE!"
+    puts
+  end
+
+  def stairs_down_error
+    puts "** THERE ARE NO STAIRS GOING DOWN FROM HERE!"
+    puts
+  end
+
 #  def self.blind_command_error
 #    "** YOU CAN'T SEE ANYTHING, YOU DUMB #{player.race.to_s.upcase}!"
 #  end

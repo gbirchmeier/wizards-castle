@@ -292,7 +292,7 @@ class Runner
     loc = @player.location
     rc = @castle.room(*loc)
 
-    valid_cmds = ["N","S","E","W"]
+    valid_cmds = ["N","S","E","W","U","D"]
     cmd = @prompter.ask(valid_cmds, @printer.prompt_standard_action)
 
     case cmd
@@ -304,6 +304,18 @@ class Runner
         @player.set_facing(cmd.downcase.to_sym)
         return PlayerStatus::NEW_ROOM
       end
+    when 'U'
+      if rc.symbol==:stairs_up
+        @player.set_location *Castle.up(*loc)
+        return PlayerStatus::NEW_ROOM
+      end
+      @printer.stairs_up_error
+    when 'D'
+      if rc.symbol==:stairs_down
+        @player.set_location *Castle.down(*loc)
+        return PlayerStatus::NEW_ROOM
+      end
+      @printer.stairs_down_error
     else
       puts "UNRECOGNIZED COMMAND <#{cmd}>"
     end
@@ -326,27 +338,7 @@ class Runner
 #        print Strings.help(@player)
 #        gets
 #        puts
-#      when 'N','S','E','W'
-#        if cmd=='N' && rc.symbol==:entrance
-#          @game_over = GameOverEnum::EXITED
-#          return
-#        end
-#        @player.set_location *Castle.move(cmd,*loc)
-#        return
-#      when 'U'
-#        if rc.symbol==:stairs_up
-#          @player.set_location *Castle.up(*loc)
-#          return
-#        end
-#        puts Strings.stairs_up_error
-#        puts
-#      when 'D'
-#        if rc.symbol==:stairs_down
-#          @player.set_location *Castle.down(*loc)
-#          return
-#        end
-#        puts Strings.stairs_down_error
-#        puts
+
 #      when 'DR'
 #        if rc.symbol==:magic_pool
 #          drink

@@ -87,5 +87,12 @@ class NullPrinter
   def prompt_standard_action
     {}
   end
+
+  def stairs_up_error
+  end
+
+  def stairs_down_error
+  end
+
 end
 end
