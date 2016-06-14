@@ -2,7 +2,8 @@ module TheWizardsCastle
 class Runner
 
   module PlayerStatus
-    PLAYING = :playing
+    NEW_ROOM = :new_room
+    ACTION = :action
     DIED = :died
     QUIT = :quit
     EXITED = :exited
@@ -54,14 +55,16 @@ class Runner
     @player.set_location(1,4,1) #entrance
     @printer.entering_the_castle
 
-    status = PlayerStatus::PLAYING
+    status = PlayerStatus::NEW_ROOM
     loop do
-      break unless status==PlayerStatus::PLAYING
-      status = enter_room
-      break unless status==PlayerStatus::PLAYING
-      status = player_action
-      # hack
-      status = PlayerStatus::QUIT
+      case status
+      when PlayerStatus::NEW_ROOM
+        status = enter_room
+      when PlayerStatus::ACTION
+        status = player_action
+      end
+
+      break if [PlayerStatus::QUIT, PlayerStatus::EXITED, PlayerStatus::DIED].include? status
     end
 
     #TODO game over messaging
@@ -229,127 +232,162 @@ class Runner
       @player.gp(+n)
       @printer.new_gold_count
       @castle.set_in_room(*loc,:empty_room)
+      return PlayerStatus::ACTION
     when :flares
       n = Random.rand(5)+1
       @player.flares(+n)
       @printer.new_flare_count
       @castle.set_in_room(*loc,:empty_room)
+      return PlayerStatus::ACTION
     when :warp
       @player.set_location *Castle.random_room
-      return PlayerStatus::PLAYING
+      return PlayerStatus::NEW_ROOM
     when :sinkhole
       @player.set_location *Castle.down(*loc)
-      return PlayerStatus::PLAYING
+      return PlayerStatus::NEW_ROOM
     when :orb_of_zot
+#TODO no no no.  This should shunt.  Only get orb by teleporting in.
       @printer.found_orb_of_zot
       @player.set_runestaff(false)
       @player.set_orb_of_zot(true)
       @castle.set_in_room(*loc,:empty_room)
-      return PlayerStatus::PLAYING
+      return PlayerStatus::ACTION
     end
 
     if rc.treasure?
       @player.add_treasure(rc.symbol)
       @printer.got_a_treasure(rc.symbol)
       @castle.set_in_room(*loc,:empty_room)
+      return PlayerStatus::ACTION
     elsif rc.monster? || (rc.symbol==:vendor && @player.vendor_rage?)
       # TODO fight!
     elsif rc.symbol==:vendor
       # TODO shop from vendor  line 6220
     end
 
-    PlayerStatus::PLAYING
+    PlayerStatus::ACTION
   end
 
   def player_action
-    # TODO leech/forget effects
+    # aka "MAIN PROCESSING LOOP" - basic line 2920
 
-    loop do
+    @player.turns(+1)
 
-      # TODO flavor
-      cmd = @prompter.ask(Strings.standard_action_prompt)[0..1]
-      cmd.chop! unless (cmd.length==1 || cmd=="DR")
+    unless @player.runestaff? || @player.orb_of_zot?
+      # TODO curses
+      # if lethargy then @player.turns(+1)
+      # if leech then @player.gp(-(Random.rand(5)-1)) #lose 1-5 gp
+      # if forgetfulness then forget a random room
 
-      # ugh, most commands have a newline, but not always
-      puts unless cmd=="F"
+      # if room is cursed, set curse status on player
+    end
 
-      if ['F','L','G','M'].include?(cmd) && @player.blind?
-        puts Strings.blind_command_error(@player)
-        puts
-        next
-      end
+    if Random.rand(5) == 0  # 20% chance
+      # TODO random-flavor - line 3060
+    end
 
-      case cmd
-      when 'H'
-        print Strings.help(@player)
-        gets
-        puts
-      when 'N','S','E','W'
-        if cmd=='N' && rc.symbol==:entrance
-          @game_over = GameOverEnum::EXITED
-          return
-        end
-        @player.set_location *Castle.move(cmd,*loc)
-        return
-      when 'U'
-        if rc.symbol==:stairs_up
-          @player.set_location *Castle.up(*loc)
-          return
-        end
-        puts Strings.stairs_up_error
-        puts
-      when 'D'
-        if rc.symbol==:stairs_down
-          @player.set_location *Castle.down(*loc)
-          return
-        end
-        puts Strings.stairs_down_error
-        puts
-      when 'DR'
-        if rc.symbol==:magic_pool
-          drink
-        else
-          puts Strings.drink_error
-          puts
-        end
-        if @player.str<1 || @player.int<1 || @player.dex<1
-          @game_over = GameOverEnum::DIED
-          return
-        end
-      when 'M'
-        display_map
-      when 'F'
-        flare
-      when 'L'
-        shine_lamp
-      when 'O'
-        puts "<<cmd placeholder>>"  #TODO open chest/book
-      when 'G'
-        if rc.symbol==:crystal_orb
-          gaze
-        else
-          puts Strings.no_crystal_orb_error
-          puts
-        end
-        if @player.str<1 || @player.int<1 || @player.dex<1
-          @game_over = GameOverEnum::DIED
-          return
-        end
-      when 'T'
-        puts "<<cmd placeholder>>"  #TODO teleport
-      when 'Q'
-        #TODO real quit prompt
-        @game_over = PlayerStatus::QUIT
-        return
+    # TODO 3350 - check treasures to cure blindness or stickybook
+
+
+    loc = @player.location
+    rc = @castle.room(*loc)
+
+    valid_cmds = ["N","S","E","W"]
+    cmd = @prompter.ask(valid_cmds, @printer.prompt_standard_action)
+
+    case cmd
+    when "N","S","E","W"
+      if cmd=="N" && rc.symbol==:entrance
+        return PlayerStatus::EXITED
       else
-        puts Strings.standard_action_error(@player)
-        puts
+        @player.set_location *Castle.move(cmd,*loc)
+        @player.set_facing(cmd.downcase.to_sym)
+        return PlayerStatus::NEW_ROOM
       end
-    end #loop
+    else
+      puts "UNRECOGNIZED COMMAND <#{cmd}>"
+    end
 
-    PlayerStatus::PLAYING
+    PlayerStatus::NEW_ROOM
   end
+ 
 
+
+#    loop do
+#
+#      if ['F','L','G','M'].include?(cmd) && @player.blind?
+#        puts Strings.blind_command_error(@player)
+#        puts
+#        next
+#      end
+#
+#      case cmd
+#      when 'H'
+#        print Strings.help(@player)
+#        gets
+#        puts
+#      when 'N','S','E','W'
+#        if cmd=='N' && rc.symbol==:entrance
+#          @game_over = GameOverEnum::EXITED
+#          return
+#        end
+#        @player.set_location *Castle.move(cmd,*loc)
+#        return
+#      when 'U'
+#        if rc.symbol==:stairs_up
+#          @player.set_location *Castle.up(*loc)
+#          return
+#        end
+#        puts Strings.stairs_up_error
+#        puts
+#      when 'D'
+#        if rc.symbol==:stairs_down
+#          @player.set_location *Castle.down(*loc)
+#          return
+#        end
+#        puts Strings.stairs_down_error
+#        puts
+#      when 'DR'
+#        if rc.symbol==:magic_pool
+#          drink
+#        else
+#          puts Strings.drink_error
+#          puts
+#        end
+#        if @player.str<1 || @player.int<1 || @player.dex<1
+#          @game_over = GameOverEnum::DIED
+#          return
+#        end
+#      when 'M'
+#        display_map
+#      when 'F'
+#        flare
+#      when 'L'
+#        shine_lamp
+#      when 'O'
+#        puts "<<cmd placeholder>>"  #TODO open chest/book
+#      when 'G'
+#        if rc.symbol==:crystal_orb
+#          gaze
+#        else
+#          puts Strings.no_crystal_orb_error
+#          puts
+#        end
+#        if @player.str<1 || @player.int<1 || @player.dex<1
+#          @game_over = GameOverEnum::DIED
+#          return
+#        end
+#      when 'T'
+#        puts "<<cmd placeholder>>"  #TODO teleport
+#      when 'Q'
+#        #TODO real quit prompt
+#        @game_over = PlayerStatus::QUIT
+#        return
+#      else
+#        puts Strings.standard_action_error(@player)
+#        puts
+#      end
+#    end #loop
 
 
 

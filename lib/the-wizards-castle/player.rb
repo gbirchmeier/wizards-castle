@@ -7,7 +7,7 @@ class Player
   WEAPONS = [:sword,:mace,:dagger,:nothing]
   TREASURES = [:ruby_red,:norn_stone,:pale_pearl,:opal_eye,:green_gem,:blue_flame,:palantir,:silmaril]
 
-  attr_reader :race, :gender, :location, :armor, :weapon
+  attr_reader :race, :gender, :location, :armor, :weapon, :facing
 
   def lamp?
     @has_lamp
@@ -44,6 +44,8 @@ class Player
     @orb_of_zot = false
     @vendor_rage = false
     @blind = false
+    @turns = 1
+    @facing = :n  # needed by orb-of-zot shunt
   end
 
   def set_location(row,col,floor)
@@ -51,6 +53,11 @@ class Player
       raise "Illegal location [#{row},#{col},#{floor}]"
     end
     @location = [row,col,floor]
+  end
+
+  def set_facing f
+    raise "Illegal direction '#{f.inspect}'" unless [:n,:s,:w,:e].include?(f)
+    @facing = f
   end
 
   def set_race r
@@ -108,6 +115,10 @@ class Player
 
   def dex n=0
     @dex += n.to_i
+  end
+
+  def turns n=0
+    @turns += n.to_i
   end
 
   def custom_attribute_points n=0

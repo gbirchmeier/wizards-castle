@@ -139,10 +139,11 @@ END_ATT_HEADER
 
   def stat_block
     s =<<END_STAT_BLOCK
-STRENGTH = #{@player.str}  INTELLIGENCE = #{@player.int}  DEXTERITY = #{@player.dex}"
-TREASURES = #{@player.treasure_count}  FLARES = #{@player.flares}  GOLD PIECES = #{@player.gp}"
+STRENGTH = #{@player.str}  INTELLIGENCE = #{@player.int}  DEXTERITY = #{@player.dex}
+TREASURES = #{@player.treasure_count}  FLARES = #{@player.flares}  GOLD PIECES = #{@player.gp}
 WEAPON = #{@player.weapon.to_s.upcase}  ARMOR = #{@player.armor.to_s.upcase}
 END_STAT_BLOCK
+    s.chomp!
     s << "  AND A LAMP" if @player.lamp?
     s << "\n\n"
     print s
@@ -180,13 +181,13 @@ END_STAT_BLOCK
   end
 
 
-#  def self.standard_action_prompt
-#    "ENTER YOUR COMMAND : "
-#  end
-#
-#  def self.standard_action_error(player)
-#    "** SILLY #{player.race.to_s.upcase}, THAT WASN'T A VALID COMMAND!"
-#  end
+  def prompt_standard_action
+    { prompt:  "ENTER YOUR COMMAND : ",
+      error:   "\n** SILLY #{player_race}, THAT WASN'T A VALID COMMAND!\n\n",
+      success: "\n"  #TODO prevent newline if flare action
+    }
+  end
+
 #
 #  def self.stairs_up_error
 #    "** THERE ARE NO STAIRS GOING UP FROM HERE!"
