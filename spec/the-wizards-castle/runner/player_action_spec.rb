@@ -8,6 +8,12 @@ context "#player_action" do
     @runner.setup(prompter: @prompter, player: Player.new, printer: NullPrinter.new)
   end
 
+  it "H" do
+    expect(@runner.printer).to receive(:help_message)
+    @prompter.push("H")
+    expect(@runner.player_action).to eq Runner::PlayerStatus::ACTION
+  end
+
   context("basic movement:") do
     before(:each) do
       @runner.castle.set_in_room(2,2,2,:empty_room)

@@ -94,5 +94,8 @@ class NullPrinter
   def stairs_down_error
   end
 
+  def help_message
+  end
+
 end
 end

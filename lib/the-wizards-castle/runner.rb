@@ -292,10 +292,13 @@ class Runner
     loc = @player.location
     rc = @castle.room(*loc)
 
-    valid_cmds = ["N","S","E","W","U","D"]
+    valid_cmds = ["N","S","E","W","U","D","H"]
     cmd = @prompter.ask(valid_cmds, @printer.prompt_standard_action)
 
     case cmd
+    when "H"
+      @printer.help_message
+      return PlayerStatus::ACTION
     when "N","S","E","W"
       if cmd=="N" && rc.symbol==:entrance
         return PlayerStatus::EXITED
@@ -310,17 +313,19 @@ class Runner
         return PlayerStatus::NEW_ROOM
       end
       @printer.stairs_up_error
+      return PlayerStatus::ACTION
     when 'D'
       if rc.symbol==:stairs_down
         @player.set_location *Castle.down(*loc)
         return PlayerStatus::NEW_ROOM
       end
       @printer.stairs_down_error
+      return PlayerStatus::ACTION
     else
       puts "UNRECOGNIZED COMMAND <#{cmd}>"
     end
 
-    PlayerStatus::NEW_ROOM
+    PlayerStatus::ACTION
   end
  
 
