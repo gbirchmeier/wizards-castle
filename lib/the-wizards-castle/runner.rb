@@ -1,7 +1,7 @@
 module TheWizardsCastle
 class Runner
 
-  module PlayerStatus
+  module PlayerState
     NEW_ROOM = :new_room
     ACTION = :action
     DIED = :died
@@ -55,16 +55,16 @@ class Runner
     @player.set_location(1,4,1) #entrance
     @printer.entering_the_castle
 
-    status = PlayerStatus::NEW_ROOM
+    status = PlayerState::NEW_ROOM
     loop do
       case status
-      when PlayerStatus::NEW_ROOM
+      when PlayerState::NEW_ROOM
         status = enter_room
-      when PlayerStatus::ACTION
+      when PlayerState::ACTION
         status = player_action
       end
 
-      break if [PlayerStatus::QUIT, PlayerStatus::EXITED, PlayerStatus::DIED].include? status
+      break if [PlayerState::QUIT, PlayerState::EXITED, PlayerState::DIED].include? status
     end
 
     #TODO game over messaging
@@ -232,40 +232,40 @@ class Runner
       @player.gp(+n)
       @printer.new_gold_count
       @castle.set_in_room(*loc,:empty_room)
-      return PlayerStatus::ACTION
+      return PlayerState::ACTION
     when :flares
       n = Random.rand(5)+1
       @player.flares(+n)
       @printer.new_flare_count
       @castle.set_in_room(*loc,:empty_room)
-      return PlayerStatus::ACTION
+      return PlayerState::ACTION
     when :warp
       @player.set_location *Castle.random_room
-      return PlayerStatus::NEW_ROOM
+      return PlayerState::NEW_ROOM
     when :sinkhole
       @player.set_location *Castle.down(*loc)
-      return PlayerStatus::NEW_ROOM
+      return PlayerState::NEW_ROOM
     when :orb_of_zot
 #TODO no no no.  This should shunt.  Only get orb by teleporting in.
       @printer.found_orb_of_zot
       @player.set_runestaff(false)
       @player.set_orb_of_zot(true)
       @castle.set_in_room(*loc,:empty_room)
-      return PlayerStatus::ACTION
+      return PlayerState::ACTION
     end
 
     if rc.treasure?
       @player.add_treasure(rc.symbol)
       @printer.got_a_treasure(rc.symbol)
       @castle.set_in_room(*loc,:empty_room)
-      return PlayerStatus::ACTION
+      return PlayerState::ACTION
     elsif rc.monster? || (rc.symbol==:vendor && @player.vendor_rage?)
       # TODO fight!
     elsif rc.symbol==:vendor
       # TODO shop from vendor  line 6220
     end
 
-    PlayerStatus::ACTION
+    PlayerState::ACTION
   end
 
   def player_action
@@ -298,34 +298,34 @@ class Runner
     case cmd
     when "H"
       @printer.help_message
-      return PlayerStatus::ACTION
+      return PlayerState::ACTION
     when "N","S","E","W"
       if cmd=="N" && rc.symbol==:entrance
-        return PlayerStatus::EXITED
+        return PlayerState::EXITED
       else
         @player.set_location *Castle.move(cmd,*loc)
         @player.set_facing(cmd.downcase.to_sym)
-        return PlayerStatus::NEW_ROOM
+        return PlayerState::NEW_ROOM
       end
     when 'U'
       if rc.symbol==:stairs_up
         @player.set_location *Castle.up(*loc)
-        return PlayerStatus::NEW_ROOM
+        return PlayerState::NEW_ROOM
       end
       @printer.stairs_up_error
-      return PlayerStatus::ACTION
+      return PlayerState::ACTION
     when 'D'
       if rc.symbol==:stairs_down
         @player.set_location *Castle.down(*loc)
-        return PlayerStatus::NEW_ROOM
+        return PlayerState::NEW_ROOM
       end
       @printer.stairs_down_error
-      return PlayerStatus::ACTION
+      return PlayerState::ACTION
     else
       puts "UNRECOGNIZED COMMAND <#{cmd}>"
     end
 
-    PlayerStatus::ACTION
+    PlayerState::ACTION
   end
  
 
@@ -378,7 +378,7 @@ class Runner
 #        puts "<<cmd placeholder>>"  #TODO teleport
 #      when 'Q'
 #        #TODO real quit prompt
-#        @game_over = PlayerStatus::QUIT
+#        @game_over = PlayerState::QUIT
 #        return
 #      else
 #        puts Strings.standard_action_error(@player)

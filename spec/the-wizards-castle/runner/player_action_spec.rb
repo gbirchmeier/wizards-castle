@@ -11,7 +11,7 @@ context "#player_action" do
   it "H" do
     expect(@runner.printer).to receive(:help_message)
     @prompter.push("H")
-    expect(@runner.player_action).to eq Runner::PlayerStatus::ACTION
+    expect(@runner.player_action).to eq Runner::PlayerState::ACTION
   end
 
   context("basic movement:") do
@@ -26,25 +26,25 @@ context "#player_action" do
 
     it "N" do
       @prompter.push("N")
-      expect(@runner.player_action).to eq Runner::PlayerStatus::NEW_ROOM
+      expect(@runner.player_action).to eq Runner::PlayerState::NEW_ROOM
       expect(@runner.player.location).to eq [1,2,2]
       expect(@runner.player.facing).to eq :n
     end
     it "S" do
       @prompter.push("S")
-      expect(@runner.player_action).to eq Runner::PlayerStatus::NEW_ROOM
+      expect(@runner.player_action).to eq Runner::PlayerState::NEW_ROOM
       expect(@runner.player.location).to eq [3,2,2]
       expect(@runner.player.facing).to eq :s
     end
     it "W" do
       @prompter.push("W")
-      expect(@runner.player_action).to eq Runner::PlayerStatus::NEW_ROOM
+      expect(@runner.player_action).to eq Runner::PlayerState::NEW_ROOM
       expect(@runner.player.location).to eq [2,1,2]
       expect(@runner.player.facing).to eq :w
     end
     it "E" do
       @prompter.push("E")
-      expect(@runner.player_action).to eq Runner::PlayerStatus::NEW_ROOM
+      expect(@runner.player_action).to eq Runner::PlayerState::NEW_ROOM
       expect(@runner.player.location).to eq [2,3,2]
       expect(@runner.player.facing).to eq :e
     end
@@ -59,12 +59,12 @@ context "#player_action" do
 
     it "N" do
       @prompter.push "N"
-      expect(@runner.player_action).to eq Runner::PlayerStatus::EXITED
+      expect(@runner.player_action).to eq Runner::PlayerState::EXITED
     end
 
     it "W" do
       @prompter.push "W"
-      expect(@runner.player_action).to eq Runner::PlayerStatus::NEW_ROOM
+      expect(@runner.player_action).to eq Runner::PlayerState::NEW_ROOM
       expect(@runner.player.facing).to eq :w
     end
   end
@@ -78,13 +78,13 @@ context "#player_action" do
     it "U" do
       @prompter.push "U"
       @runner.player.set_location(2,2,3)
-      expect(@runner.player_action).to eq Runner::PlayerStatus::NEW_ROOM
+      expect(@runner.player_action).to eq Runner::PlayerState::NEW_ROOM
       expect(@runner.player.location).to eq [2,2,2]
     end
     it "D" do
       @prompter.push "D"
       @runner.player.set_location(2,2,2)
-      expect(@runner.player_action).to eq Runner::PlayerStatus::NEW_ROOM
+      expect(@runner.player_action).to eq Runner::PlayerState::NEW_ROOM
       expect(@runner.player.location).to eq [2,2,3]
     end
   end

@@ -18,8 +18,8 @@ context "misc" do
       expect(@runner.player.location).to eq [1,4,1]
       @runner.castle.set_in_room(1,5,1,:empty_room)
       @prompter.push("S")
-      expect(@runner.enter_room).to eq Runner::PlayerStatus::ACTION
-      expect(@runner.player_action).to eq Runner::PlayerStatus::NEW_ROOM
+      expect(@runner.enter_room).to eq Runner::PlayerState::ACTION
+      expect(@runner.player_action).to eq Runner::PlayerState::NEW_ROOM
       expect(@runner.player.turns).to eq 2
     end
   end
