@@ -280,6 +280,9 @@ class Runner
       # if forgetfulness then forget a random room
 
       # if room is cursed, set curse status on player
+
+
+      # TODO when you regain sight, do you "learn" the current room
     end
 
     if Random.rand(5) == 0  # 20% chance
@@ -292,8 +295,14 @@ class Runner
     loc = @player.location
     rc = @castle.room(*loc)
 
-    valid_cmds = ["N","S","E","W","U","D","H"]
+    valid_cmds = ["H","N","S","E","W","U","D","DR","M","F","L","O","G","T","Q"]
     cmd = @prompter.ask(valid_cmds, @printer.prompt_standard_action)
+
+#      if ['F','L','G','M'].include?(cmd) && @player.blind?
+#        puts Strings.blind_command_error(@player)
+#        puts
+#        next
+#      end
 
     case cmd
     when "H"
@@ -321,46 +330,25 @@ class Runner
       end
       @printer.stairs_down_error
       return PlayerState::ACTION
-    else
-      puts "UNRECOGNIZED COMMAND <#{cmd}>"
-    end
+    when 'DR'
+      if rc.symbol==:magic_pool
+        drink
+        return PlayerState::DIED if @player.str<1 || @player.int<1 || @player.dex<1
+        return PlayerState::ACTION
+      else
+        @printer.drink_error
+        return PlayerState::ACTION
+      end
+    when 'M'
+      @printer.display_map(@castle)
+      return PlayerState::ACTION
+    when 'F'
+      flare
+      return PlayerState::ACTION
+    when 'L'
+      shine_lamp
+      return PlayerState::ACTION
 
-    PlayerState::ACTION
-  end
- 
-
-
-#    loop do
-#
-#      if ['F','L','G','M'].include?(cmd) && @player.blind?
-#        puts Strings.blind_command_error(@player)
-#        puts
-#        next
-#      end
-#
-#      case cmd
-#      when 'H'
-#        print Strings.help(@player)
-#        gets
-#        puts
-
-#      when 'DR'
-#        if rc.symbol==:magic_pool
-#          drink
-#        else
-#          puts Strings.drink_error
-#          puts
-#        end
-#        if @player.str<1 || @player.int<1 || @player.dex<1
-#          @game_over = GameOverEnum::DIED
-#          return
-#        end
-#      when 'M'
-#        display_map
-#      when 'F'
-#        flare
-#      when 'L'
-#        shine_lamp
 #      when 'O'
 #        puts "<<cmd placeholder>>"  #TODO open chest/book
 #      when 'G'
@@ -380,12 +368,14 @@ class Runner
 #        #TODO real quit prompt
 #        @game_over = PlayerState::QUIT
 #        return
-#      else
-#        puts Strings.standard_action_error(@player)
-#        puts
 #      end
-#    end #loop
+    else
+      puts "UNRECOGNIZED COMMAND <#{cmd}>"  # should never happen
+    end
 
+    PlayerState::ACTION
+  end
+ 
 
 
   def display_map
@@ -408,109 +398,74 @@ class Runner
     puts
   end
 
+  def random_drink_effect
+    [:stronger,:weaker,:smarter,:dumber,:nimbler,:clumsier,:change_race,:change_gender].sample
+  end
+
+  def random_drink_attr_change
+    1+Random.rand(3)
+  end
+
+  def random_drink_race_change
+    (Player::RACES - [@player.race]).sample
+  end
+
   def drink
-    s = "YOU TAKE A DRINK AND "
-    case Random.rand(8)
-    when 0
-      s+="FEEL STRONGER."
-      @player.str(1+Random.rand(3))
-    when 1
-      s+="FEEL WEAKER"
-      @player.str(-1*(1+Random.rand(3)))
-    when 2
-      s+="FEEL SMARTER."
-      @player.int(1+Random.rand(3))
-    when 3
-      s+="FEEL DUMBER."
-      @player.int(-1*(1+Random.rand(3)))
-    when 4
-      s+="FEEL NIMBLER."
-      @player.dex(1+Random.rand(3))
-    when 5
-      s+="FEEL CLUMSIER."
-      @player.dex(-1*(1+Random.rand(3)))
-    when 6
-      newrace = (Player::RACES - [@player.race]).sample
-      s+="BECOME A #{newrace.to_s.upcase}"
+    effect = random_drink_effect()
+    case effect
+    when :stronger
+      @player.str(random_drink_attr_change)
+    when :weaker
+      @player.str(-1 * random_drink_attr_change)
+    when :smarter
+      @player.int(random_drink_attr_change)
+    when :dumber
+      @player.int(-1 * random_drink_attr_change)
+    when :nimbler
+      @player.dex(random_drink_attr_change)
+    when :clumsier
+      @player.dex(-1 * random_drink_attr_change)
+    when :change_race
+      newrace = random_drink_race_change()
       @player.set_race(newrace)
-    when 7
+    when :change_gender
       newgender = @player.gender==:male ? :female : :male
-      s+="TURN INTO A #{newgender.to_s.upcase} #{@player.race.to_s.upcase}!"
       @player.set_gender(newgender)
+    else
+      raise "unrecognized drink effect '#{effect.to_s}'"
     end
-    puts s
-    puts
+
+    @printer.drink_effect(effect)
   end
 
   def flare
     if @player.flares < 1
-      puts Strings.out_of_flares
-      puts
+      @printer.out_of_flares
       return
     end
 
     @player.flares(-1)
 
-    locs = flare_locs
-    locs.each do |row|
-      puts
-      line = ""
-      row.each do |loc|
-        @player.remember_room(*loc)
-        c = @castle.room(*loc).display
-        line << " #{c}   "
-      end
-      puts line
-      puts
+    Castle.flare_locs(*@player.location).each do |loc|
+      @player.remember_room(*loc)
+      # TODO should I remember the center room?
     end
-    puts Strings.you_are_here(@player)
-    puts
+
+    @printer.flare(@castle)
   end
 
-  def flare_locs
-    row,col,floor = @player.location
-    top_row = row==1 ? 8 : row-1
-    bottom_row = row==8 ? 1 : row+1
-    left_col = col==1 ? 8 : col-1
-    right_col = col==8 ? 1 : col+1
-    rv = Array.new
-    rv << [
-      [top_row,left_col,floor],     # top-left
-      [top_row,col,floor],          # top-middle
-      [top_row,right_col,floor]]    # top-right
-    rv << [
-      [row,left_col,floor],         # left
-      [row,col,floor],              # center
-      [row,right_col,floor]]        # right
-    rv << [
-      [bottom_row,left_col,floor],  # bottom-left
-      [bottom_row,col,floor],       # bottom-middle
-      [bottom_row,right_col,floor]] # bottom-right
-    rv
-  end
 
   def shine_lamp
     unless @player.lamp?
-      puts Strings.no_lamp_error(@player)
-      puts
+      @printer.no_lamp_error
       return
     end
-
-    loop do
-      dir = @prompter.ask(Strings.lamp_prompt)[0]
-      puts
-      if ['N','W','E','S'].include?(dir)
-        target_loc = Castle.move(dir,*@player.location)
-        @player.remember_room(*target_loc)
-        rc = @castle.room(*target_loc)
-        puts Strings.lamp_shine(*target_loc,rc)
-        puts
-        break
-      end
-      puts Strings.lamp_prompt_error(@player)
-      puts
-    end
+    dir = @prompter.ask(["N","E","W","S"], @printer.prompt_shine_lamp)
+    target_loc = Castle.move(dir,*@player.location)
+    @player.remember_room(*target_loc)
+    @printer.lamp_shine(*target_loc,@castle)
   end
+
 
   def gaze
     s = "YOU SEE "

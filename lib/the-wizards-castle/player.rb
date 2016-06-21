@@ -97,6 +97,8 @@ class Player
 
   def flares n=0
     @flares += n.to_i
+    @flares=0 if @flares<0
+    @flares
   end
 
   def gp n=0
@@ -107,14 +109,23 @@ class Player
 
   def str n=0
     @str += n.to_i
+    @str=0 if @str<0
+    @str=18 if @str>18
+    @str
   end
 
   def int n=0
     @int += n.to_i
+    @int=0 if @int<0
+    @int=18 if @int>18
+    @int
   end
 
   def dex n=0
     @dex += n.to_i
+    @dex=0 if @dex<0
+    @dex=18 if @dex>18
+    @dex
   end
 
   def turns n=0

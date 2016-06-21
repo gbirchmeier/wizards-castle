@@ -107,7 +107,7 @@ END_ATT_HEADER
 
   def prompt_lamp
     { prompt: "DO YOU WANT TO BUY A LAMP FOR 20 GP'S? ",
-      error: "** PLEASE ANSWER YES OR NO",
+      error: "** PLEASE ANSWER YES OR NO\n\n",
       success: "\n"
     }
   end
@@ -117,7 +117,7 @@ END_ATT_HEADER
     { prompt: "FLARES COST 1 GP EACH. HOW MANY DO YOU WANT? ",
       success: "\n",
       error: "\n** IF YOU DON'T WANT ANY, JUST TYPE 0 (ZERO).\n\n",
-      out_of_range: "\n** YOU CAN ONLY AFFORD #{@player.gp} ."
+      out_of_range: "\n** YOU CAN ONLY AFFORD #{@player.gp} .\n\n"
     }
   end
 
@@ -189,53 +189,6 @@ END_STAT_BLOCK
   end
 
 
-  def stairs_up_error
-    puts "** THERE ARE NO STAIRS GOING UP FROM HERE!"
-    puts
-  end
-
-  def stairs_down_error
-    puts "** THERE ARE NO STAIRS GOING DOWN FROM HERE!"
-    puts
-  end
-
-#  def self.blind_command_error
-#    "** YOU CAN'T SEE ANYTHING, YOU DUMB #{player.race.to_s.upcase}!"
-#  end
-#
-#  def self.drink_error
-#    "** IF YOU WANT A DRINK, FIND A POOL!"
-#  end
-#
-#  def self.out_of_flares
-#    "** HEY, BRIGHT ONE, YOU'RE OUT OF FLARES!"
-#  end
-#
-#  def self.lamp_prompt
-#    "WHERE DO YOU WANT TO SHINE THE LAMP (N,S,E,W)? "
-#  end
-#
-#  def self.no_lamp_error(player)
-#    "** YOU DON'T HAVE A LAMP, #{player.race.to_s.upcase}!"
-#  end
-#
-#  def self.lamp_prompt_error(player)
-#    "** THAT'S NOT A DIRECTION, #{player.race.to_s.upcase}!"
-#  end
-#
-#  def self.lamp_shine(row,col,floor,room_content)
-#    s =<<END_SHINE
-#THE LAMP SHINES INTO ( #{row} , #{col} ) LEVEL #{floor} .
-#
-#THERE YOU WILL FIND #{room_content.text}.
-#END_SHINE
-#    s
-#  end
-#
-#  def self.no_crystal_orb_error
-#    "** IT'S HARD TO GAZE WITHOUT AN ORB!"
-#  end
-
   def help_message
     s=<<END_HELP
 *** WIZARD'S CASTLE COMMAND AND INFORMATION SUMMARY ***
@@ -269,6 +222,118 @@ END_HELP
   end
 
 
+  def stairs_up_error
+    puts "** THERE ARE NO STAIRS GOING UP FROM HERE!"
+    puts
+  end
+
+  def stairs_down_error
+    puts "** THERE ARE NO STAIRS GOING DOWN FROM HERE!"
+    puts
+  end
+
+#  def self.blind_command_error
+#    "** YOU CAN'T SEE ANYTHING, YOU DUMB #{player.race.to_s.upcase}!"
+#  end
+
+  def drink_effect(effect)
+    s = "YOU TAKE A DRINK AND "
+    case effect
+    when :stronger
+      s+="FEEL STRONGER."
+    when :weaker
+      s+="FEEL WEAKER"
+    when :smarter
+      s+="FEEL SMARTER."
+    when :dumber
+      s+="FEEL DUMBER."
+    when :nimbler
+      s+="FEEL NIMBLER."
+    when :clumsier
+      s+="FEEL CLUMSIER."
+    when :change_race
+      s+="BECOME A #{player_race}."
+    when :change_gender
+      s+="TURN INTO A #{player_gender} #{player_race}!"
+    else
+      s+="<ERROR - unrecognized effect '#{effect}.to_s'>"
+    end
+    puts s
+    puts
+  end
+
+  def drink_error
+    puts "** IF YOU WANT A DRINK, FIND A POOL!"
+    puts
+  end
+
+
+  def display_map(castle)
+    floor = @player.location.last
+    lines = []
+    (1..8).each do |row|
+      lines << ''
+      (1..8).each do |col|
+        c = @player.knows_room?(row,col,floor) ? castle.room(row,col,floor).display : "?"
+        if [row,col,floor]==@player.location
+          lines.last << "<#{c}>  "
+        else
+          lines.last << " #{c}   "
+        end
+      end
+    end
+    puts lines
+    puts
+    self.you_are_here
+  end
+
+
+  def flare(castle)
+    locs = Castle.flare_locs(*@player.location)
+    3.times do
+      line = ""
+      3.times do 
+        loc = locs.shift
+        c = castle.room(*loc).display
+        line << " #{c}   "
+      end
+      puts
+      puts line
+      puts
+    end
+    self.you_are_here
+  end
+
+  def out_of_flares
+    puts "** HEY, BRIGHT ONE, YOU'RE OUT OF FLARES!"
+    puts
+  end
+
+  def prompt_shine_lamp
+    { prompt: "WHERE DO YOU WANT TO SHINE THE LAMP (N,S,E,W)? ",
+      error: "** THAT'S NOT A DIRECTION, #{player_race}!\n\n",
+      success: "\n"
+    }
+  end
+
+  def no_lamp_error
+    puts "** YOU DON'T HAVE A LAMP, #{player.race.to_s.upcase}!"
+    puts
+  end
+
+  def lamp_shine(row,col,floor,castle)
+    puts "THE LAMP SHINES INTO ( #{row} , #{col} ) LEVEL #{floor} ."
+    puts
+    puts "THERE YOU WILL FIND #{castle.room(row,col,floor).text}."
+    puts
+  end
+
+
+#  def self.no_crystal_orb_error
+#    "** IT'S HARD TO GAZE WITHOUT AN ORB!"
+#  end
+
+
 #
 ##YOU TAKE A DRINK AND FEEL DUMBER.
 ##
@@ -292,6 +357,10 @@ END_HELP
 private
   def player_race
     @player.race.to_s.upcase
+  end
+
+  def player_gender
+    @player.gender.to_s.upcase
   end
 
   def random_monster_text

@@ -88,13 +88,38 @@ class NullPrinter
     {}
   end
 
+  def help_message
+  end
+
   def stairs_up_error
   end
 
   def stairs_down_error
   end
 
-  def help_message
+  def drink_effect(effect)
+  end
+
+  def drink_error
+  end
+
+  def display_map(castle)
+  end
+
+  def flare(castle)
+  end
+
+  def out_of_flares
+  end
+
+  def prompt_shine_lamp
+    {}
+  end
+
+  def no_lamp_error
+  end
+
+  def lamp_shine(row,col,floor,castle)
   end
 
 end

@@ -4,3 +4,5 @@ require 'the-wizards-castle/printers/stetson_printer'
 require 'the-wizards-castle/prompter'
 require 'the-wizards-castle/room_content'
 require 'the-wizards-castle/runner'
+
+require 'pry'

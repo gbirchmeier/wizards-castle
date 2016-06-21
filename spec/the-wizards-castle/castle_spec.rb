@@ -74,5 +74,16 @@ describe Castle do
     expect(castle.rooms[63]).to eq 9 
   end
 
+  it "#flare_locs" do
+    locs = Castle.flare_locs(2,2,2)
+    expectation = [
+      [1,1,2], [1,2,2], [1,3,2],
+      [2,1,2], [2,2,2], [2,3,2],
+      [3,1,2], [3,2,2], [3,3,2]
+    ]
+    expect(locs).to eq expectation
+      
+  end
+
 end
 end

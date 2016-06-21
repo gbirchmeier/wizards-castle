@@ -93,6 +93,23 @@ class Castle
     [row,col,floor]
   end
 
+  def self.flare_locs(row,col,floor)
+    top_row = row==1 ? 8 : row-1
+    bottom_row = row==8 ? 1 : row+1
+    left_col = col==1 ? 8 : col-1
+    right_col = col==8 ? 1 : col+1
+    rv = Array.new
+    rv << [top_row,left_col,floor]      # top-left
+    rv << [top_row,col,floor]           # top-middle
+    rv << [top_row,right_col,floor]     # top-right
+    rv << [row,left_col,floor]          # left
+    rv << [row,col,floor]               # center
+    rv << [row,right_col,floor]         # right
+    rv << [bottom_row,left_col,floor]   # bottom-left
+    rv << [bottom_row,col,floor]        # bottom-middle
+    rv << [bottom_row,right_col,floor]  # bottom-right
+    rv
+  end
 
   def room(row,col,floor)
     lethargy      = [row,col,floor]==@curse_location_lethargy
