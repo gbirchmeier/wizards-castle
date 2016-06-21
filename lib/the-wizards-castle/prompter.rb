@@ -8,8 +8,8 @@ class Prompter
       input = gets.strip.upcase
 
       rv = nil
-      if allowed_array.include?("DR")
-        rv="DR" if input[0..1]=="DR"
+      if allowed_array.include?("DR") && input[0..1]=="DR"
+        rv="DR"
       else
         rv=input[0] if allowed_array.include?(input[0])
       end
