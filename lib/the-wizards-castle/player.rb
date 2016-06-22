@@ -43,9 +43,15 @@ class Player
     @runestaff = false
     @orb_of_zot = false
     @vendor_rage = false
-    @blind = false
     @turns = 1
     @facing = :n  # needed by orb-of-zot shunt
+
+    # afflictions
+    @blind = false
+    @stickybook = false
+    @forgetful = false
+    @leech = false
+    @lethargic = false
   end
 
   def set_location(row,col,floor)
@@ -171,15 +177,6 @@ class Player
     @room_memory[idx] = false
   end
 
-  def blind?
-    @blind
-  end
-
-  def set_blind(bool)
-    check_bool(bool)
-    @blind = bool
-  end
-
   def set_runestaff(bool)
     check_bool(bool)
     @runestaff = bool
@@ -189,6 +186,57 @@ class Player
     check_bool(bool)
     @orb_of_zot = bool
   end
+
+
+  # afflictions
+  def blind?
+    @blind
+  end
+  def set_blind(bool)
+    check_bool(bool)
+    @blind = bool
+  end
+
+  def stickybook?
+    @stickybook
+  end
+  def set_stickybook(bool)
+    check_bool(bool)
+    @stickybook=bool
+  end
+  
+  def forgetful?
+    @forgetful
+  end
+  def set_forgetful(bool)
+    check_bool(bool)
+    @forgetful = bool
+  end
+
+  def leech?
+    @leech
+  end
+  def set_leech(bool)
+    check_bool(bool)
+    @leech = bool
+  end
+
+  def lethargic?
+    @lethargic
+  end
+  def set_lethargic(bool)
+    check_bool(bool)
+    @lethargic = bool
+  end
+
+
+  # combat
+  def take_a_hit(n)
+    # line 8740 - TODO correct this
+    raise "you have armor, but that's not implemented yet" unless @armor==:nothing
+    str(-n)
+  end
+
 
 private
   def check_bool(bool)

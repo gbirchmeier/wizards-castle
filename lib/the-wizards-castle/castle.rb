@@ -53,7 +53,7 @@ class Castle
   end
 
   def self.move(dir,row,col,floor)
-    case dir[0]
+    case dir
     when "N" then return Castle.north(row,col,floor)
     when "S" then return Castle.south(row,col,floor)
     when "E" then return Castle.east(row,col,floor)

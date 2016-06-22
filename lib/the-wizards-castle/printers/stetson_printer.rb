@@ -49,7 +49,7 @@ END_INTRO
 
   def attributes_header
     s =<<END_ATT_HEADER
-OK, #{@player.race.to_s.upcase}, YOU HAVE THE FOLLOWING ATTRIBUTES :
+OK, #{player_race}, YOU HAVE THE FOLLOWING ATTRIBUTES :
 STRENGTH = #{@player.str}  INTELLIGENCE = #{@player.int}  DEXTERITY = #{@player.dex}
 AND #{@player.custom_attribute_points} OTHER POINTS TO ALLOCATE AS YOU WISH.
 
@@ -173,6 +173,7 @@ END_STAT_BLOCK
     puts "YOU JUST FOUND ***THE ORB OF ZOT***!"
     puts
     puts "THE RUNESTAFF HAS DISAPPEARED!"
+    puts
   end
 
 
@@ -264,6 +265,7 @@ END_HELP
   end
 
   def drink_error
+# TODO rename this to no_pool_error
     puts "** IF YOU WANT A DRINK, FIND A POOL!"
     puts
   end
@@ -318,7 +320,7 @@ END_HELP
   end
 
   def no_lamp_error
-    puts "** YOU DON'T HAVE A LAMP, #{player.race.to_s.upcase}!"
+    puts "** YOU DON'T HAVE A LAMP, #{player_race}!"
     puts
   end
 
@@ -330,7 +332,47 @@ END_HELP
   end
 
 
-# open chest/book goes here
+  def nothing_to_open_error
+    puts "** THE ONLY THING OPENED WAS YOUR BIG MOUTH!"
+    puts
+  end
+
+  def book_effect(effect)
+    puts "YOU OPEN THE BOOK AND"
+    case effect
+    when :flash
+      puts "FLASH! OH NO! YOU ARE NOW A BLIND #{player_race}!"
+    when :poetry
+      puts "IT'S ANOTHER VOLUME OF ZOT'S POETRY! - YECH!!"
+    when :magazine
+      puts "IT'S AN OLD COPY OF PLAY#{random_race}!"
+    when :dex_manual
+      puts "IT'S A MANUAL OF DEXTERITY!"
+    when :str_manual
+      puts "IT'S A MANUAL OF STRENGTH!"
+    when :sticky
+      puts "THE BOOK STICKS TO YOUR HANDS -"
+      puts "NOW YOU ARE UNABLE TO DRAW YOUR WEAPON!"
+    else
+      puts "<ERROR - unrecognized effect '#{effect.to_s}'"
+    end
+    puts
+  end
+
+  def chest_effect(effect,gold_gain)
+    puts "YOU OPEN THE CHEST AND"
+    case effect
+    when :kaboom
+      puts "KABOOM! IT EXPLODES!!"
+    when :gold
+      puts "FIND #{gold_gain} GOLD PIECES!"
+    when :gas
+      puts "GAS!! YOU STAGGER FROM THE ROOM!"
+    else
+      raise "unrecognized chest effect '#{effect.to_s}'"
+    end
+    puts
+  end
 
   def gaze_effect(effect,effect_location)
     s = "YOU SEE "
@@ -349,7 +391,7 @@ END_HELP
     when :soap_opera_rerun
       s+="A SOAP OPERA RERUN!"
     else
-      s+="<ERROR - unrecognized effect '#{effect}.to_s'>"
+      s+="<ERROR - unrecognized effect '#{effect.to_s}'>"
     end
     puts s
     puts
@@ -392,6 +434,10 @@ private
 
   def random_monster_text
     RoomContent::ROOM_THINGS[Castle::MONSTERS.sample][:text]
+  end
+
+  def random_race
+    Player::RACES.sample.to_s.upcase
   end
 
   def prompt_add_to_attribute(att)

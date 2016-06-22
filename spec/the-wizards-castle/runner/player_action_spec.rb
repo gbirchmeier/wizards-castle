@@ -235,7 +235,91 @@ context "#player_action" do
     end
   end
 
-  context "O" do
+  it "O nothing to open" do
+    @runner.castle.set_in_room(2,2,2,:empty_room)
+    @runner.player.set_location(2,2,2)
+    @prompter.push "O"
+    expect(@runner.printer).to receive(:nothing_to_open_error)
+    expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+  end
+
+  context "O book" do
+    before(:each) do
+      @runner.player.set_location(2,2,2)
+      @runner.castle.set_in_room(2,2,2,:book)
+      @runner.player.set_blind(false)
+      @runner.player.set_stickybook(false)
+      expect(@runner.player.str).to eq 0
+      expect(@runner.player.dex).to eq 0
+      @prompter.push "O"
+    end
+
+    it "flash" do
+      allow(@runner).to receive(:random_book_effect).and_return :flash
+      expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+      expect(@runner.player.blind?).to eq true
+    end
+    it "manual_of_dexterity" do
+      allow(@runner).to receive(:random_book_effect).and_return :dex_manual
+      expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+      expect(@runner.player.dex).to eq 18
+    end
+    it "manual_of_strength" do
+      allow(@runner).to receive(:random_book_effect).and_return :str_manual
+      expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+      expect(@runner.player.str).to eq 18
+    end
+    it "sticky" do
+      allow(@runner).to receive(:random_book_effect).and_return :sticky
+      expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+      expect(@runner.player.stickybook?).to eq true
+    end
+  end
+
+  context "O chest" do
+    before(:each) do
+      @runner.player.set_location(2,2,2)
+      @runner.castle.set_in_room(2,2,2,:chest)
+      @runner.castle.set_in_room(2,1,2,:empty_room)
+      @runner.player.str(+8)
+      @runner.player.int(+8)
+      @runner.player.dex(+8)
+      @runner.player.set_armor(:nothing)
+      @runner.player.set_facing(:s)
+      expect(@runner.player.gp).to eq 60
+      expect(@runner.player.turns).to eq 1
+      @prompter.push "O"
+    end
+
+    context "kaboom" do
+      before(:each) do
+        allow(@runner).to receive(:random_chest_effect).and_return :kaboom
+        allow(@runner).to receive(:chest_explosion_damage).and_return 5
+      end
+      it "survive" do
+        expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+        expect(@runner.player.str).to eq 3
+      end
+      it "die" do
+        @runner.player.str(-6)
+        expect(@runner.player_action).to eq Runner::PlayerState::DIED
+        expect(@runner.player.str).to eq 0
+      end
+    end
+    it "gold" do
+      allow(@runner).to receive(:random_chest_effect).and_return :gold
+      allow(@runner).to receive(:chest_gold).and_return 717
+      expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+      expect(@runner.player.gp).to eq 777
+    end
+    it "gas" do
+      allow(@runner).to receive(:random_chest_effect).and_return :gas
+      allow(@runner).to receive(:chest_gas_random_direction).and_return :w
+      expect(@runner.player_action).to eq Runner::PlayerState::NEW_ROOM
+      expect(@runner.player.facing).to eq :w
+      expect(@runner.player.location).to eq [2,1,2]
+      expect(@runner.player.turns).to eq 22
+    end
   end
 
   context "G" do
@@ -266,7 +350,7 @@ context "#player_action" do
         expect(@runner.player.str).to eq 6
       end
       it "die due to 0 str" do
-      @runner.player.str(-6)
+        @runner.player.str(-6)
         expect(@runner.player_action).to eq Runner::PlayerState::DIED
         expect(@runner.player.str).to eq 0
       end

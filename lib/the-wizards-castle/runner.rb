@@ -55,6 +55,8 @@ class Runner
     @player.set_location(1,4,1) #entrance
     @printer.entering_the_castle
 
+    # TODO probably can deduce NEW_ROOM vs ACTION
+
     status = PlayerState::NEW_ROOM
     loop do
       case status
@@ -282,7 +284,7 @@ class Runner
       # if room is cursed, set curse status on player
 
 
-      # TODO when you regain sight, do you "learn" the current room
+      # TODO when you regain sight, do you "learn" the current room?
     end
 
     if Random.rand(5) == 0  # 20% chance
@@ -348,8 +350,19 @@ class Runner
     when 'L'
       shine_lamp
       return PlayerState::ACTION
-#      when 'O'
-#        puts "<<cmd placeholder>>"  #TODO open chest/book
+    when 'O'
+      if rc.symbol==:book
+        book
+        return PlayerState::ACTION
+      elsif rc.symbol==:chest
+        chest_effect = chest()
+        return PlayerState::DIED if @player.str<1 || @player.int<1 || @player.dex<1
+        return PlayerState::NEW_ROOM if chest_effect==:gas
+        return PlayerState::ACTION
+      else
+        @printer.nothing_to_open_error
+        return PlayerState::ACTION
+      end
     when 'G'
       if rc.symbol==:crystal_orb
         gaze
@@ -493,6 +506,69 @@ class Runner
     end
 
     @printer.gaze_effect(effect,effect_location)
+  end
+
+  def random_book_effect
+    [:flash,:poetry,:magazine,:dex_manual,:str_manual,:sticky].sample
+  end
+
+  def book
+    effect = random_book_effect()
+    case effect
+    when :flash
+      @player.set_blind(true)
+    when :poetry,:magazine
+      # no effect
+    when :dex_manual
+      @player.dex(+18)
+    when :str_manual
+      @player.str(+18)
+    when :sticky
+      @player.set_stickybook(true)
+    else
+      raise "unrecognized book effect '#{effect.to_s}'"
+    end
+
+    @printer.book_effect(effect)
+  end
+
+  def random_chest_effect
+    [:kaboom,:gold,:gas,:gold].sample
+  end
+
+  def chest_explosion_damage
+    1+Random.rand(6)
+  end
+
+  def chest_gold
+    1+Random.rand(1000)
+  end
+
+  def chest_gas_random_direction
+    [:n,:e,:w,:s].sample
+  end
+
+  def chest
+    effect = random_chest_effect
+    gold_gain = 0
+    case effect
+    when :kaboom
+      dmg = chest_explosion_damage
+      @player.take_a_hit(dmg)
+    when :gold
+      gold_gain = chest_gold()
+      @player.gp(+gold_gain)
+    when :gas
+      dir = chest_gas_random_direction
+      @player.turns(+20)
+      @player.set_facing dir
+      @player.set_location *Castle.move(dir.to_s.upcase,*@player.location)
+    else
+      raise "unrecognized chest effect '#{effect.to_s}'"
+    end
+
+    @printer.chest_effect(effect,gold_gain)
+    effect
   end
 
 

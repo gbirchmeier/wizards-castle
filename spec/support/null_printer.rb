@@ -1,9 +1,6 @@
 module TheWizardsCastle
 class NullPrinter
 
-  def initialize
-  end
-
   def intro
   end
 
@@ -120,6 +117,15 @@ class NullPrinter
   end
 
   def lamp_shine(row,col,floor)
+  end
+
+  def nothing_to_open_error
+  end
+
+  def book_effect(effect)
+  end
+
+  def chest_effect(effect,gold_gain)
   end
 
   def gaze_effect(effect,effect_location)
