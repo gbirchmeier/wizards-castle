@@ -103,10 +103,10 @@ class NullPrinter
   def drink_error
   end
 
-  def display_map(castle)
+  def display_map
   end
 
-  def flare(castle)
+  def flare
   end
 
   def out_of_flares
@@ -119,7 +119,13 @@ class NullPrinter
   def no_lamp_error
   end
 
-  def lamp_shine(row,col,floor,castle)
+  def lamp_shine(row,col,floor)
+  end
+
+  def gaze_effect(effect,effect_location)
+  end
+
+  def no_crystal_orb_error
   end
 
 end

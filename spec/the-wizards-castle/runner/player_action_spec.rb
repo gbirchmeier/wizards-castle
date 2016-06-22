@@ -235,6 +235,42 @@ context "#player_action" do
     end
   end
 
+  context "O" do
+  end
+
+  context "G" do
+    before(:each) do
+      @runner.player.str(+8)
+      @runner.player.int(+8)
+      @runner.player.dex(+8)
+      @runner.player.set_location(2,2,2)
+      @runner.castle.set_in_room(2,2,2,:crystal_orb)
+      @runner.player.remember_room(2,2,2)
+      expect(@runner.player.room_memory.count(true)).to eq 1
+      @prompter.push "G"
+    end
+
+    it "no crystal orb present" do
+      @runner.castle.set_in_room(2,2,2,:empty_room)
+      expect(@runner.printer).to receive(:no_crystal_orb_error)
+      expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+    end
+
+    it "bloody_heap" do
+      allow(@runner).to receive(:random_gaze_effect).and_return(:bloody_heap)
+      allow(@runner).to receive(:random_gaze_attr_change).and_return(2)
+      expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+      expect(@runner.player.str).to eq 6
+    end
+    it "random_room" do
+      allow(@runner).to receive(:random_gaze_effect).and_return :random_room
+      allow(Castle).to receive(:random_room).and_return [4,4,4]
+      expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+      expect(@runner.player.knows_room?(4,4,4)).to eq true 
+      expect(@runner.player.room_memory.count(true)).to eq 2
+    end
+  end
+
 end
 end
 end

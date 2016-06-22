@@ -1,8 +1,9 @@
 module TheWizardsCastle
 class StetsonPrinter
 
-  def initialize(player)
+  def initialize(player,castle)
     @player = player
+    @castle = castle
   end
 
 
@@ -268,13 +269,13 @@ END_HELP
   end
 
 
-  def display_map(castle)
+  def display_map
     floor = @player.location.last
     lines = []
     (1..8).each do |row|
       lines << ''
       (1..8).each do |col|
-        c = @player.knows_room?(row,col,floor) ? castle.room(row,col,floor).display : "?"
+        c = @player.knows_room?(row,col,floor) ? @castle.room(row,col,floor).display : "?"
         if [row,col,floor]==@player.location
           lines.last << "<#{c}>  "
         else
@@ -288,13 +289,13 @@ END_HELP
   end
 
 
-  def flare(castle)
+  def flare
     locs = Castle.flare_locs(*@player.location)
     3.times do
       line = ""
       3.times do 
         loc = locs.shift
-        c = castle.room(*loc).display
+        c = @castle.room(*loc).display
         line << " #{c}   "
       end
       puts
@@ -321,17 +322,43 @@ END_HELP
     puts
   end
 
-  def lamp_shine(row,col,floor,castle)
+  def lamp_shine(row,col,floor)
     puts "THE LAMP SHINES INTO ( #{row} , #{col} ) LEVEL #{floor} ."
     puts
-    puts "THERE YOU WILL FIND #{castle.room(row,col,floor).text}."
+    puts "THERE YOU WILL FIND #{@castle.room(row,col,floor).text}."
     puts
   end
 
 
-#  def self.no_crystal_orb_error
-#    "** IT'S HARD TO GAZE WITHOUT AN ORB!"
-#  end
+# open chest/book goes here
+
+  def gaze_effect(effect,effect_location)
+    s = "YOU SEE "
+    case effect
+    when :bloody_heap
+      s+="YOURSELF IN A BLOODY HEAP!"
+    when :drink_and_become
+      s+="YOURSELF DRINKING FROM A POOL AND BECOMING #{random_monster_text}!"
+    when :monster_gazing_back
+      s+="#{random_monster_text} GAZING BACK AT YOU!"
+    when :random_room
+      rc = @castle.room(*effect_location)
+      s+="#{rc.text} AT ( #{effect_location[0]} , #{effect_location[1]} ) LEVEL #{effect_location[2]} ."
+    when :zot_location
+      s+="***THE ORB OF ZOT*** AT ( #{effect_location[0]} , #{effect_location[1]} ) LEVEL #{effect_location[2]} ."
+    when :soap_opera_rerun
+      s+="A SOAP OPERA RERUN!"
+    else
+      s+="<ERROR - unrecognized effect '#{effect}.to_s'>"
+    end
+    puts s
+    puts
+  end
+
+  def no_crystal_orb_error
+    puts "** IT'S HARD TO GAZE WITHOUT AN ORB!"
+    puts
+  end
 
 
 #

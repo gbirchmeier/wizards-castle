@@ -31,7 +31,7 @@ class Runner
     @prompter = h[:prompter] || Prompter.new
     @castle = h[:castle] || Castle.new
     @player = h[:player] || Player.new
-    @printer = h[:printer] || StetsonPrinter.new(@player)
+    @printer = h[:printer] || StetsonPrinter.new(@player,@castle)
   end
 
   def character_creation
@@ -340,7 +340,7 @@ class Runner
         return PlayerState::ACTION
       end
     when 'M'
-      @printer.display_map(@castle)
+      @printer.display_map
       return PlayerState::ACTION
     when 'F'
       flare
@@ -348,20 +348,17 @@ class Runner
     when 'L'
       shine_lamp
       return PlayerState::ACTION
-
 #      when 'O'
 #        puts "<<cmd placeholder>>"  #TODO open chest/book
-#      when 'G'
-#        if rc.symbol==:crystal_orb
-#          gaze
-#        else
-#          puts Strings.no_crystal_orb_error
-#          puts
-#        end
-#        if @player.str<1 || @player.int<1 || @player.dex<1
-#          @game_over = GameOverEnum::DIED
-#          return
-#        end
+    when 'G'
+      if rc.symbol==:crystal_orb
+        gaze
+        return PlayerState::DIED if @player.str<1 || @player.int<1 || @player.dex<1
+        return PlayerState::ACTION
+      else
+        @printer.no_crystal_orb_error
+        return PlayerState::ACTION
+      end
 #      when 'T'
 #        puts "<<cmd placeholder>>"  #TODO teleport
 #      when 'Q'
@@ -451,7 +448,7 @@ class Runner
       # TODO should I remember the center room?
     end
 
-    @printer.flare(@castle)
+    @printer.flare
   end
 
 
@@ -463,37 +460,39 @@ class Runner
     dir = @prompter.ask(["N","E","W","S"], @printer.prompt_shine_lamp)
     target_loc = Castle.move(dir,*@player.location)
     @player.remember_room(*target_loc)
-    @printer.lamp_shine(*target_loc,@castle)
+    @printer.lamp_shine(*target_loc)
   end
 
+  def random_gaze_effect
+    [:bloody_heap,:drink_and_become,:monster_gazing_back,:random_room,:zot_location,:soap_opera_rerun].sample
+  end
+
+  def random_gaze_attr_change
+    1+Random.rand(2)
+  end
+
+  def random_gaze_show_orb_of_zot?
+    Random.rand(2)==0
+  end
 
   def gaze
-    s = "YOU SEE "
-    case Random.rand(6)
-    when 0
-      @player.str(-1*Random.rand(2))
-      s += "YOURSELF IN A BLOODY HEAP!"
-    when 1
-      s += "YOURSELF DRINKING FROM A POOL AND BECOMING #{Strings.random_monster_text}!"
-    when 2
-      s += "#{Strings.random_monster_text} GAZING BACK AT YOU!"
-    when 3
-      # a random room
-      xloc = Castle.random_room
-      xrc = @castle.room(*xloc)
-      @player.remember_room(*xloc)
-      s += "#{xrc.text} AT ( #{xloc[0]} , #{xloc[1]} ) LEVEL #{xloc[2]} ."
-    when 4
-      zot_loc = Castle.random_room
-      if Random.rand(2)==0
-        zot_loc = @castle.orb_of_zot_location
-      end
-      s += "***THE ORB OF ZOT*** AT ( #{zot_loc[0]} , #{zot_loc[1]} ) LEVEL #{zot_loc[2]} ."
-    when 5
-      s += "A SOAP OPERA RERUN!"
+    effect = random_gaze_effect()
+    effect_location = nil
+    case effect
+    when :bloody_heap
+      @player.str(-1*random_gaze_attr_change)
+    when :random_room
+      effect_location = Castle.random_room
+      @player.remember_room(*effect_location)
+    when :zot_location
+      effect_location = random_gaze_show_orb_of_zot? ? @castle.orb_of_zot_location : Castle.random_room
+    when :drink_and_become,:monster_gazing_back,:soap_opera_rerun
+      # no effect
+    else
+      raise "unrecognized gaze effect '#{effect.to_s}'"
     end
-    puts s
-    puts
+
+    @printer.gaze_effect(effect,effect_location)
   end
 
 
