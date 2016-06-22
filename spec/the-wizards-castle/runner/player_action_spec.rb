@@ -256,12 +256,22 @@ context "#player_action" do
       expect(@runner.player_action).to eq Runner::PlayerState::ACTION
     end
 
-    it "bloody_heap" do
-      allow(@runner).to receive(:random_gaze_effect).and_return(:bloody_heap)
-      allow(@runner).to receive(:random_gaze_attr_change).and_return(2)
-      expect(@runner.player_action).to eq Runner::PlayerState::ACTION
-      expect(@runner.player.str).to eq 6
+    context "bloody_heap" do
+      before(:each) do
+        allow(@runner).to receive(:random_gaze_effect).and_return(:bloody_heap)
+        allow(@runner).to receive(:random_gaze_attr_change).and_return(2)
+      end
+      it "survive" do
+        expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+        expect(@runner.player.str).to eq 6
+      end
+      it "die due to 0 str" do
+      @runner.player.str(-6)
+        expect(@runner.player_action).to eq Runner::PlayerState::DIED
+        expect(@runner.player.str).to eq 0
+      end
     end
+
     it "random_room" do
       allow(@runner).to receive(:random_gaze_effect).and_return :random_room
       allow(Castle).to receive(:random_room).and_return [4,4,4]
