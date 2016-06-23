@@ -12,17 +12,41 @@ class Player
   def lamp?
     @has_lamp
   end
+  def set_lamp bool
+    check_bool(bool)
+    @has_lamp = bool
+  end
 
   def vendor_rage?
     @vendor_rage
+  end
+  def set_vendor_rage bool
+    check_bool(bool)
+    @vendor_rage = bool
   end
 
   def runestaff?
     @runestaff
   end
+  def set_runestaff(bool)
+    check_bool(bool)
+    @runestaff = bool
+  end
 
   def orb_of_zot?
     @orb_of_zot
+  end
+  def set_orb_of_zot(bool)
+    check_bool(bool)
+    @orb_of_zot = bool
+  end
+
+  def teleported?
+    @teleported
+  end
+  def set_teleported(bool)
+    check_bool(bool)
+    @teleported=bool
   end
 
   def initialize
@@ -45,6 +69,7 @@ class Player
     @vendor_rage = false
     @turns = 1
     @facing = :n  # needed by orb-of-zot shunt
+    @teleported = false  # so orb-of-zot room knows how you entered it
 
     # afflictions
     @blind = false
@@ -66,6 +91,7 @@ class Player
     @facing = f
   end
 
+
   def set_race r
     raise "Unrecognized race parameter '#{r.inspect}'" unless RACES.include?(r)
     @race = r
@@ -77,11 +103,6 @@ class Player
     @gender = g
   end
 
-  def set_lamp bool
-    check_bool(bool)
-    @has_lamp = bool
-  end
-
   def set_armor a
     raise "Unrecognized armor parameter" unless ARMORS.include?(a)
     @armor = a
@@ -90,15 +111,6 @@ class Player
   def set_weapon w
     raise "Unrecognized weapon parameter" unless WEAPONS.include?(w)
     @weapon = w
-  end
-
-  def vendor_rage?
-    @vendor_rage
-  end
-
-  def set_vendor_rage bool
-    check_bool(bool)
-    @vendor_rage = bool
   end
 
   def flares n=0
@@ -175,16 +187,6 @@ class Player
     loc = Castle.random_room
     idx = Castle.room_index(*loc)
     @room_memory[idx] = false
-  end
-
-  def set_runestaff(bool)
-    check_bool(bool)
-    @runestaff = bool
-  end
-
-  def set_orb_of_zot(bool)
-    check_bool(bool)
-    @orb_of_zot = bool
   end
 
 

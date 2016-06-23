@@ -186,7 +186,7 @@ END_STAT_BLOCK
   def prompt_standard_action
     { prompt:  "ENTER YOUR COMMAND : ",
       error:   "\n** SILLY #{player_race}, THAT WASN'T A VALID COMMAND!\n\n",
-      success: "\n"  #TODO prevent newline if flare action, add newline if no-runestaff Teleport action
+      success: "\n"  #TODO prevent newline if flare action, add newline if teleport action
     }
   end
 
@@ -405,6 +405,55 @@ END_HELP
   def no_runestaff_error
     puts "** YOU CAN'T TELEPORT WITHOUT THE RUNESTAFF!"
   end
+
+  def prompt_teleport_row
+    { prompt: "X-COORDINATE? ",
+      success: "\n",
+      error: "\n** TRY A NUMBER FROM 1 TO 8.\n\n",
+      out_of_range: "\n** TRY A NUMBER FROM 1 TO 8.\n\n"
+    }
+  end
+
+  def prompt_teleport_column
+    { prompt: "Y-COORDINATE? ",
+      success: "\n",
+      error: "\n** TRY A NUMBER FROM 1 TO 8.\n\n",
+      out_of_range: "\n** TRY A NUMBER FROM 1 TO 8.\n\n"
+    }
+  end
+
+  def prompt_teleport_floor
+    { prompt: "Z-COORDINATE? ",
+      success: "\n",
+      error: "\n** TRY A NUMBER FROM 1 TO 8.\n\n",
+      out_of_range: "\n** TRY A NUMBER FROM 1 TO 8.\n\n"
+    }
+  end
+
+
+#----------------------
+# teleport into zot space
+
+#Z-COORDINATE? 8                                                                 
+#                                                                                
+#YOU ARE AT ( 8 , 8 ) LEVEL 8 .                                                  
+#                                                                                
+#STRENGTH = 8  INTELLIGENCE = 8  DEXTERITY = 16                                  
+#TREASURES = 0  FLARES = 7  GOLD PIECES = 0                                      
+#WEAPON = SWORD  ARMOR = NO ARMOR  AND A LAMPORBOFZOT: 8 - 8 - 8                 
+#                                                                                
+#                                                                                
+#HERE YOU FIND A WARP.                                                           
+#                                                                                
+#GREAT UNMITIGATED ZOT!                                                          
+#                                                                                
+#YOU JUST FOUND ***THE ORB OF ZOT***!                                            
+#                                                                                
+#THE RUNESTAFF HAS DISAPPEARED!                                                  
+#                                                                                
+#ENTER YOUR COMMAND :                 
+# map is now a dot
+
 
   def prompt_confirm_quit
     { prompt: "DO YOU REALLY WANT TO QUIT NOW? ",

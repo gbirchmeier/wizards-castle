@@ -205,6 +205,12 @@ class Runner
   def enter_room
     # returns a Player::Status
 
+    loc = @player.location
+    rc = @castle.room(*loc)
+
+    entered_via_teleport = @player.teleported?
+    @player.set_teleported(false)
+
     if @player.blind?
       @printer.you_are_here_blind
     else
@@ -215,9 +221,7 @@ class Runner
 
     # TODO @web_counter = 0
 
-    loc = @player.location
-    rc = @castle.room(*loc)
-
+    # TODO should I remember even if blind?
     @player.remember_room(*loc)
 
     symbol_for_text =
@@ -249,6 +253,11 @@ class Runner
       return PlayerState::NEW_ROOM
     when :orb_of_zot
 #TODO no no no.  This should shunt.  Only get orb by teleporting in.
+
+# shunt appears to be just like a regular warp
+# doesn't give a shit if you have the runestaff or not
+
+
       @printer.found_orb_of_zot
       @player.set_runestaff(false)
       @player.set_orb_of_zot(true)
@@ -374,7 +383,8 @@ class Runner
       end
     when 'T'
       if @player.runestaff?
-        puts "teleport not implemented yet"
+        teleport
+        return PlayerState::NEW_ROOM
       else
         @printer.no_runestaff_error
         return PlayerState::ACTION
@@ -391,7 +401,6 @@ class Runner
     PlayerState::ACTION
   end
  
-
 
   def display_map
     floor = @player.location.last
@@ -412,6 +421,7 @@ class Runner
     puts lines
     puts
   end
+
 
   def random_drink_effect
     [:stronger,:weaker,:smarter,:dumber,:nimbler,:clumsier,:change_race,:change_gender].sample
@@ -453,6 +463,7 @@ class Runner
     @printer.drink_effect(effect)
   end
 
+
   def flare
     if @player.flares < 1
       @printer.out_of_flares
@@ -481,37 +492,6 @@ class Runner
     @printer.lamp_shine(*target_loc)
   end
 
-  def random_gaze_effect
-    [:bloody_heap,:drink_and_become,:monster_gazing_back,:random_room,:zot_location,:soap_opera_rerun].sample
-  end
-
-  def random_gaze_attr_change
-    1+Random.rand(2)
-  end
-
-  def random_gaze_show_orb_of_zot?
-    Random.rand(2)==0
-  end
-
-  def gaze
-    effect = random_gaze_effect()
-    effect_location = nil
-    case effect
-    when :bloody_heap
-      @player.str(-1*random_gaze_attr_change)
-    when :random_room
-      effect_location = Castle.random_room
-      @player.remember_room(*effect_location)
-    when :zot_location
-      effect_location = random_gaze_show_orb_of_zot? ? @castle.orb_of_zot_location : Castle.random_room
-    when :drink_and_become,:monster_gazing_back,:soap_opera_rerun
-      # no effect
-    else
-      raise "unrecognized gaze effect '#{effect.to_s}'"
-    end
-
-    @printer.gaze_effect(effect,effect_location)
-  end
 
   def random_book_effect
     [:flash,:poetry,:magazine,:dex_manual,:str_manual,:sticky].sample
@@ -536,6 +516,7 @@ class Runner
 
     @printer.book_effect(effect)
   end
+
 
   def random_chest_effect
     [:kaboom,:gold,:gas,:gold].sample
@@ -576,6 +557,47 @@ class Runner
     effect
   end
 
+
+  def random_gaze_effect
+    [:bloody_heap,:drink_and_become,:monster_gazing_back,:random_room,:zot_location,:soap_opera_rerun].sample
+  end
+
+  def random_gaze_attr_change
+    1+Random.rand(2)
+  end
+
+  def random_gaze_show_orb_of_zot?
+    Random.rand(2)==0
+  end
+
+  def gaze
+    effect = random_gaze_effect()
+    effect_location = nil
+    case effect
+    when :bloody_heap
+      @player.str(-1*random_gaze_attr_change)
+    when :random_room
+      effect_location = Castle.random_room
+      @player.remember_room(*effect_location)
+    when :zot_location
+      effect_location = random_gaze_show_orb_of_zot? ? @castle.orb_of_zot_location : Castle.random_room
+    when :drink_and_become,:monster_gazing_back,:soap_opera_rerun
+      # no effect
+    else
+      raise "unrecognized gaze effect '#{effect.to_s}'"
+    end
+
+    @printer.gaze_effect(effect,effect_location)
+  end
+
+
+  def teleport
+    row   = @prompter.ask_integer(1,8,@printer.prompt_teleport_row)
+    col   = @prompter.ask_integer(1,8,@printer.prompt_teleport_column)
+    floor = @prompter.ask_integer(1,8,@printer.prompt_teleport_floor)
+    @player.set_location(row,col,floor)
+    @player.set_teleported(true)
+  end
 
 end
 end

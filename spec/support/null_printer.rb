@@ -137,6 +137,18 @@ class NullPrinter
   def no_runestaff_error
   end
 
+  def prompt_teleport_row
+    {}
+  end
+
+  def prompt_teleport_column
+    {}
+  end
+
+  def prompt_teleport_floor
+    {}
+  end
+
   def prompt_confirm_quit
     {}
   end

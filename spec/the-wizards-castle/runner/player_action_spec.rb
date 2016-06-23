@@ -366,11 +366,26 @@ context "#player_action" do
   end
 
   context "T" do
-    it "without runestaff" do
-      expect(@runner.player.runestaff?).to eq false
+    before(:each) do
+      @runner.player.set_location(2,2,2)
+      @runner.player.set_teleported(false)
+    end
+
+    it "no runestaff" do
+      @runner.player.set_runestaff(false)
       @prompter.push "T"
       expect(@runner.printer).to receive(:no_runestaff_error)
       expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+      expect(@runner.player.location).to eq [2,2,2]
+      expect(@runner.player.teleported?).to eq false
+    end
+
+    it "success" do
+      @runner.player.set_runestaff(true)
+      @prompter.push ["T",3,3,3]
+      expect(@runner.player_action).to eq Runner::PlayerState::NEW_ROOM
+      expect(@runner.player.location).to eq [3,3,3]
+      expect(@runner.player.teleported?).to eq true
     end
   end
 
