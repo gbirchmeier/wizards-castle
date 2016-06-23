@@ -134,5 +134,11 @@ class NullPrinter
   def no_crystal_orb_error
   end
 
+  # teleport
+
+  def prompt_confirm_quit
+    {}
+  end
+
 end
 end

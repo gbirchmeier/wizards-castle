@@ -22,4 +22,10 @@ class TestPrompter
     @seeds.shift.to_i
   end
 
+  def confirm(blah,blah2)
+    # you should push booleans for this one
+    raise "out of seeds" if @seeds.length<1
+    @seeds.shift
+  end
+
 end

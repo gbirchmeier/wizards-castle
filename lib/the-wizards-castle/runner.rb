@@ -374,11 +374,11 @@ class Runner
       end
 #      when 'T'
 #        puts "<<cmd placeholder>>"  #TODO teleport
-#      when 'Q'
-#        #TODO real quit prompt
-#        @game_over = PlayerState::QUIT
-#        return
-#      end
+    when 'Q'
+      if @prompter.confirm("Y",@printer.prompt_confirm_quit)
+        return PlayerState::QUIT
+      end
+      return PlayerState::ACTION
     else
       puts "UNRECOGNIZED COMMAND <#{cmd}>"  # should never happen
     end

@@ -365,6 +365,17 @@ context "#player_action" do
     end
   end
 
+  context "Q" do
+    it "Y" do
+      @prompter.push ["Q",true]
+      expect(@runner.player_action).to eq Runner::PlayerState::QUIT
+    end
+    it "N" do
+      @prompter.push ["Q",false]
+      expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+    end
+  end
+
 end
 end
 end

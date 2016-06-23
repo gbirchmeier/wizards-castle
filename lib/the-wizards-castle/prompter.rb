@@ -44,6 +44,19 @@ class Prompter
     end
   end
 
+
+  def confirm(target,prompt_hash)
+    emit prompt_hash[:prompt]
+    input = gets.strip.upcase
+    if target.start_with?(input)
+      emit prompt_hash[:confirmed]
+      return true
+    else
+      emit prompt_hash[:denied]
+      return false
+    end
+  end
+
 private
   def emit x
     output = x.is_a?(Proc) ? x.call : x

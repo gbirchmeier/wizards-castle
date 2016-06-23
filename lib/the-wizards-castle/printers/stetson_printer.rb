@@ -314,7 +314,7 @@ END_HELP
 
   def prompt_shine_lamp
     { prompt: "WHERE DO YOU WANT TO SHINE THE LAMP (N,S,E,W)? ",
-      error: "** THAT'S NOT A DIRECTION, #{player_race}!\n\n",
+      error: "\n** THAT'S NOT A DIRECTION, #{player_race}!\n\n",
       success: "\n"
     }
   end
@@ -402,6 +402,14 @@ END_HELP
     puts
   end
 
+  # teleport
+
+  def prompt_confirm_quit
+    { prompt: "DO YOU REALLY WANT TO QUIT NOW? ",
+      confirmed: "\n\n\n",
+      denied: "\n** THEN DON'T SAY THAT YOU DO!\n\n",
+    }
+  end
 
 #
 ##YOU TAKE A DRINK AND FEEL DUMBER.
