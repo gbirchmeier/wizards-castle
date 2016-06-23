@@ -186,7 +186,7 @@ END_STAT_BLOCK
   def prompt_standard_action
     { prompt:  "ENTER YOUR COMMAND : ",
       error:   "\n** SILLY #{player_race}, THAT WASN'T A VALID COMMAND!\n\n",
-      success: "\n"  #TODO prevent newline if flare action
+      success: "\n"  #TODO prevent newline if flare action, add newline if no-runestaff Teleport action
     }
   end
 
@@ -402,7 +402,9 @@ END_HELP
     puts
   end
 
-  # teleport
+  def no_runestaff_error
+    puts "** YOU CAN'T TELEPORT WITHOUT THE RUNESTAFF!"
+  end
 
   def prompt_confirm_quit
     { prompt: "DO YOU REALLY WANT TO QUIT NOW? ",

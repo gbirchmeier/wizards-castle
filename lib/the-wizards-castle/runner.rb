@@ -372,8 +372,13 @@ class Runner
         @printer.no_crystal_orb_error
         return PlayerState::ACTION
       end
-#      when 'T'
-#        puts "<<cmd placeholder>>"  #TODO teleport
+    when 'T'
+      if @player.runestaff?
+        puts "teleport not implemented yet"
+      else
+        @printer.no_runestaff_error
+        return PlayerState::ACTION
+      end
     when 'Q'
       if @prompter.confirm("Y",@printer.prompt_confirm_quit)
         return PlayerState::QUIT

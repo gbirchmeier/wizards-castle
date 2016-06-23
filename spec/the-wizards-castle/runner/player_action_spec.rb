@@ -365,6 +365,15 @@ context "#player_action" do
     end
   end
 
+  context "T" do
+    it "without runestaff" do
+      expect(@runner.player.runestaff?).to eq false
+      @prompter.push "T"
+      expect(@runner.printer).to receive(:no_runestaff_error)
+      expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+    end
+  end
+
   context "Q" do
     it "Y" do
       @prompter.push ["Q",true]
