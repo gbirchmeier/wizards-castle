@@ -36,5 +36,14 @@ describe Player do
     expect(player.flares(-10000)).to eq 0
   end
 
+  it "#forget_random_room" do
+    player.remember_room(2,2,2)
+    player.remember_room(3,3,3)
+    allow(Castle).to receive(:random_room).and_return [2,2,2]
+    player.forget_random_room
+    expect(player.knows_room?(2,2,2)).to eq false
+    expect(player.knows_room?(3,3,3)).to eq true
+  end
+
 end
 end
