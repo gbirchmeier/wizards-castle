@@ -2,16 +2,44 @@ module TheWizardsCastle
 describe Runner do
 context "afflictions" do
 
+  class Castle
+    attr_accessor :curse_location_lethargy, :curse_location_leech, :curse_location_forgetfulness
+  end
+
   before(:each) do
     @prompter = TestPrompter.new
     @runner = Runner.new
     @runner.setup(prompter: @prompter, player: Player.new, printer: NullPrinter.new)
   end 
 
-  context "turn-start curses" do
+  context "turn-start curse acquisition" do
     before(:each) do
       @runner.player.set_location(2,2,2)
       @runner.castle.set_in_room(2,2,2,:empty_room)
+      @prompter.push "H"  #doesn't matter what this is
+      expect(@runner.player.lethargic?).to eq false
+      expect(@runner.player.leech?).to eq false
+      expect(@runner.player.forgetful?).to eq false
+    end
+    it "lethargy" do
+      @runner.castle.curse_location_lethargy = [2,2,2]
+      @runner.player_action
+      expect(@runner.player.lethargic?).to eq true
+    end
+    it "leech" do
+      @runner.castle.curse_location_leech = [2,2,2]
+      @runner.player_action
+      expect(@runner.player.leech?).to eq true
+    end
+    it "forgetful" do
+      @runner.castle.curse_location_forgetfulness = [2,2,2]
+      @runner.player_action
+      expect(@runner.player.forgetful?).to eq true
+    end
+  end
+
+  context "turn-start curse effects" do
+    before(:each) do
       @prompter.push "H"  #doesn't matter what this is
       expect(@runner.player.turns).to eq 1
       expect(@runner.player.gp).to eq 60

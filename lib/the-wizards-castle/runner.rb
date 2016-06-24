@@ -282,6 +282,9 @@ class Runner
   end
 
   def player_action
+    loc = @player.location
+    rc = @castle.room(*loc)
+
     @player.turns(+1)
 
     unless @player.runestaff? || @player.orb_of_zot?
@@ -289,8 +292,13 @@ class Runner
       @player.gp(-leech_gp_loss) if @player.leech? && !@player.have_treasure?(:pale_pearl)
       @player.forget_random_room if @player.forgetful? && !@player.have_treasure?(:green_gem)
 
-      # TODO if room is cursed, set curse status on player
+      @player.set_lethargic(true) if rc.cursed_with_lethargy?
+      @player.set_leech(true) if rc.cursed_with_leech?
+      @player.set_forgetful(true) if rc.cursed_with_forgetfulness?
 
+      # Curses are never permanently removed.
+      # Treasures do not cure or prevent them, they just negate them.
+      # If you sell the treasure to a vendor, the curse will kick in again.
 
       # TODO when you regain sight, do you "learn" the current room?
       #  (assuming you don't learn rooms when blind)
@@ -302,9 +310,6 @@ class Runner
 
     # TODO 3350 - check treasures to cure blindness or stickybook
 
-
-    loc = @player.location
-    rc = @castle.room(*loc)
 
     valid_cmds = ["H","N","S","E","W","U","D","DR","M","F","L","O","G","T","Q"]
     cmd = @prompter.ask(valid_cmds, @printer.prompt_standard_action)
