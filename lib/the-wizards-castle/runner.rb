@@ -279,21 +279,23 @@ class Runner
     PlayerState::ACTION
   end
 
-  def player_action
-    # aka "MAIN PROCESSING LOOP" - basic line 2920
+  def leech_gp_loss
+    1+Random.rand(5)
+  end
 
+  def player_action
     @player.turns(+1)
 
     unless @player.runestaff? || @player.orb_of_zot?
-      # TODO curses
-      # if lethargy then @player.turns(+1)
-      # if leech then @player.gp(-(Random.rand(5)-1)) #lose 1-5 gp
-      # if forgetfulness then forget a random room
+      @player.turns(+1) if @player.lethargic? && !@player.have_treasure?(:ruby_red)
+      @player.gp(-leech_gp_loss) if @player.leech? && !@player.have_treasure?(:pale_pearl)
+      @player.forget_random_room if @player.forgetful? && !@player.have_treasure?(:green_gem)
 
-      # if room is cursed, set curse status on player
+      # TODO if room is cursed, set curse status on player
 
 
       # TODO when you regain sight, do you "learn" the current room?
+      #  (assuming you don't learn rooms when blind)
     end
 
     if Random.rand(5) == 0  # 20% chance
