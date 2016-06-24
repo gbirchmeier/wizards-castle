@@ -43,14 +43,27 @@ context "#enter_room" do
     expect(@runner.player.location).to eq [2,2,3]
   end
 
-  it "orb-of-zot" do
-    @runner.castle.set_in_room(2,2,2,:orb_of_zot)
-    @runner.player.set_location(2,2,2)
-    @runner.player.set_runestaff(true)
-    expect(@runner.enter_room).to eq Runner::PlayerState::ACTION
-    expect(@runner.player.orb_of_zot?).to eq true
-    expect(@runner.player.runestaff?).to eq false
-    expect(@runner.castle.room(2,2,2).symbol).to eq :empty_room
+  context "orb-of-zot" do
+    before(:each) do
+      @runner.castle.set_in_room(2,2,2,:orb_of_zot)
+      @runner.player.set_location(2,2,2)
+      @runner.player.set_facing(:s)
+    end
+    it "via teleport" do
+      @runner.player.set_runestaff(true)
+      @runner.player.set_teleported(true)
+      expect(@runner.enter_room).to eq Runner::PlayerState::ACTION
+      expect(@runner.player.orb_of_zot?).to eq true
+      expect(@runner.player.runestaff?).to eq false
+      expect(@runner.castle.room(2,2,2).symbol).to eq :empty_room
+    end
+    it "via other means" do
+      @runner.player.set_teleported(false)
+      expect(@runner.enter_room).to eq Runner::PlayerState::ACTION
+      expect(@runner.player.location).to eq [3,2,2]
+      expect(@runner.player.orb_of_zot?).to eq false
+      expect(@runner.castle.room(2,2,2).symbol).to eq :orb_of_zot
+    end
   end
 
   it "treasure" do

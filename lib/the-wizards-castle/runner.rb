@@ -252,16 +252,14 @@ class Runner
       @player.set_location *Castle.down(*loc)
       return PlayerState::NEW_ROOM
     when :orb_of_zot
-#TODO no no no.  This should shunt.  Only get orb by teleporting in.
-
-# shunt appears to be just like a regular warp
-# doesn't give a shit if you have the runestaff or not
-
-
-      @printer.found_orb_of_zot
-      @player.set_runestaff(false)
-      @player.set_orb_of_zot(true)
-      @castle.set_in_room(*loc,:empty_room)
+      if entered_via_teleport
+        @printer.found_orb_of_zot
+        @player.set_runestaff(false)
+        @player.set_orb_of_zot(true)
+        @castle.set_in_room(*loc,:empty_room)
+      else
+        @player.set_location *Castle.move(@player.facing.to_s.upcase,*loc)
+      end
       return PlayerState::ACTION
     end
 
