@@ -81,6 +81,9 @@ class NullPrinter
   def got_a_treasure(treasure_symbol)
   end
 
+  def player_action_flavor_text
+  end
+
   def prompt_standard_action
     {}
   end

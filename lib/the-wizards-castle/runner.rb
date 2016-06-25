@@ -281,6 +281,10 @@ class Runner
     1+Random.rand(5)
   end
 
+  def do_random_flavor_text?
+    Random.rand(5) == 0  # 20% chance
+  end
+
   def player_action
     loc = @player.location
     rc = @castle.room(*loc)
@@ -296,17 +300,11 @@ class Runner
       @player.set_leech(true) if rc.cursed_with_leech?
       @player.set_forgetful(true) if rc.cursed_with_forgetfulness?
 
-      # Curses are never permanently removed.
-      # Treasures do not cure or prevent them, they just negate them.
-      # If you sell the treasure to a vendor, the curse will kick in again.
-
       # TODO when you regain sight, do you "learn" the current room?
       #  (assuming you don't learn rooms when blind)
     end
 
-    if Random.rand(5) == 0  # 20% chance
-      # TODO random-flavor - line 3060
-    end
+    @printer.player_action_flavor_text if do_random_flavor_text?
 
     # TODO 3350 - check treasures to cure blindness or stickybook
 

@@ -183,6 +183,24 @@ END_STAT_BLOCK
   end
 
 
+  def player_action_flavor_text
+    rnd = 1+Random.rand(7)
+    rnd +=1 if @player.blind?
+    rnd=4 if rnd>7
+    # ^^ pretty stupid, right?  But that's just how the BASIC impl does it.
+
+    case rnd
+    when 1 then puts "YOU SEE A BAT FLY BY!"
+    when 2 then puts "YOU HEAR #{["A SCREAM!","FOOTSTEPS!","A WUMPUS!","THUNDER!"].sample}"
+    when 3 then puts "YOU SNEEZED!"
+    when 4 then puts "YOU STEPPED ON A FROG!"
+    when 5 then puts "YOU SMELL #{random_monster_text} FRYING!"
+    when 6 then puts "YOU FEEL LIKE YOU'RE BEING WATCHED!"
+    when 7 then puts "YOU HEAR FAINT RUSTLING NOISES!"
+    end
+  end
+
+
   def prompt_standard_action
     { prompt:  "ENTER YOUR COMMAND : ",
       error:   "\n** SILLY #{player_race}, THAT WASN'T A VALID COMMAND!\n\n",
