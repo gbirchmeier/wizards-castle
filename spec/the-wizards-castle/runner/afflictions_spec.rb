@@ -119,8 +119,49 @@ context "afflictions" do
           @runner.player.set_orb_of_zot(true)
         end
       end
-
     end 
+
+  end #turn-start curse effects
+
+
+  context "cure" do
+    before(:each) do
+      @prompter.push "H"
+    end
+
+    context "blindness" do
+      before(:each) do
+        @runner.player.set_blind(true)
+      end
+      it "with treasure" do
+        @runner.player.add_treasure(:opal_eye)
+        expect(@runner.printer).to receive(:cure_blindness)
+        @runner.player_action
+        expect(@runner.player.blind?).to eq false
+      end
+      it "nope" do
+        expect(@runner.printer).not_to receive(:cure_blindness)
+        @runner.player_action
+        expect(@runner.player.blind?).to eq true
+      end
+    end
+
+    context "stickybook" do
+      before(:each) do
+        @runner.player.set_stickybook(true)
+      end
+      it "with treasure" do
+        @runner.player.add_treasure(:blue_flame)
+        expect(@runner.printer).to receive(:cure_stickybook)
+        @runner.player_action
+        expect(@runner.player.stickybook?).to eq false
+      end
+      it "nope" do
+        expect(@runner.printer).not_to receive(:cure_stickybook)
+        @runner.player_action
+        expect(@runner.player.stickybook?).to eq true
+      end
+    end
   end
 
 end

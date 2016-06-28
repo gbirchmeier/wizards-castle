@@ -330,9 +330,19 @@ class Runner
       #  (assuming you don't learn rooms when blind)
     end
 
+
     @printer.player_action_flavor_text if do_random_flavor_text?
 
-    # TODO 3350 - check treasures to cure blindness or stickybook
+
+    if @player.blind? && @player.have_treasure?(:opal_eye)
+      @printer.cure_blindness
+      @player.set_blind(false)
+    end
+
+    if @player.stickybook? && @player.have_treasure?(:blue_flame)
+      @printer.cure_stickybook
+      @player.set_stickybook(false)
+    end
 
 
     valid_cmds = ["H","N","S","E","W","U","D","DR","M","F","L","O","G","T","Q"]

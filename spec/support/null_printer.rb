@@ -84,6 +84,12 @@ class NullPrinter
   def player_action_flavor_text
   end
 
+  def cure_blindness
+  end
+
+  def cure_stickybook
+  end
+
   def prompt_standard_action
     {}
   end

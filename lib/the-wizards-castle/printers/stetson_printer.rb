@@ -208,6 +208,17 @@ END_STAT_BLOCK
   end
 
 
+  def cure_blindness
+    puts "THE OPAL EYE CURES YOUR BLINDNESS!"
+    puts
+  end
+
+  def cure_stickybook
+    puts "THE BLUE FLAME DISSOLVES THE BOOK!"
+    puts
+  end
+
+
   def prompt_standard_action
     { prompt:  "ENTER YOUR COMMAND : ",
       error:   "\n** SILLY #{player_race}, THAT WASN'T A VALID COMMAND!\n\n",
