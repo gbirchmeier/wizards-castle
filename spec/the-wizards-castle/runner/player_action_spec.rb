@@ -125,7 +125,7 @@ context "#player_action" do
 
     it "no pool present" do
       @runner.castle.set_in_room(2,2,2,:empty_room)
-      expect(@runner.printer).to receive(:drink_error)
+      expect(@runner.printer).to receive(:no_pool_error)
       expect(@runner.player_action).to eq Runner::PlayerState::ACTION
     end
 

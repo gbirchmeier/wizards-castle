@@ -234,7 +234,7 @@ class Player
 
   # combat
   def take_a_hit(n)
-    # line 8740 - TODO correct this
+    # line 8740 - TODO implement proper hit-taking
     raise "you have armor, but that's not implemented yet" unless @armor==:nothing
     str(-n)
   end

@@ -386,7 +386,7 @@ class Runner
         return PlayerState::DIED if @player.str<1 || @player.int<1 || @player.dex<1
         return PlayerState::ACTION
       else
-        @printer.drink_error
+        @printer.no_pool_error
         return PlayerState::ACTION
       end
     when 'M'

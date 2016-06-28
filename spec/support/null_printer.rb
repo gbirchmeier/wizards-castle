@@ -106,7 +106,7 @@ class NullPrinter
   def drink_effect(effect)
   end
 
-  def drink_error
+  def no_pool_error
   end
 
   def display_map

@@ -300,8 +300,7 @@ END_HELP
     puts
   end
 
-  def drink_error
-# TODO rename this to no_pool_error
+  def no_pool_error
     puts "** IF YOU WANT A DRINK, FIND A POOL!"
     puts
   end
