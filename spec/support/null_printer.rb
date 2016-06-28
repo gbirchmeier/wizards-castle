@@ -156,5 +156,32 @@ class NullPrinter
     {}
   end
 
+
+
+  def death
+  end
+
+  def quit
+  end
+
+  def exit_castle
+  end
+
+  def endgame_possessions
+  end
+
+  def prompt_play_again
+    {}
+  end
+
+  def play_again
+  end
+
+  def restock
+  end
+
+  def shut_down
+  end
+
 end
 end

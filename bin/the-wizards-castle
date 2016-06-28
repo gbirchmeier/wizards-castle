@@ -5,5 +5,3 @@ require 'the-wizards-castle'
 
 TheWizardsCastle::Runner.run
 
-puts "---"
-puts "the end."

@@ -10,10 +10,15 @@ class Runner
   end
 
   def self.run
-    runner = Runner.new
-    runner.setup
-    runner.character_creation
-    runner.start
+    n=0
+    loop do
+      runner = Runner.new
+      runner.setup
+      runner.intro if n==0
+      runner.character_creation
+      break unless runner.play
+      n+=1
+    end
   end
 
 
@@ -27,6 +32,10 @@ class Runner
     @printer = nil
   end
 
+  def intro
+    @printer.intro
+  end
+
   def setup(h={})
     @prompter = h[:prompter] || Prompter.new
     @castle = h[:castle] || Castle.new
@@ -35,7 +44,6 @@ class Runner
   end
 
   def character_creation
-    @printer.intro
     @printer.character_creation_header
     ask_race
     ask_gender
@@ -51,11 +59,14 @@ class Runner
     end
   end
 
-  def start
+  def play
+    # returns true if user wants to play again
+
     @player.set_location(1,4,1) #entrance
     @printer.entering_the_castle
 
     # TODO probably can deduce NEW_ROOM vs ACTION
+    #      instead of explicitly returning from within each action
 
     status = PlayerState::NEW_ROOM
     loop do
@@ -69,10 +80,25 @@ class Runner
       break if [PlayerState::QUIT, PlayerState::EXITED, PlayerState::DIED].include? status
     end
 
-    #TODO game over messaging
-    puts "Game over because you #{status.to_s}."
+    case status
+    when PlayerState::DIED
+      @printer.death
+    when PlayerState::QUIT
+      @printer.quit
+    when PlayerState::EXITED
+      @printer.exit_castle
+    end
+    @printer.endgame_possessions
 
-    #TODO play again?
+    answer = @prompter.ask(["Y","N"], @printer.prompt_play_again)
+    if answer=="Y"
+      @printer.play_again
+      @printer.restock
+      return true
+    end
+
+    @printer.shut_down
+    return false
   end
 
 

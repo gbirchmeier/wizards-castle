@@ -7,6 +7,11 @@ class StetsonPrinter
   end
 
 
+
+
+
+
+
   def intro
     s =<<END_INTRO
 ****************************************************************
@@ -25,10 +30,11 @@ OF NOW, *NONE* HAS EVER EMERGED VICTORIOUSLY! BEWARE!!
 
 END_INTRO
     puts s
-    # TODO pause here
   end
 
   def character_creation_header
+    sleep 3  #simulate BASIC's delay
+    print "\a"
     puts "ALL RIGHT, BOLD ONE."
   end
 
@@ -198,6 +204,7 @@ END_STAT_BLOCK
     when 6 then puts "YOU FEEL LIKE YOU'RE BEING WATCHED!"
     when 7 then puts "YOU HEAR FAINT RUSTLING NOISES!"
     end
+    puts
   end
 
 
@@ -449,57 +456,109 @@ END_HELP
   end
 
 
-#----------------------
-# teleport into zot space
-
-#Z-COORDINATE? 8                                                                 
-#                                                                                
-#YOU ARE AT ( 8 , 8 ) LEVEL 8 .                                                  
-#                                                                                
-#STRENGTH = 8  INTELLIGENCE = 8  DEXTERITY = 16                                  
-#TREASURES = 0  FLARES = 7  GOLD PIECES = 0                                      
-#WEAPON = SWORD  ARMOR = NO ARMOR  AND A LAMPORBOFZOT: 8 - 8 - 8                 
-#                                                                                
-#                                                                                
-#HERE YOU FIND A WARP.                                                           
-#                                                                                
-#GREAT UNMITIGATED ZOT!                                                          
-#                                                                                
-#YOU JUST FOUND ***THE ORB OF ZOT***!                                            
-#                                                                                
-#THE RUNESTAFF HAS DISAPPEARED!                                                  
-#                                                                                
-#ENTER YOUR COMMAND :                 
-# map is now a dot
-
-
   def prompt_confirm_quit
     { prompt: "DO YOU REALLY WANT TO QUIT NOW? ",
-      confirmed: "\n\n\n",
+      confirmed: "\n\n",
       denied: "\n** THEN DON'T SAY THAT YOU DO!\n\n",
     }
   end
 
-#
-##YOU TAKE A DRINK AND FEEL DUMBER.
-##
-##****************************************************************
-##
-##A NOBLE EFFORT, OH FORMERLY LIVING HUMAN!
-##
-##YOU DIED DUE TO LACK OF INTELLIGENCE.
-##
-##AT THE TIME YOU DIED, YOU HAD :
-##THE OPAL EYE
-##THE SILMARIL
-##DAGGER AND PLATE AND A LAMP
-##YOU ALSO HAD 0 FLARES AND 5 GOLD PIECES
-##
-##AND IT TOOK YOU 42 TURNS!
-##
-##ARE YOU FOOLISH ENOUGH TO WANT TO PLAY AGAIN?
-#
-#
+
+
+
+  #########################################
+  # ENDGAME
+
+  def death
+    print "\a"
+    puts "*" * 62
+    puts "A NOBLE EFFORT, OH FORMERLY LIVING #{player_race}"
+    puts
+    reason = if @player.str<1
+      "STRENGTH"
+    elsif @player.int<1
+      "INTELLIGENCE"
+    else @player.dex<1
+      "DEXTERITY"
+    end
+    puts "YOU DIED DUE TO LACK OF #{reason}."
+    puts
+    puts "AT THE TIME YOU DIED, YOU HAD :"
+  end
+
+  def quit
+    puts
+    puts
+    puts
+    puts "A LESS THAN AWE-INSPIRING DEFEAT."
+    puts
+    puts "WHEN YOU LEFT THE CASTLE, YOU HAD :"
+    puts "YOUR MISERABLE LIFE!"
+  end
+
+  def exit_castle
+    if @player.orb_of_zot?
+      puts "YOU LEFT THE CASTLE WITH THE ORB OF ZOT."
+      puts
+      puts
+      puts "AN INCREDIBLY GLORIOUS VICTORY!!"
+      puts "IN ADDITION, YOU GOT OUT WITH THE FOLLOWING :"
+    else
+      puts "YOU LEFT THE CASTLE WITHOUT THE ORB OF ZOT."
+      puts
+      puts
+      puts "A LESS THAN AWE-INSPIRING DEFEAT."
+      puts
+      puts "WHEN YOU LEFT THE CASTLE, YOU HAD :"
+    end
+    puts "YOUR MISERABLE LIFE!"
+  end
+
+  def endgame_possessions
+    weapon = @player.weapon==:nothing ? "NO WEAPON" : @player.weapon.to_s.upcase
+    armor =  @player.armor==:nothing  ? "NO ARMOR"  : @player.armor.to_s.upcase
+    lamp = @player.lamp? ? " AND A LAMP" : ""
+
+    puts "THE RUBY RED" if @player.have_treasure? :ruby_red
+    puts "THE NORN STONE" if @player.have_treasure? :norn_stone
+    puts "THE PALE PEARL" if @player.have_treasure? :pale_pearl
+    puts "THE OPAL EYE" if @player.have_treasure? :opal_eye
+    puts "THE GREEN GEM" if @player.have_treasure? :green_gem
+    puts "THE BLUE FLAME" if @player.have_treasure? :blue_flame
+    puts "THE PALANTIR" if @player.have_treasure? :palantir
+    puts "THE SILMARIL" if @player.have_treasure? :silmaril
+    puts "#{weapon} AND #{armor}#{lamp}"
+    puts "YOU ALSO HAD #{@player.flares} FLARES AND #{@player.gp} GOLD PIECES"
+    puts "AND THE RUNESTAFF" if @player.runestaff?
+    puts
+    puts "AND IT TOOK YOU #{@player.turns} TURNS!"
+    puts
+  end
+
+  def prompt_play_again
+    { prompt: "ARE YOU FOOLISH ENOUGH TO WANT TO PLAY AGAIN? ",
+      error: "** PLEASE ANSWER YES OR NO\n",
+      success: "\n"
+    }
+  end
+
+  def play_again
+    puts "SOME #{player_race}S NEVER LEARN!"
+    puts
+  end
+
+  def restock
+    puts "PLEASE BE PATIENT WHILE THE CASTLE IS RESTOCKED."
+    puts
+  end
+
+  def shut_down
+    puts "MAYBE DUMB #{player_race} IS NOT SO DUMB AFTER ALL!"
+    puts
+  end
+
+
+
 private
   def player_race
     @player.race.to_s.upcase
