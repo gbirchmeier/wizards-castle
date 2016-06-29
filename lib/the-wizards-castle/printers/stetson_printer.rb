@@ -227,6 +227,11 @@ END_STAT_BLOCK
   end
 
 
+  def blind_command_error
+    puts "** YOU CAN'T SEE ANYTHING, YOU DUMB #{player_race}!"
+    puts
+  end
+
   def help_message
     s=<<END_HELP
 *** WIZARD'S CASTLE COMMAND AND INFORMATION SUMMARY ***
@@ -269,10 +274,6 @@ END_HELP
     puts "** THERE ARE NO STAIRS GOING DOWN FROM HERE!"
     puts
   end
-
-#  def self.blind_command_error
-#    "** YOU CAN'T SEE ANYTHING, YOU DUMB #{player.race.to_s.upcase}!"
-#  end
 
   def drink_effect(effect)
     s = "YOU TAKE A DRINK AND "

@@ -164,6 +164,36 @@ context "afflictions" do
     end
   end
 
+
+  context "can't when blind:" do
+    before(:each) do
+      @runner.player.set_blind(true)
+    end
+    after(:each) do
+      expect(@runner.printer).to receive(:blind_command_error)
+      expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+    end
+
+    it "M" do
+      @prompter.push "M"
+      expect(@runner.printer).not_to receive :display_map
+    end
+    it "F" do
+      @prompter.push "F"
+      expect(@runner).not_to receive :flare
+    end
+    it "L" do
+      @prompter.push "L"
+      expect(@runner).not_to receive :shine_lamp
+    end
+    it "G" do
+      @runner.player.set_location(2,2,2)
+      @runner.castle.set_in_room(2,2,2,:crystal_orb)
+      @prompter.push "G"
+      expect(@runner).not_to receive :gaze
+    end
+  end
+
 end
 end
 end

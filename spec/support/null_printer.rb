@@ -94,6 +94,9 @@ class NullPrinter
     {}
   end
 
+  def blind_command_error
+  end
+
   def help_message
   end
 

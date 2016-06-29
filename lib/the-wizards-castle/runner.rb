@@ -189,7 +189,7 @@ class Runner
 
 
   def ask_armor
-    #TODO this is only correct for char creation when you can afford everything
+    #TODO (armor buy) this is only correct for char creation when you can afford everything
     # unaffordable choices should not be shown or allowed
     allowed = Player::ARMORS.collect{|x| [x.to_s[0].upcase,x]}.to_h
     costs = { plate: 30, chainmail: 20, leather: 10, nothing: 0 }
@@ -200,7 +200,7 @@ class Runner
   end
 
   def ask_weapon
-    #TODO this is only correct for char creation when you can afford everything
+    #TODO (weapon buy) this is only correct for char creation when you can afford everything
     # unaffordable choices should not be shown or allowed
     allowed = Player::WEAPONS.collect{|x| [x.to_s[0].upcase,x]}.to_h
     costs = { sword: 30, mace: 20, dagger: 10, nothing: 0 }
@@ -247,8 +247,7 @@ class Runner
 
     # TODO @web_counter = 0
 
-    # TODO should I remember even if blind?
-    @player.remember_room(*loc)
+    @player.remember_room(*loc)  #remember even if blind
 
     symbol_for_text =
       if rc.symbol==:runestaff_and_monster
@@ -325,9 +324,6 @@ class Runner
       @player.set_lethargic(true) if rc.cursed_with_lethargy?
       @player.set_leech(true) if rc.cursed_with_leech?
       @player.set_forgetful(true) if rc.cursed_with_forgetfulness?
-
-      # TODO when you regain sight, do you "learn" the current room?
-      #  (assuming you don't learn rooms when blind)
     end
 
 
@@ -348,11 +344,10 @@ class Runner
     valid_cmds = ["H","N","S","E","W","U","D","DR","M","F","L","O","G","T","Q"]
     cmd = @prompter.ask(valid_cmds, @printer.prompt_standard_action)
 
-#      if ['F','L','G','M'].include?(cmd) && @player.blind?
-#        puts Strings.blind_command_error(@player)
-#        puts
-#        next
-#      end
+    if ['M','F','L','G'].include?(cmd) && @player.blind?
+      @printer.blind_command_error
+      return PlayerState::ACTION
+    end
 
     case cmd
     when "H"
@@ -513,7 +508,6 @@ class Runner
 
     Castle.flare_locs(*@player.location).each do |loc|
       @player.remember_room(*loc)
-      # TODO should I remember the center room?
     end
 
     @printer.flare
