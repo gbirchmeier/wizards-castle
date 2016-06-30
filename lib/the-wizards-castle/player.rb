@@ -7,7 +7,8 @@ class Player
   WEAPONS = [:sword,:mace,:dagger,:nothing]
   TREASURES = [:ruby_red,:norn_stone,:pale_pearl,:opal_eye,:green_gem,:blue_flame,:palantir,:silmaril]
 
-  attr_reader :race, :gender, :location, :armor, :weapon, :facing
+  attr_reader :race, :gender, :location, :armor, :weapon, :facing,
+    :armor_value, :armor_health, :weapon_value
 
   def lamp?
     @has_lamp
@@ -61,8 +62,11 @@ class Player
     @int = 0
     @dex = 0
     @custom_attribute_points = 0
-    @armor = nil
-    @weapon = nil
+    @armor = :nothing
+    @armor_value = 0
+    @armor_health = 0
+    @weapon = :nothing
+    @weapon_value = 0
     @treasures = []
     @runestaff = false
     @orb_of_zot = false
@@ -106,11 +110,14 @@ class Player
   def set_armor a
     raise "Unrecognized armor parameter" unless ARMORS.include?(a)
     @armor = a
+    @armor_value = [:nothing,:leather,:chainmail,:plate].index(a)
+    @armor_health = @armor_value*7
   end
 
   def set_weapon w
     raise "Unrecognized weapon parameter" unless WEAPONS.include?(w)
     @weapon = w
+    @weapon_value = [:nothing,:dagger,:mace,:sword].index(w)
   end
 
   def flares n=0
@@ -234,9 +241,21 @@ class Player
 
   # combat
   def take_a_hit(n)
-    # line 8740 - TODO implement proper hit-taking
-    raise "you have armor, but that's not implemented yet" unless @armor==:nothing
-    str(-n)
+    # This screwy algorithm is taken directly from the BASIC.
+    # TODO rewrite take_a_hit's algorithm to not look drunk
+
+    damage = n - @armor_value
+    @armor_health -= @armor_value  # yeah, this seems weird, but...
+    if damage<0
+      @armor_health -= damage      # ...it's corrected here
+      damage=0
+    end
+    if @armor_health<=0
+      self.set_armor(:nothing)
+      #  puts
+      #  puts "YOUR ARMOR HAS BEEN DESTROYED . . . GOOD LUCK!"
+    end
+    self.str(-damage)
   end
 
 
