@@ -40,5 +40,24 @@ describe RoomContent do
     end
   end
 
+  describe "#monster_symbol" do
+    it "raises if not a monster" do
+      rc = RoomContent.new(3)
+      expect{rc.monster_symbol}.to raise_error /no monster in room \(has stairs_up\)/
+    end
+    it "kobold" do
+      rc = RoomContent.new(13)
+      expect(rc.monster_symbol).to eq :kobold
+    end
+    it "kobold" do
+      rc = RoomContent.new(13)
+      expect(rc.monster_symbol).to eq :kobold
+    end
+    it "vendor" do
+      rc = RoomContent.new(25)
+      expect(rc.monster_symbol).to eq :vendor
+    end
+  end
+
 end
 end

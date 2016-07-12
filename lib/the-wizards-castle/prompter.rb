@@ -15,7 +15,7 @@ class Prompter
       end
 
       if rv
-        emit prompt_hash[:success]
+        emit_with_arg(prompt_hash[:success],rv)
         return rv
       end
 
@@ -44,6 +44,13 @@ class Prompter
     end
   end
 
+  def ask_for_anything(prompt_hash)
+    emit prompt_hash[:prompt]
+    rv = gets.strip.upcase
+    emit_with_arg(prompt_hash[:success],rv)
+    rv
+  end
+
 
   def confirm(target,prompt_hash)
     emit prompt_hash[:prompt]
@@ -60,6 +67,11 @@ class Prompter
 private
   def emit x
     output = x.is_a?(Proc) ? x.call : x
+    print output
+  end
+
+  def emit_with_arg x, arg
+    output = x.is_a?(Proc) ? x.call(arg) : x
     print output
   end
 

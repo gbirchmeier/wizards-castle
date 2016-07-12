@@ -165,7 +165,8 @@ class NullPrinter
     {}
   end
 
-
+  #########################################
+  # ENDGAME
 
   def death
   end
@@ -190,6 +191,17 @@ class NullPrinter
   end
 
   def shut_down
+  end
+
+
+  #########################################
+  # COMBAT
+
+  def prompt_retreat_direction
+    {}
+  end
+
+  def you_have_escaped
   end
 
 end

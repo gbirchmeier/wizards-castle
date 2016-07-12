@@ -222,7 +222,7 @@ END_STAT_BLOCK
   def prompt_standard_action
     { prompt:  "ENTER YOUR COMMAND : ",
       error:   "\n** SILLY #{player_race}, THAT WASN'T A VALID COMMAND!\n\n",
-      success: "\n"  #TODO prevent newline if flare action, add newline if teleport action
+      success: Proc.new {|x| x=="F" ? '' : x=="T" ? "\n\n" : "\n" }
     }
   end
 
@@ -440,6 +440,7 @@ END_HELP
 
   def no_runestaff_error
     puts "** YOU CAN'T TELEPORT WITHOUT THE RUNESTAFF!"
+    puts
   end
 
   def prompt_teleport_row
@@ -498,8 +499,6 @@ END_HELP
   end
 
   def quit
-    puts
-    puts
     puts
     puts "A LESS THAN AWE-INSPIRING DEFEAT."
     puts
@@ -567,6 +566,74 @@ END_HELP
     puts "MAYBE DUMB #{player_race} IS NOT SO DUMB AFTER ALL!"
     puts
   end
+
+
+  #########################################
+  # COMBAT
+
+  def you_have_escaped
+    puts "YOU HAVE ESCAPED!"
+    puts
+  end
+
+  def prompt_retreat_direction
+    { prompt: "DO YOU WANT TO GO NORTH, SOUTH, EAST, OR WEST?",
+      error: "\n** DON'T PRESS YOUR LUCK, #{player_race}!\n\n",
+      success: "\n"
+    }
+  end
+
+
+
+
+  def youre_facing_a_monster
+    rc = @castle.room( *@player.location )
+    puts "YOU'RE FACING #{rc.text}!"
+    puts
+  end
+
+  def the_monster_attacks
+    rc = @castle.room( *@player.location )
+    txt = rc.text
+    txt.sub!(/^\S*\s/,'')
+    puts "THE #{txt} ATTACKS!"
+    puts
+  end
+
+  def he_hit_you
+    puts "OUCH! HE HIT YOU!"
+    puts
+  end
+
+  def he_missed_you
+    puts "WHAT LUCK, HE MISSED YOU!"
+    puts
+  end
+
+  def combat_menu(can_bribe)
+    puts "YOU MAY ATTACK OR RETREAT."
+    puts "YOU CAN ALSO ATTEMPT A BRIBE." if can_bribe
+    puts "YOU CAN ALSO CAST A SPELL." if @player.int > 14
+    puts
+  end
+
+  def your_battle_stats
+    puts "YOUR STRENGTH IS #{@player.str} AND YOUR DEXTERITY IS #{@player.dex} ."
+    puts
+  end
+
+  def combat_selection_error_msg
+    puts "** CHOOSE ONE OF THE OPTIONS LISTED."
+    puts
+  end
+
+  def prompt_combat
+    { prompt: "YOUR CHOICE? ",
+      success: "\n"
+      # error is ignored in this one
+    }
+  end
+
 
 
 

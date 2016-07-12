@@ -30,6 +30,7 @@ class Runner
     @castle = nil
     @player = nil
     @printer = nil
+    @web_counter = 0
   end
 
   def intro
@@ -245,7 +246,7 @@ class Runner
 
     @printer.stat_block
 
-    # TODO @web_counter = 0
+    @web_counter = 0
 
     @player.remember_room(*loc)  #remember even if blind
 
@@ -294,7 +295,7 @@ class Runner
       @castle.set_in_room(*loc,:empty_room)
       return PlayerState::ACTION
     elsif rc.monster? || (rc.symbol==:vendor && @player.vendor_rage?)
-      # TODO fight!
+      return combat
     elsif rc.symbol==:vendor
       # TODO shop from vendor  line 6220
     end
@@ -630,6 +631,35 @@ class Runner
     floor = @prompter.ask_integer(1,8,@printer.prompt_teleport_floor)
     @player.set_location(row,col,floor)
     @player.set_teleported(true)
+  end
+
+
+  def combat
+    loc = @player.location
+    rc = @castle.room(*loc)
+
+    outcome = run_battle(rc.monster_symbol)
+
+    case outcome
+    when BattleRunner::Result::RETREAT
+      @printer.you_have_escaped
+      dir = @prompter.ask(['N','S','E','W'], @printer.prompt_retreat_direction)
+      @player.set_location *Castle.move(dir,*loc)
+      @player.set_facing(dir.downcase.to_sym)
+      return PlayerState::NEW_ROOM
+
+    when BattleRunner::Result::ENEMY_DEAD
+      raise "not done TODO"
+    when BattleRunner::Result::PLAYER_DEAD
+      raise "not done TODO"
+    else
+      raise "illegal BattleRunner::Result '#{outcome}'"
+    end
+  end
+
+  def run_battle(monster_symbol)
+    br = BattleRunner.new(@player,rc.monster_symbol,@printer,@prompter)
+    br.run()
   end
 
 end

@@ -97,7 +97,7 @@ class RoomContent
 
   def text
     sym = (@symbol==:runestaff_and_monster && @monster_type) ? @monster_type : @symbol
-    ROOM_THINGS[@symbol][:text]
+    ROOM_THINGS[@symbol][:text].dup
   end
 
   def monster?
@@ -106,6 +106,11 @@ class RoomContent
 
   def treasure?
     ROOM_THINGS[@symbol][:mapchar]=='T'
+  end
+
+  def monster_symbol
+    raise "no monster in room (has #{symbol.to_s})" unless (self.monster? || @symbol==:vendor)
+    (@symbol==:runestaff_and_monster && @monster_type) ? @monster_type : @symbol
   end
 
 end
