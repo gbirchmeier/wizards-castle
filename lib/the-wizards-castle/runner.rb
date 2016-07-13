@@ -647,11 +647,10 @@ class Runner
       @player.set_location *Castle.move(dir,*loc)
       @player.set_facing(dir.downcase.to_sym)
       return PlayerState::NEW_ROOM
-
-    when BattleRunner::Result::ENEMY_DEAD
-      raise "not done TODO"
     when BattleRunner::Result::PLAYER_DEAD
-      raise "not done TODO"
+      return PlayerState::DIED
+    when BattleRunner::Result::ENEMY_DEAD
+      raise "TODO enemy dead"
     else
       raise "illegal BattleRunner::Result '#{outcome}'"
     end
