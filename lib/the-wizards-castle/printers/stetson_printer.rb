@@ -484,16 +484,15 @@ END_HELP
   def death
     print "\a"
     puts "*" * 62
+    puts
     puts "A NOBLE EFFORT, OH FORMERLY LIVING #{player_race}"
     puts
-    reason = if @player.str<1
-      "STRENGTH"
-    elsif @player.int<1
-      "INTELLIGENCE"
-    else @player.dex<1
-      "DEXTERITY"
-    end
-    puts "YOU DIED DUE TO LACK OF #{reason}."
+    print "YOU DIED DUE TO LACK OF "
+    # Yes, if two stats hit 0 at once, this will print two attributes.
+    # This is authentic to the original BASIC.
+    puts "STRENGTH." if @player.str<1
+    puts "INTELLIGENCE." if @player.int<1
+    puts "DEXTERITY." if @player.dex<1
     puts
     puts "AT THE TIME YOU DIED, YOU HAD :"
   end
