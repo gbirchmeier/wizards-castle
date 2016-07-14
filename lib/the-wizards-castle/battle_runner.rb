@@ -2,8 +2,8 @@ module TheWizardsCastle
 class BattleRunner
 
   module Result
-    RETREAT = :retreat,
-    ENEMY_DEAD = :enemy_dead,
+    RETREAT = :retreat
+    ENEMY_DEAD = :enemy_dead
     PLAYER_DEAD = :player_dead
   end
 
@@ -18,39 +18,45 @@ class BattleRunner
   end
 
   def run
-#    if enemy_first_shot?
-#      bribable = false
-#      do_enemy_attack(enemy_power)
-#    end
-#
-#    loop do
-#      @printer.youre_facing_a_monster
-#      @printer.combat_menu(bribable)
-#      @printer.your_battle_stats
-#
-#      allowed = ["A","R"]
-#      allowed << "B" if bribable
-#      allowed << "C" if (@player.int > 14) || bribable
-#      # Yup, in both the Powers and Stetson versions,
-#      #   you can cast whenever you can bribe,
-#      #   even if your INT is under 14.
-#
-#      action = @prompter.ask_for_anything(@printer.prompt_combat)[0]
-#      if allowed.include?(action)
-#        case action
-#        when "A"
-#        when "R"
-#        when "B"
-#        when "C"
-#        end
-#
-#        is enemy dead?
-#
-#        do_enemy_attack(enemy_power)
-#      else
-#        @printer.combat_selection_error_msg
-#      end
-#    end
+    if enemy_first_shot?
+      bribable = false
+      do_enemy_attack(enemy_power)
+    end
+
+    loop do
+      @printer.youre_facing_a_monster
+      @printer.combat_menu(bribable)
+      @printer.your_battle_stats
+
+      allowed = ["A","R"]
+      allowed << "B" if bribable
+      allowed << "C" if (@player.int > 14) || bribable
+      # Yup, in both the Powers and Stetson versions,
+      #   you can cast whenever you can bribe,
+      #   even if your INT is under 14.
+      #   You can die from INT loss if its really low.
+
+      action = @prompter.ask_for_anything(@printer.prompt_combat)[0]
+      if allowed.include?(action)
+        case action
+        when "A"
+          raise "TODO attack not impld"
+        when "R" #retreat
+          do_enemy_attack
+          return Result::PLAYER_DEAD if @player.dead?
+          return Result::RETREAT
+        when "B"
+          raise "TODO bribe not impld"
+        when "C"
+          raise "TODO cast not impld"
+        end
+
+        # is enemy dead?
+
+      else
+        @printer.combat_selection_error_msg
+      end
+    end
   end
 
   def self.enemy_stats(sym)
@@ -58,16 +64,26 @@ class BattleRunner
     return [ (1+(code/2)), code+2 ]
   end
 
-#  def enemy_first_shot?
-#    @player.lethargic? || @player.blind? || (@player.dex < (Random.rand(9)+Random.rand(9)+2))
-#  end
-#
-#  def enemy_hit_player?
-#    n = Random.rand(7)+Random.rand(7)+Random.rand(7)+3
-#    n += 3 if @player.blind?
-#    @player.dex < n
-#  end
-#
+  def enemy_first_shot?
+    @player.lethargic? || @player.blind? || (@player.dex < (Random.rand(9)+Random.rand(9)+2))
+  end
+
+  def enemy_hit_player?
+    n = Random.rand(7)+Random.rand(7)+Random.rand(7)+3
+    n += 3 if @player.blind?
+    @player.dex < n
+  end
+
+  def do_enemy_attack
+    @printer.the_monster_attacks
+    if enemy_hit_player?
+      @player.take_a_hit(@enemy_power)
+      @printer.he_hit_you
+    else
+      @printer.he_missed_you
+    end
+  end
+
 #  def player_hit_enemy?
 #    n = Random.rand(20)+1
 #    n += 3 if blind?
@@ -93,17 +109,8 @@ class BattleRunner
 #      end
 #    end
 #  end
-#
-#  def do_enemy_attack(pow)
-#    rc = @castle.room( *@player.location )
-#    @printer.the_monster_attacks
-#    if enemy_hit_player?
-#      @player.take_a_hit(pow)
-#      @printer.he_hit_you
-#    else
-#      @printer.he_missed_you
-#    end
-#  end
+
+
 
 end
 end

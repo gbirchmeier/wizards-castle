@@ -12,7 +12,7 @@ class TestPrompter
     end
   end
 
-  def ask(ignored,ignored2)
+  def ask(allowed_array,prompt_hash)
     raise "out of seeds" if @seeds.length<1
     @seeds.shift
   end
@@ -20,6 +20,11 @@ class TestPrompter
   def ask_integer(blah,blah2,blah3)
     raise "out of seeds" if @seeds.length<1
     @seeds.shift.to_i
+  end
+
+  def ask_for_anything(prompt_hash)
+    raise "out of seeds" if @seeds.length<1
+    @seeds.shift
   end
 
   def confirm(blah,blah2)

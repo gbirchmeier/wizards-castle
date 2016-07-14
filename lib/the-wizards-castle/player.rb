@@ -83,6 +83,10 @@ class Player
     @lethargic = false
   end
 
+  def dead?
+    @str<1 || @int<1 || @dex<1
+  end
+
   def set_location(row,col,floor)
     if row<1 || row>8 || col<1 || col>8 || floor<1 || floor>8
       raise "Illegal location [#{row},#{col},#{floor}]"
@@ -253,6 +257,7 @@ class Player
     end
     if @armor_health<=0
       self.set_armor(:nothing)
+      # TODO destroyed armor messaage
       #  puts
       #  puts "YOUR ARMOR HAS BEEN DESTROYED . . . GOOD LUCK!"
     end

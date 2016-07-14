@@ -197,11 +197,36 @@ class NullPrinter
   #########################################
   # COMBAT
 
+  def you_have_escaped
+  end
+
   def prompt_retreat_direction
     {}
   end
 
-  def you_have_escaped
+  def youre_facing_a_monster
+  end
+
+  def combat_menu(can_bribe)
+  end
+
+  def your_battle_stats
+  end
+
+  def combat_selection_error_msg
+  end
+
+  def prompt_combat
+    {}
+  end
+
+  def the_monster_attacks
+  end
+
+  def he_hit_you
+  end
+
+  def he_missed_you
   end
 
 end

@@ -379,7 +379,7 @@ class Runner
     when 'DR'
       if rc.symbol==:magic_pool
         drink
-        return PlayerState::DIED if @player.str<1 || @player.int<1 || @player.dex<1
+        return PlayerState::DIED if @player.dead?
         return PlayerState::ACTION
       else
         @printer.no_pool_error
@@ -400,7 +400,7 @@ class Runner
         return PlayerState::ACTION
       elsif rc.symbol==:chest
         chest_effect = chest()
-        return PlayerState::DIED if @player.str<1 || @player.int<1 || @player.dex<1
+        return PlayerState::DIED if @player.dead?
         return PlayerState::NEW_ROOM if chest_effect==:gas
         return PlayerState::ACTION
       else
@@ -410,7 +410,7 @@ class Runner
     when 'G'
       if rc.symbol==:crystal_orb
         gaze
-        return PlayerState::DIED if @player.str<1 || @player.int<1 || @player.dex<1
+        return PlayerState::DIED if @player.dead?
         return PlayerState::ACTION
       else
         @printer.no_crystal_orb_error

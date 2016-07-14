@@ -582,30 +582,9 @@ END_HELP
     }
   end
 
-
-
-
   def youre_facing_a_monster
     rc = @castle.room( *@player.location )
     puts "YOU'RE FACING #{rc.text}!"
-    puts
-  end
-
-  def the_monster_attacks
-    rc = @castle.room( *@player.location )
-    txt = rc.text
-    txt.sub!(/^\S*\s/,'')
-    puts "THE #{txt} ATTACKS!"
-    puts
-  end
-
-  def he_hit_you
-    puts "OUCH! HE HIT YOU!"
-    puts
-  end
-
-  def he_missed_you
-    puts "WHAT LUCK, HE MISSED YOU!"
     puts
   end
 
@@ -632,6 +611,30 @@ END_HELP
       # error is ignored in this one
     }
   end
+
+
+
+  def the_monster_attacks
+    rc = @castle.room( *@player.location )
+    txt = rc.text
+    txt.sub!(/^\S*\s/,'')
+    puts "THE #{txt} ATTACKS!"
+    puts
+  end
+
+  def he_hit_you
+    puts "OUCH! HE HIT YOU!"
+    puts
+  end
+
+  def he_missed_you
+    puts "WHAT LUCK, HE MISSED YOU!"
+    puts
+  end
+
+
+
+
 
 
 
