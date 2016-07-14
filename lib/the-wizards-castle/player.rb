@@ -244,7 +244,7 @@ class Player
 
 
   # combat
-  def take_a_hit(n)
+  def take_a_hit(n,printer=nil)
     # This screwy algorithm is taken directly from the BASIC.
     # TODO rewrite take_a_hit's algorithm to not look drunk
     # TODO rename to take_a_hit! (bang)
@@ -257,9 +257,7 @@ class Player
     end
     if @armor_health<=0
       self.set_armor(:nothing)
-      # TODO destroyed armor messaage
-      #  puts
-      #  puts "YOUR ARMOR HAS BEEN DESTROYED . . . GOOD LUCK!"
+      printer.armor_destroyed if printer
     end
     self.str(-damage)
   end

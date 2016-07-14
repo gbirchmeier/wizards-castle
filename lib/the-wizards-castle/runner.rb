@@ -574,7 +574,7 @@ class Runner
     case effect
     when :kaboom
       dmg = chest_explosion_damage
-      @player.take_a_hit(dmg)
+      @player.take_a_hit(dmg,@printer)
     when :gold
       gold_gain = chest_gold()
       @player.gp(+gold_gain)

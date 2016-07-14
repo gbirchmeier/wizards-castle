@@ -229,5 +229,8 @@ class NullPrinter
   def he_missed_you
   end
 
+  def armor_destroyed
+  end
+
 end
 end

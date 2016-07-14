@@ -632,6 +632,11 @@ END_HELP
     puts
   end
 
+  def armor_destroyed
+    puts "YOUR ARMOR HAS BEEN DESTROYED . . . GOOD LUCK!"
+    puts
+  end
+
 
 
 
