@@ -1,7 +1,7 @@
 module TheWizardsCastle
 class Castle
 
-  attr_reader :rooms, :runestaff_monster, :orb_of_zot_location, :runestaff_location
+  attr_reader :rooms, :runestaff_monster, :orb_of_zot_location
 
   MONSTERS = [:kobold, :orc, :wolf, :goblin, :ogre, :troll, :bear, :minotaur, :gargoyle, :chimera, :balrog, :dragon]
 
@@ -39,7 +39,7 @@ class Castle
     @curse_location_leech         = set_in_random_room(:empty_room)
     @curse_location_forgetfulness = set_in_random_room(:empty_room)
 
-    @runestaff_location = set_in_random_room(:runestaff_and_monster)
+    set_in_random_room(:runestaff_and_monster)
     @runestaff_monster = MONSTERS[Random.rand(MONSTERS.length)]
 
     @orb_of_zot_location = set_in_random_room(:orb_of_zot)
@@ -115,11 +115,17 @@ class Castle
     lethargy      = [row,col,floor]==@curse_location_lethargy
     leech         = [row,col,floor]==@curse_location_leech
     forgetfulness = [row,col,floor]==@curse_location_forgetfulness
-    monster_type = [row,col,floor]==@runestaff_location ? @runestaff_monster : nil
+    monster_type  = [row,col,floor]==@runestaff_location ? @runestaff_monster : nil
     RoomContent.new(@rooms[Castle.room_index(row,col,floor)],lethargy,leech,forgetfulness)
   end
 
   def set_in_room(row,col,floor,symbol)
+    if self.room(row,col,floor).symbol==:runestaff_and_monster
+      @runestaff_location = nil
+    end
+    if symbol==:runestaff_and_monster
+      @runestaff_location = [row,col,floor]
+    end
     @rooms[Castle.room_index(row,col,floor)] = RoomContent.to_intcode(symbol)
   end
 
@@ -155,7 +161,11 @@ class Castle
     lines.last << " Leech=#{@curse_location_leech.join(',')}"
     lines.last << " Forget=#{@curse_location_forgetfulness.join(',')}"
 
-    lines << "Runestaff:  #{runestaff_location.join(',')} (#{@runestaff_monster})"
+    if @runestaff_location
+      lines << "Runestaff:  #{runestaff_location.join(',')} (#{@runestaff_monster})"
+    else
+      lines << "Runestaff removed from last location"
+    end
     lines << "Orb of Zot: #{orb_of_zot_location.join(',')}"
 
     lines

@@ -4,7 +4,8 @@ describe Castle do
   class Castle
     attr_reader :curse_location_lethargy,
       :curse_location_leech,
-      :curse_location_forgetfulness
+      :curse_location_forgetfulness,
+      :runestaff_location
   end
 
   let(:castle) { Castle.new }
@@ -72,6 +73,19 @@ describe Castle do
   it "#set_in_room" do
     castle.set_in_room(8,8,1,:warp)
     expect(castle.rooms[63]).to eq 9 
+  end
+
+  context "@runestaff_location" do
+    before(:each) do
+      castle.set_in_room(8,8,1,:runestaff_and_monster)
+    end
+    it "after placement" do
+      expect(castle.runestaff_location).to eq [8,8,1]
+    end
+    it "after removal" do
+      castle.set_in_room(8,8,1,:empty_room)
+      expect(castle.runestaff_location).to eq nil
+    end
   end
 
   it "#flare_locs" do
