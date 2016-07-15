@@ -232,5 +232,15 @@ class NullPrinter
   def armor_destroyed
   end
 
+  def monster_is_dead
+  end
+
+
+  def you_got_the_runestaff
+  end
+
+  def you_got_monster_gold(n)
+  end
+
 end
 end

@@ -641,6 +641,7 @@ class Runner
     outcome = run_battle(rc.monster_symbol)
 
     case outcome
+
     when BattleRunner::Result::RETREAT
       @printer.you_have_escaped
       dir = @prompter.ask(['N','S','E','W'], @printer.prompt_retreat_direction)
@@ -650,7 +651,15 @@ class Runner
     when BattleRunner::Result::PLAYER_DEAD
       return PlayerState::DIED
     when BattleRunner::Result::ENEMY_DEAD
-      raise "TODO enemy dead"
+      if rc.symbol==:runestaff_and_monster
+        @printer.you_got_the_runestaff
+        @player.set_runestaff(true)
+      end
+      gp_gain = monster_random_gp()
+      @player.gp(+gp_gain)
+      @printer.you_got_monster_gold(gp_gain)
+      @castle.set_in_room(*loc,:empty_room)
+      return PlayerState::ACTION
     else
       raise "illegal BattleRunner::Result '#{outcome}'"
     end
@@ -659,6 +668,10 @@ class Runner
   def run_battle(monster_symbol)
     br = BattleRunner.new(@player,rc.monster_symbol,@printer,@prompter)
     br.run()
+  end
+
+  def monster_random_gp
+    Random.rand(1000)+1
   end
 
 end

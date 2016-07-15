@@ -34,7 +34,7 @@ END_INTRO
 
   def character_creation_header
     sleep 3  #simulate BASIC's delay
-    print "\a"
+    beep
     puts "ALL RIGHT, BOLD ONE."
   end
 
@@ -482,7 +482,7 @@ END_HELP
   # ENDGAME
 
   def death
-    print "\a"
+    beep
     puts "*" * 62
     puts
     puts "A NOBLE EFFORT, OH FORMERLY LIVING #{player_race}"
@@ -637,8 +637,23 @@ END_HELP
     puts
   end
 
+  def monster_is_dead
+    rc = @castle.room( *@player.location )
+    puts "#{rc.text} LIES DEAD AT OUR FEET!"
+    puts
+  end
 
 
+  def you_got_the_runestaff
+    beep
+    puts "GREAT ZOT! YOU'VE FOUND THE RUNESTAFF!"
+    puts
+  end
+
+  def you_got_monster_gold(n)
+    puts "YOU NOW GET HIS HOARD OF #{n} GP's"
+    puts
+  end
 
 
 
@@ -668,6 +683,10 @@ private
       error: "\n** ",
       out_of_range: "\n** "
     }
+  end
+
+  def beep
+    print "\a"
   end
 
 end
