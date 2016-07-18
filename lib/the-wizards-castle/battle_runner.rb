@@ -34,13 +34,16 @@ class BattleRunner
       # Yup, in both the Powers and Stetson versions,
       #   you can cast whenever you can bribe,
       #   even if your INT is under 14.
-      #   You can die from INT loss if its really low.
+      #   You can die if this cast drops your INT to 0.
 
       action = @prompter.ask_for_anything(@printer.prompt_combat)[0]
       if allowed.include?(action)
         case action
         when "A"
-          raise "TODO attack not impld"
+          do_player_attack
+          return Result::ENEMY_DEAD if @enemy_str<1
+          do_enemy_attack
+          return Result::PLAYER_DEAD if @player.dead?
         when "R" #retreat
           do_enemy_attack
           return Result::PLAYER_DEAD if @player.dead?
@@ -50,8 +53,6 @@ class BattleRunner
         when "C"
           raise "TODO cast not impld"
         end
-
-        # is enemy dead?
 
       else
         @printer.combat_selection_error_msg
@@ -84,33 +85,31 @@ class BattleRunner
     end
   end
 
-#  def player_hit_enemy?
-#    n = Random.rand(20)+1
-#    n += 3 if blind?
-#    @player.dex >= n
-#  end
-#
-#  def do_player_attack
-#    if @player.weapon==:nothing
-#      puts "** POUNDING ON ";C$(A+12);" WON'T HURT IT!"
-#    elsif @player.bookstick
-#      puts "** YOU CAN'T BEAT IT TO DEATH WITH A BOOK!"
-#    else
-#      if player_hit_enemy?
-#        puts "YOU HIT THE EVIL ";Z$;"!"
-#        enemy_str -= weapon_value
-#
-#        if [:gargoyle,:dragon].include?(enemy)
-#          if Random.rand(8)==0 # 1/8 chance
-#            puts "OH NO! YOUR ";W$(WV+1);" BROKE!"
-#            @player.set_weapon(:nothing)
-#          end
-#        end
-#      end
-#    end
-#  end
+  def player_hit_enemy?
+    n = Random.rand(20)+1
+    n += 3 if blind?
+    @player.dex >= n
+  end
 
+  def do_player_attack
+    if @player.weapon==:nothing
+      @printer.unarmed_attack
+    elsif @player.bookstick
+      @printer.book_attack
+    else
+      if player_hit_enemy?
+        @printer.you_hit_him
+        enemy_str -= weapon_value
 
+        if [:gargoyle,:dragon].include?(enemy)
+          if Random.rand(8)==0 # 1/8 chance
+            @printer.your_weapon_broke
+            @player.set_weapon(:nothing)
+          end
+        end
+      end
+    end
+  end
 
 end
 end

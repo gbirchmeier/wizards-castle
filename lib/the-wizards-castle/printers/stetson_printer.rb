@@ -583,8 +583,7 @@ END_HELP
   end
 
   def youre_facing_a_monster
-    rc = @castle.room( *@player.location )
-    puts "YOU'RE FACING #{rc.text}!"
+    puts "YOU'RE FACING #{room_monster}!"
     puts
   end
 
@@ -613,12 +612,8 @@ END_HELP
   end
 
 
-
   def the_monster_attacks
-    rc = @castle.room( *@player.location )
-    txt = rc.text
-    txt.sub!(/^\S*\s/,'')
-    puts "THE #{txt} ATTACKS!"
+    puts "THE #{room_monster_no_article} ATTACKS!"
     puts
   end
 
@@ -638,11 +633,30 @@ END_HELP
   end
 
   def monster_is_dead
-    rc = @castle.room( *@player.location )
-    puts "#{rc.text} LIES DEAD AT OUR FEET!"
+    puts "#{room_monster} LIES DEAD AT OUR FEET!"
     puts
   end
 
+
+  def unarmed_attack
+    puts "** POUNDING ON #{room_monster} WON'T HURT IT!"
+    puts
+  end
+
+  def book_attack
+    puts "** YOU CAN'T BEAT IT TO DEATH WITH A BOOK!"
+    puts
+  end
+
+  def you_hit_him
+    puts "YOU HIT THE EVIL #{room_monster}!"
+    puts
+  end
+
+  def your_weapon_broke
+    puts "OH NO! YOUR #{@player.weapon.to_s.upcase} BROKE!"
+    puts
+  end
 
   def you_got_the_runestaff
     beep
@@ -687,6 +701,15 @@ private
 
   def beep
     print "\a"
+  end
+
+  def room_monster
+    rc = @castle.room( *@player.location )
+    rc.text
+  end
+
+  def room_monster_no_article
+    room_monster.sub(/^\S*\s/,'')
   end
 
 end

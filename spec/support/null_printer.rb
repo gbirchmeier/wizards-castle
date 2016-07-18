@@ -236,6 +236,18 @@ class NullPrinter
   end
 
 
+  def unarmed_attack
+  end
+
+  def book_attack
+  end
+
+  def you_hit_him
+  end
+
+  def your_weapon_broke
+  end
+
   def you_got_the_runestaff
   end
 
