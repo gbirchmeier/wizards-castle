@@ -94,21 +94,25 @@ class BattleRunner
   def do_player_attack
     if @player.weapon==:nothing
       @printer.unarmed_attack
-    elsif @player.bookstick
+    elsif @player.stickybook?
       @printer.book_attack
     else
       if player_hit_enemy?
         @printer.you_hit_him
-        enemy_str -= weapon_value
+        @enemy_str -= @player.weapon_value
 
-        if [:gargoyle,:dragon].include?(enemy)
-          if Random.rand(8)==0 # 1/8 chance
+        if [:gargoyle,:dragon].include?(@enemy_symbol)
+          if broken_weapon?
             @printer.your_weapon_broke
             @player.set_weapon(:nothing)
           end
         end
       end
     end
+  end
+
+  def broken_weapon?
+    Random.rand(8)==0 # 1/8 chance
   end
 
 end
