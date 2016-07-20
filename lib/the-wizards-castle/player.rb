@@ -177,8 +177,8 @@ class Player
 
   def remove_treasure(t)
     raise "invalid treasure #{t.inspect}" unless TREASURES.include?(t)
-    raise "don't have treasure #{t.inspect}" unless @treasures.include(t)
-    @treasure.delete(t)
+    raise "don't have treasure #{t.inspect}" unless @treasures.include?(t)
+    @treasures.delete(t)
   end
 
   def have_treasure?(t)

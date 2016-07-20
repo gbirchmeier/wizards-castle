@@ -135,5 +135,25 @@ describe Player do
     end
   end
 
+  it "#add_treasure" do
+    expect(player.treasure_count).to eq 0
+    player.add_treasure(:opal_eye)
+    expect(player.treasure_count).to eq 1
+  end
+
+  it "#have_treasure?" do
+    expect(player.have_treasure?(:opal_eye)).to eq false
+    player.add_treasure(:opal_eye)
+    expect(player.have_treasure?(:opal_eye)).to eq true
+    expect(player.have_treasure?(:norn_stone)).to eq false
+  end
+
+  it "#remove_treasure" do
+    player.add_treasure(:opal_eye)
+    expect(player.treasure_count).to eq 1
+    player.remove_treasure(:opal_eye)
+    expect(player.treasure_count).to eq 0
+  end
+
 end
 end
