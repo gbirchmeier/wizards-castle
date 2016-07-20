@@ -660,6 +660,8 @@ class Runner
       @printer.you_got_monster_gold(gp_gain)
       @castle.set_in_room(*loc,:empty_room)
       return PlayerState::ACTION
+    when BattleRunner::Result::BRIBED
+      return PlayerState::ACTION
     else
       raise "illegal BattleRunner::Result '#{outcome}'"
     end

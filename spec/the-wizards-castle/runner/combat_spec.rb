@@ -20,6 +20,15 @@ context "combat:" do
     expect(@runner.castle.room(2,2,2).symbol).to eq :kobold
   end
 
+  it "bribed" do
+    allow(@runner).to receive(:run_battle).and_return BattleRunner::Result::BRIBED
+    expect(@runner.combat).to eq Runner::PlayerState::ACTION
+    # make sure player is not bothered by monster on next action
+    @prompter.push("H")
+    expect(@runner.printer).to receive(:help_message)
+    expect(@runner.player_action).to eq Runner::PlayerState::ACTION
+  end
+
   it "player died" do
     allow(@runner).to receive(:run_battle).and_return BattleRunner::Result::PLAYER_DEAD
     expect(@runner.combat).to eq Runner::PlayerState::DIED
