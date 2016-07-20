@@ -3,6 +3,7 @@ class BattleRunner
 
   module Result
     RETREAT = :retreat
+    BRIBED = :bribed
     ENEMY_DEAD = :enemy_dead
     PLAYER_DEAD = :player_dead
   end
@@ -19,18 +20,18 @@ class BattleRunner
 
   def run
     if enemy_first_shot?
-      bribable = false
+      @bribable = false
       do_enemy_attack(enemy_power)
     end
 
     loop do
       @printer.youre_facing_a_monster
-      @printer.combat_menu(bribable)
+      @printer.combat_menu(@bribable)
       @printer.your_battle_stats
 
       allowed = ["A","R"]
-      allowed << "B" if bribable
-      allowed << "C" if (@player.int > 14) || bribable
+      allowed << "B" if @bribable
+      allowed << "C" if (@player.int > 14) || @bribable
       # Yup, in both the Powers and Stetson versions,
       #   you can cast whenever you can bribe,
       #   even if your INT is under 14.
@@ -46,13 +47,16 @@ class BattleRunner
           return Result::PLAYER_DEAD if @player.dead?
         when "R" #retreat
           do_enemy_attack
-          return Result::PLAYER_DEAD if @player.dead?
-          return Result::RETREAT
+          return @player.dead? ? Result::PLAYER_DEAD : Result::RETREAT
         when "B"
-          raise "TODO bribe not impld"
+          return Result::BRIBED if do_bribe?
+          do_enemy_attack
+          return Result::PLAYER_DEAD if @player.dead?
         when "C"
           raise "TODO cast not impld"
         end
+
+        @bribeable = false
 
       else
         @printer.combat_selection_error_msg
@@ -113,6 +117,21 @@ class BattleRunner
 
   def broken_weapon?
     Random.rand(8)==0 # 1/8 chance
+  end
+
+
+  def do_bribe?
+    if @player.treasure_count < 1
+      @printer.bribe_refused
+    else
+      desired_treasure = @player.random_treasure
+      answer = @prompter.ask(['Y','N'],@printer.prompt_bribe_request(desired_treasure))
+      if answer=='Y'
+        @printer.bribe_accepted
+        return true
+      end
+    end
+    false
   end
 
 end

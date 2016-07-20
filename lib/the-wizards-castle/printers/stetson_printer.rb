@@ -670,6 +670,23 @@ END_HELP
   end
 
 
+  def bribe_refused
+    puts "ALL I WANT IS YOUR LIFE!"
+    puts
+  end
+
+  def prompt_bribe_request(treasure_symbol)
+    treasure_text = RoomContent::ROOM_THINGS[treasure_symbol][:text]
+    { prompt: "I WANT #{treasure_text}. WILL YOU GIVE IT TO ME? ",
+      error:  "** PLEASE ANSWER YES OR NO\n\n",
+      success: "\n"
+    }
+  end
+
+  def bribe_accepted
+    puts "OK, JUST DON'T TELL ANYONE ELSE."
+    puts
+  end
 
 
 

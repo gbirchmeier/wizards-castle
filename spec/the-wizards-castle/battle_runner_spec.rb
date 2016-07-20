@@ -22,39 +22,63 @@ describe BattleRunner do
     expect(BattleRunner.enemy_stats(:vendor)).to eq   [7,15]
   end
 
-  context "retreat (and implicitly, #do_enemy_attack)" do
+  context "#run" do
     before(:each) do
       @prompter = TestPrompter.new
       @player = Player.new
       @player.str(+5)
-      @player.int(+8)
+      @player.int(+18)
       @player.dex(+8)
       @brunner = BattleRunner.new(@player,:dragon,NullPrinter.new,@prompter)
-
-      allow(@brunner).to receive(:enemy_first_shot?).and_return false
-      @prompter.push "R"
     end
 
-    context "and get hit and" do
+    context "retreat (and implicitly, #do_enemy_attack)" do
       before(:each) do
-        allow(@brunner).to receive(:enemy_hit_player?).and_return true
+        allow(@brunner).to receive(:enemy_first_shot?).and_return false
+        @prompter.push "R"
       end
 
-      it "die" do
-        expect(@brunner.run).to eq BattleRunner::Result::PLAYER_DEAD
-        expect(@player.str).to eq 0
+      context "and get hit and" do
+        before(:each) do
+          allow(@brunner).to receive(:enemy_hit_player?).and_return true
+        end
+
+        it "die" do
+          expect(@brunner.run).to eq BattleRunner::Result::PLAYER_DEAD
+          expect(@player.str).to eq 0
+        end
+        it "survive" do
+          @brunner.enemy_power = 1
+          expect(@brunner.run).to eq BattleRunner::Result::RETREAT
+          expect(@player.str).to eq 4
+        end
       end
-      it "survive" do
-        @brunner.enemy_power = 1
+
+      it "without getting hit" do
+        allow(@brunner).to receive(:enemy_hit_player?).and_return false
         expect(@brunner.run).to eq BattleRunner::Result::RETREAT
-        expect(@player.str).to eq 4
+        expect(@player.str).to eq 5
       end
     end
 
-    it "without getting hit" do
-      allow(@brunner).to receive(:enemy_hit_player?).and_return false
-      expect(@brunner.run).to eq BattleRunner::Result::RETREAT
-      expect(@player.str).to eq 5
+    context "bribe" do
+      before(:each) do
+        allow(@brunner).to receive(:enemy_first_shot?).and_return false
+        @prompter.push "B"
+      end
+
+      it "accepted" do
+        allow(@brunner).to receive(:do_bribe?).and_return true
+        expect(@brunner).not_to receive(:do_enemy_attack)
+        expect(@brunner.run).to eq BattleRunner::Result::BRIBED
+      end
+
+      it "refused and killed" do
+        @player.str(-20)
+        allow(@brunner).to receive(:do_bribe?).and_return false
+        allow(@brunner).to receive(:do_enemy_attack).and_return nil
+        expect(@brunner.run).to eq BattleRunner::Result::PLAYER_DEAD
+      end
     end
   end
 
@@ -107,7 +131,37 @@ describe BattleRunner do
       @brunner.do_player_attack
       expect(@brunner.enemy_str).to eq 14 #unharmed
     end
+  end # do_player_attack
 
+  context "#do_bribe?" do
+    before(:each) do
+      @prompter = TestPrompter.new
+      @player = Player.new
+      @player.str(+5)
+      @player.int(+8)
+      @player.dex(+8)
+      @printer = NullPrinter.new
+      @brunner = BattleRunner.new(@player,:dragon,@printer,@prompter)
+    end
+
+    context "false:" do
+      it "player has no treasure" do
+        expect(@printer).to receive(:bribe_refused)
+        expect(@brunner.do_bribe?).to eq false
+      end
+      it "player refuses offer" do
+        @player.add_treasure(:opal_eye)
+        @prompter.push "N"
+        expect(@brunner.do_bribe?).to eq false
+      end
+    end
+
+    it "true" do
+      @player.add_treasure(:opal_eye)
+      @prompter.push "Y"
+      expect(@printer).to receive(:bribe_accepted)
+      expect(@brunner.do_bribe?).to eq true
+    end
   end
 
 end

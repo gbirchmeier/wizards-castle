@@ -186,6 +186,11 @@ class Player
     @treasures.include?(t)
   end
 
+  def random_treasure
+    return nil if treasure_count() < 1
+    @treasures.sample
+  end
+
   def knows_room?(col,row,floor)
     @room_memory[Castle.room_index(col,row,floor)]
   end

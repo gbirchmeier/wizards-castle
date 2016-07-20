@@ -254,5 +254,15 @@ class NullPrinter
   def you_got_monster_gold(n)
   end
 
+  def bribe_refused
+  end
+
+  def prompt_bribe_request(treasure_symbol)
+    {}
+  end
+
+  def bribe_accepted
+  end
+
 end
 end
