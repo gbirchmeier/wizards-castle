@@ -80,7 +80,7 @@ describe BattleRunner do
         expect(@brunner.run).to eq BattleRunner::Result::PLAYER_DEAD
       end
     end
-  end
+  end #run
 
   context "#do_player_attack" do
     before(:each) do
@@ -133,6 +133,7 @@ describe BattleRunner do
     end
   end # do_player_attack
 
+
   context "#do_bribe?" do
     before(:each) do
       @prompter = TestPrompter.new
@@ -153,6 +154,7 @@ describe BattleRunner do
         @player.add_treasure(:opal_eye)
         @prompter.push "N"
         expect(@brunner.do_bribe?).to eq false
+        expect(@player.have_treasure?(:opal_eye)).to eq true
       end
     end
 
@@ -161,6 +163,7 @@ describe BattleRunner do
       @prompter.push "Y"
       expect(@printer).to receive(:bribe_accepted)
       expect(@brunner.do_bribe?).to eq true
+      expect(@player.have_treasure?(:opal_eye)).to eq false
     end
   end
 

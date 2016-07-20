@@ -127,6 +127,7 @@ class BattleRunner
       desired_treasure = @player.random_treasure
       answer = @prompter.ask(['Y','N'],@printer.prompt_bribe_request(desired_treasure))
       if answer=='Y'
+        @player.remove_treasure(desired_treasure)
         @printer.bribe_accepted
         return true
       end
