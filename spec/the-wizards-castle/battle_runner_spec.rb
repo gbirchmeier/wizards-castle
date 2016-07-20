@@ -32,6 +32,27 @@ describe BattleRunner do
       @brunner = BattleRunner.new(@player,:dragon,NullPrinter.new,@prompter)
     end
 
+    context "attack:" do
+      before(:each) do
+        allow(@brunner).to receive(:enemy_first_shot?).and_return false
+        @prompter.push "A"
+      end
+
+      it "killed monster" do
+        allow(@brunner).to receive(:do_player_attack).and_return nil
+        expect(@brunner).not_to receive(:do_enemy_attack)
+        @brunner.enemy_str = 0
+        expect(@brunner.run).to eq BattleRunner::Result::ENEMY_DEAD
+      end
+
+      it "got killed" do
+        allow(@brunner).to receive(:do_player_attack).and_return nil
+        expect(@brunner).to receive(:do_enemy_attack).and_return nil
+        @player.str(-20)
+        expect(@brunner.run).to eq BattleRunner::Result::PLAYER_DEAD
+      end
+    end
+
     context "retreat (and implicitly, #do_enemy_attack)" do
       before(:each) do
         allow(@brunner).to receive(:enemy_first_shot?).and_return false
