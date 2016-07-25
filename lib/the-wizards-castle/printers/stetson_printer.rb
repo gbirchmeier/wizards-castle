@@ -689,6 +689,46 @@ END_HELP
   end
 
 
+  def cant_cast_now
+    puts "** YOU CAN'T CAST A SPELL NOW!"
+    puts
+  end
+
+  def prompt_cast
+    { prompt: "WHICH SPELL (WEB, FIREBALL, DEATHSPELL)? ",
+      success: "\n\n"
+      # error is ignored in this one
+    }
+  end
+
+  def cast_selection_error_msg
+    puts "** TRY ONE OF THE OPTIONS GIVEN."
+    puts
+  end
+
+  def the_web_broke
+    puts "THE WEB JUST BROKE!"
+    puts
+  end
+
+  def monster_stuck_in_web
+    puts "THE #{room_monster} IS STUCK AND CAN'T ATTACK NOW!"
+    puts
+  end
+
+  def fireball_damage_report(n)
+    puts "IT DOES #{n} POINTS WORTH OF DAMAGE."
+    puts
+  end
+
+  def deathspell_kills_enemy
+    puts "DEATH . . . HIS!"
+  end
+
+  def deathspell_kills_player
+    puts "DEATH . . . YOURS!"
+  end
+
 
 private
   def player_race

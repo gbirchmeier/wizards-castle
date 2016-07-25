@@ -16,11 +16,11 @@ class BattleRunner
 
     @enemy_power,@enemy_str = BattleRunner.enemy_stats(enemy_symbol)
     @bribable = true
+    @web_counter = 0
   end
 
   def run
     if enemy_first_shot?
-      @bribable = false
       do_enemy_attack(enemy_power)
     end
 
@@ -29,18 +29,14 @@ class BattleRunner
       @printer.combat_menu(@bribable)
       @printer.your_battle_stats
 
-      allowed = ["A","R"]
+      allowed = ["A","R","C"]
       allowed << "B" if @bribable
-      allowed << "C" if (@player.int > 14) || @bribable
-      # Yup, in both the Powers and Stetson versions,
-      #   you can cast whenever you can bribe,
-      #   even if your INT is under 14.
-      #   You can die if this cast drops your INT to 0.
 
       action = @prompter.ask_for_anything(@printer.prompt_combat)[0]
       if allowed.include?(action)
         case action
         when "A"
+          @bribeable = false
           do_player_attack
           return Result::ENEMY_DEAD if @enemy_str<1
           do_enemy_attack
@@ -53,10 +49,23 @@ class BattleRunner
           do_enemy_attack
           return Result::PLAYER_DEAD if @player.dead?
         when "C"
-          raise "TODO cast not impld"
+          # Preserved authentic bug:
+          #   In both the Powers and Stetson versions,
+          #   you can cast whenever you can bribe,
+          #   even if your INT is under 14.
+          #   You can die if this cast drops your INT to 0.
+
+          if (@player.int > 14) || @bribable
+            do_cast
+            return Result::PLAYER_DEAD if @player.dead? #due to cast-cost
+            return Result::ENEMY_DEAD if @enemy_str<1
+            do_enemy_attack
+            return Result::PLAYER_DEAD if @player.dead?
+          else
+            @printer.cant_cast_now
+          end
         end
 
-        @bribeable = false
 
       else
         @printer.combat_selection_error_msg
@@ -80,12 +89,23 @@ class BattleRunner
   end
 
   def do_enemy_attack
-    @printer.the_monster_attacks
-    if enemy_hit_player?
-      @player.take_a_hit(@enemy_power,@printer)
-      @printer.he_hit_you
+    @bribable = false
+
+    if @web_counter > 0
+      @web_counter -= 1
+      @printer.the_web_broke
+    end
+
+    if @web_counter > 0
+      @printer.monster_stuck_in_web
     else
-      @printer.he_missed_you
+      @printer.the_monster_attacks
+      if enemy_hit_player?
+        @player.take_a_hit(@enemy_power,@printer)
+        @printer.he_hit_you
+      else
+        @printer.he_missed_you
+      end
     end
   end
 
@@ -133,6 +153,47 @@ class BattleRunner
       end
     end
     false
+  end
+
+
+  def do_cast
+    # TODO specs
+    spell = @prompter.ask_for_anything(@printer.prompt_cast)[0]
+    case spell
+    when "W"
+      @player.str(-1)
+      @web_counter = random_web_duration
+    when "F"
+      @player.str(-1)
+      @player.int(-1)
+      dmg = random_fireball_damage
+      @enemy_str -= dmg
+      unless @player.dead?
+        @printer.fireball_damage_report(dmg)
+      end
+    when "D"
+      if deathspell_kills_player?
+        @printer.deathspell_kills_player
+        @player.int(-20)
+      else
+        @printer.deathspell_kills_enemy
+        @enemy_str = 0
+      end
+    else
+      @printer.cast_selection_error_msg
+    end
+  end
+
+  def random_web_duration
+    Random.rand(8) + 2
+  end
+
+  def random_fireball_damage
+    Random.rand(7) + Random.rand(7) + 2
+  end
+
+  def deathspell_kills_player?
+    @player.int < (Random.rand(4)+1+15)
   end
 
 end

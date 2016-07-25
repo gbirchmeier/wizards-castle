@@ -264,5 +264,31 @@ class NullPrinter
   def bribe_accepted
   end
 
+
+  def cant_cast_now
+  end
+
+  def prompt_cast
+    {}
+  end
+
+  def cast_selection_error_msg
+  end
+
+  def the_web_broke
+  end
+
+  def monster_stuck_in_web
+  end
+
+  def fireball_damage_report(n)
+  end
+
+  def deathspell_kills_enemy
+  end
+
+  def deathspell_kills_player
+  end
+
 end
 end

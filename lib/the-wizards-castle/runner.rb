@@ -30,7 +30,6 @@ class Runner
     @castle = nil
     @player = nil
     @printer = nil
-    @web_counter = 0
   end
 
   def intro
@@ -245,8 +244,6 @@ class Runner
     end
 
     @printer.stat_block
-
-    @web_counter = 0
 
     @player.remember_room(*loc)  #remember even if blind
 
