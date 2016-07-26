@@ -249,10 +249,9 @@ class Player
 
 
   # combat
-  def take_a_hit(n,printer=nil)
+  def take_a_hit!(n,printer=nil)
     # This screwy algorithm is taken directly from the BASIC.
-    # TODO rewrite take_a_hit's algorithm to not look drunk
-    # TODO rename to take_a_hit! (bang)
+    # TODO rewrite take_a_hit!'s algorithm to not look drunk
 
     damage = n - @armor_value
     @armor_health -= @armor_value  # yeah, this seems weird, but...

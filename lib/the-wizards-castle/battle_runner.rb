@@ -100,7 +100,7 @@ class BattleRunner
     else
       @printer.the_monster_attacks
       if enemy_hit_player?
-        @player.take_a_hit(@enemy_power,@printer)
+        @player.take_a_hit!(@enemy_power,@printer)
         @printer.he_hit_you
       else
         @printer.he_missed_you

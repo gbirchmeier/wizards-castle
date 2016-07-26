@@ -91,14 +91,14 @@ describe Player do
     end
   end
 
-  context "#take_a_hit" do
+  context "#take_a_hit!" do
     before(:each) do
       player.str(+18)
     end
 
     it ":nothing" do
         player.set_armor(:nothing)
-      player.take_a_hit(5)
+      player.take_a_hit!(5)
       expect(player.str).to eq 13
     end
 
@@ -107,26 +107,26 @@ describe Player do
         player.set_armor(:plate)
       end
       it "high damage" do
-        player.take_a_hit(5)
+        player.take_a_hit!(5)
         expect(player.armor_health).to eq 18  #lost 3
         expect(player.str).to eq 16  #lost 2
         expect(player.armor).to eq :plate
       end
       it "low damage" do
-        player.take_a_hit(1)
+        player.take_a_hit!(1)
         expect(player.armor_health).to eq 20  #lost 1
         expect(player.str).to eq 18  #no loss
         expect(player.armor).to eq :plate
       end
       it "low damage" do
-        player.take_a_hit(1)
+        player.take_a_hit!(1)
         expect(player.armor_health).to eq 20  #lost 1
         expect(player.str).to eq 18  #no loss
         expect(player.armor).to eq :plate
       end
       it "destroyed" do
         player.armor_health = 1
-        player.take_a_hit(5)
+        player.take_a_hit!(5)
         expect(player.armor).to eq :nothing
         expect(player.armor_health).to eq 0
         expect(player.armor_value).to eq 0
