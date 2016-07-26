@@ -248,6 +248,9 @@ class NullPrinter
   def your_weapon_broke
   end
 
+  def eat_a_monster
+  end
+
   def you_got_the_runestaff
   end
 

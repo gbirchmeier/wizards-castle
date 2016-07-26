@@ -56,8 +56,6 @@ context "combat:" do
       expect(@runner.combat).to eq Runner::PlayerState::ACTION
       expect(@runner.player.runestaff?).to eq true
     end
-
-    # TODO eating monster food (7770)
   end
 
 end

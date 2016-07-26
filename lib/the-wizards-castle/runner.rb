@@ -648,6 +648,7 @@ class Runner
     when BattleRunner::Result::PLAYER_DEAD
       return PlayerState::DIED
     when BattleRunner::Result::ENEMY_DEAD
+      eat_monster_maybe()
       if rc.symbol==:runestaff_and_monster
         @printer.you_got_the_runestaff
         @player.set_runestaff(true)
@@ -656,6 +657,7 @@ class Runner
       @player.gp(+gp_gain)
       @printer.you_got_monster_gold(gp_gain)
       @castle.set_in_room(*loc,:empty_room)
+
       return PlayerState::ACTION
     when BattleRunner::Result::BRIBED
       return PlayerState::ACTION
@@ -671,6 +673,13 @@ class Runner
 
   def monster_random_gp
     Random.rand(1000)+1
+  end
+
+  def eat_monster_maybe
+    unless @player.last_ate_turn > (@player.turns-60)
+      @printer.eat_a_monster
+      @player.update_last_ate_turn!
+    end
   end
 
 end

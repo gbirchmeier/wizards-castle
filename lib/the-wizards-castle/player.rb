@@ -8,7 +8,7 @@ class Player
   TREASURES = [:ruby_red,:norn_stone,:pale_pearl,:opal_eye,:green_gem,:blue_flame,:palantir,:silmaril]
 
   attr_reader :race, :gender, :location, :armor, :weapon, :facing,
-    :armor_value, :armor_health, :weapon_value
+    :armor_value, :armor_health, :weapon_value, :last_ate_turn
 
   def lamp?
     @has_lamp
@@ -72,6 +72,7 @@ class Player
     @orb_of_zot = false
     @vendor_rage = false
     @turns = 1
+    @last_ate_turn = 0
     @facing = :n  # needed by orb-of-zot shunt
     @teleported = false  # so orb-of-zot room knows how you entered it
 
@@ -203,6 +204,10 @@ class Player
     loc = Castle.random_room
     idx = Castle.room_index(*loc)
     @room_memory[idx] = false
+  end
+
+  def update_last_ate_turn!
+    @last_ate_turn = @turns
   end
 
 

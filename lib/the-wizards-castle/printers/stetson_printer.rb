@@ -658,6 +658,12 @@ END_HELP
     puts
   end
 
+  def eat_a_monster
+    recipe = ["SANDWICH","STEW","SOUP","BURGER","ROAST","FILET","TACO","PIE"].sample
+    puts "YOU SPEND AN HOUR EATING #{room_monster} #{recipe}."
+    puts
+  end
+
   def you_got_the_runestaff
     beep
     puts "GREAT ZOT! YOU'VE FOUND THE RUNESTAFF!"
