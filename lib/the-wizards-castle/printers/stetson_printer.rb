@@ -222,7 +222,7 @@ END_STAT_BLOCK
   def prompt_standard_action
     { prompt:  "ENTER YOUR COMMAND : ",
       error:   "\n** SILLY #{player_race}, THAT WASN'T A VALID COMMAND!\n\n",
-      success: Proc.new {|x| x=="F" ? '' : x=="T" ? "\n\n" : "\n" }
+      success: Proc.new {|x| x[0]=="F" ? '' : x=="T" ? "\n\n" : "\n" }
     }
   end
 
@@ -696,12 +696,13 @@ END_HELP
 
   def prompt_cast
     { prompt: "WHICH SPELL (WEB, FIREBALL, DEATHSPELL)? ",
-      success: "\n\n"
+      success: Proc.new {|x| x[0]=="W" ? "\n\n" : "\n"}
       # error is ignored in this one
     }
   end
 
   def cast_selection_error_msg
+    puts
     puts "** TRY ONE OF THE OPTIONS GIVEN."
     puts
   end
@@ -712,6 +713,7 @@ END_HELP
   end
 
   def monster_stuck_in_web
+    puts
     puts "THE #{room_monster} IS STUCK AND CAN'T ATTACK NOW!"
     puts
   end
@@ -719,14 +721,17 @@ END_HELP
   def fireball_damage_report(n)
     puts "IT DOES #{n} POINTS WORTH OF DAMAGE."
     puts
+    puts
   end
 
   def deathspell_kills_enemy
     puts "DEATH . . . HIS!"
+    puts
   end
 
   def deathspell_kills_player
     puts "DEATH . . . YOURS!"
+    puts
   end
 
 
