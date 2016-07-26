@@ -2,7 +2,7 @@ module TheWizardsCastle
 describe BattleRunner do
 
   class BattleRunner
-    attr_accessor :enemy_power,:enemy_str
+    attr_accessor :enemy_power,:enemy_str, :web_counter
   end
 
 
@@ -185,6 +185,56 @@ describe BattleRunner do
       expect(@printer).to receive(:bribe_accepted)
       expect(@brunner.do_bribe?).to eq true
       expect(@player.have_treasure?(:opal_eye)).to eq false
+    end
+  end
+
+  context "#do_cast" do
+    before(:each) do
+      @prompter = TestPrompter.new
+      @player = Player.new
+      @player.str(+18)
+      @player.int(+18)
+      @player.dex(+18)
+      @printer = NullPrinter.new
+      @brunner = BattleRunner.new(@player,:dragon,@printer,@prompter)
+    end
+
+    it "web" do
+      @prompter.push "W"
+      allow(@brunner).to receive(:random_web_duration).and_return 5
+      @brunner.do_cast
+      expect(@brunner.web_counter).to eq 5
+      expect(@player.str).to eq 17
+      expect(@player.int).to eq 18
+      expect(@brunner.enemy_str).to eq 14 #unharmed
+    end
+
+    it "fireball" do
+      @prompter.push "F"
+      allow(@brunner).to receive(:random_fireball_damage).and_return 10
+      @brunner.do_cast
+      expect(@player.str).to eq 17
+      expect(@player.int).to eq 17
+      expect(@brunner.enemy_str).to eq 4
+    end
+
+    context "deathspell" do
+      it "kills monster" do
+        @prompter.push "D"
+        allow(@brunner).to receive(:deathspell_kills_player?).and_return false
+        @brunner.do_cast
+        expect(@player.str).to eq 18
+        expect(@player.int).to eq 18
+        expect(@brunner.enemy_str).to eq 0
+      end
+      it "kills player" do
+        @prompter.push "D"
+        allow(@brunner).to receive(:deathspell_kills_player?).and_return true
+        @brunner.do_cast
+        expect(@player.str).to eq 18
+        expect(@player.int).to eq 0
+        expect(@brunner.enemy_str).to eq 14
+      end
     end
   end
 

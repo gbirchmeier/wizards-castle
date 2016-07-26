@@ -157,7 +157,6 @@ class BattleRunner
 
 
   def do_cast
-    # TODO specs
     spell = @prompter.ask_for_anything(@printer.prompt_cast)[0]
     case spell
     when "W"
@@ -182,6 +181,7 @@ class BattleRunner
     else
       @printer.cast_selection_error_msg
     end
+    nil
   end
 
   def random_web_duration
