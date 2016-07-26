@@ -236,6 +236,45 @@ describe BattleRunner do
         expect(@brunner.enemy_str).to eq 14
       end
     end
+  end #do_cast
+
+  context "web effect" do
+    before(:each) do
+      @prompter = TestPrompter.new
+      @player = Player.new
+      @player.str(+18)
+      @player.int(+18)
+      @player.dex(+18)
+      @printer = NullPrinter.new
+      @brunner = BattleRunner.new(@player,:dragon,@printer,@prompter)
+    end
+
+    it "no web" do
+      @brunner.web_counter = 0
+      expect(@printer).not_to receive(:the_web_broke)
+      expect(@printer).not_to receive(:monster_stuck_in_web)
+      expect(@printer).to receive(:the_monster_attacks)
+      @brunner.do_enemy_attack
+      expect(@brunner.web_counter).to eq 0
+    end
+
+    it "enemy stuck" do
+      @brunner.web_counter = 2
+      expect(@printer).not_to receive(:the_web_broke)
+      expect(@printer).to receive(:monster_stuck_in_web)
+      expect(@printer).not_to receive(:the_monster_attacks)
+      @brunner.do_enemy_attack
+      expect(@brunner.web_counter).to eq 1
+    end
+
+    it "enemy freed" do
+      @brunner.web_counter = 1
+      expect(@printer).to receive(:the_web_broke)
+      expect(@printer).not_to receive(:monster_stuck_in_web)
+      expect(@printer).to receive(:the_monster_attacks)
+      @brunner.do_enemy_attack
+      expect(@brunner.web_counter).to eq 0
+    end
   end
 
 end

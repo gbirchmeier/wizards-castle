@@ -66,7 +66,6 @@ class BattleRunner
           end
         end
 
-
       else
         @printer.combat_selection_error_msg
       end
@@ -93,7 +92,7 @@ class BattleRunner
 
     if @web_counter > 0
       @web_counter -= 1
-      @printer.the_web_broke
+      @printer.the_web_broke if @web_counter < 1
     end
 
     if @web_counter > 0
