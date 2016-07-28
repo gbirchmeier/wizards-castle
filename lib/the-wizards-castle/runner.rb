@@ -676,7 +676,7 @@ class Runner
   end
 
   def eat_monster_maybe
-    unless @player.last_ate_turn > (@player.turns-60)
+    if @player.turns >= (@player.last_ate_turn+60)
       @printer.eat_a_monster
       @player.update_last_ate_turn!
     end
