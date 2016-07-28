@@ -741,6 +741,17 @@ END_HELP
   end
 
 
+  #########################################
+  # VENDOR
+
+  def prompt_vendor_encounter
+    { prompt: "YOU MAY TRADE WITH, ATTACK, OR IGNORE THE VENDOR.\n\nYOUR CHOICE? ",
+      success: "\n",
+      error: "** NICE SHOT, #{player_race}!\n\n"
+    }
+  end
+
+
 private
   def player_race
     @player.race.to_s.upcase

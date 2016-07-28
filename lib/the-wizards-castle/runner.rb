@@ -294,7 +294,16 @@ class Runner
     elsif rc.monster? || (rc.symbol==:vendor && @player.vendor_rage?)
       return combat
     elsif rc.symbol==:vendor
-      # TODO shop from vendor  line 6220
+      case @prompter.ask(["T","A","I"], @printer.prompt_vendor_encounter)
+      when "I"
+        return PlayerState::ACTION
+      when "A"
+        puts "TODO vendor attack not impl'd yet" #6220
+        return PlayerState::ACTION
+      when "T"
+        puts "TODO vendor trade not impl'd yet"  #6220
+        return PlayerState::ACTION
+      end
     end
 
     PlayerState::ACTION

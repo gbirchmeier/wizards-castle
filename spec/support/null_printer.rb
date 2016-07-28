@@ -293,5 +293,13 @@ class NullPrinter
   def deathspell_kills_player
   end
 
+  #########################################
+  # VENDOR
+
+  def prompt_vendor_encounter
+    {}
+  end
+
+
 end
 end
