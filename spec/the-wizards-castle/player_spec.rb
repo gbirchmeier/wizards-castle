@@ -97,7 +97,7 @@ describe Player do
     end
 
     it ":nothing" do
-        player.set_armor(:nothing)
+      player.set_armor(:nothing)
       player.take_a_hit!(5)
       expect(player.str).to eq 13
     end
