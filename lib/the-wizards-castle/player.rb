@@ -3,8 +3,8 @@ class Player
 
   RACES = [:elf,:dwarf,:human,:hobbit]
   GENDERS = [:male,:female]
-  ARMORS = [:plate,:chainmail,:leather,:nothing]
-  WEAPONS = [:sword,:mace,:dagger,:nothing]
+  ARMORS = [:nothing,:leather,:chainmail,:plate]
+  WEAPONS = [:nothing,:dagger,:mace,:sword]
   TREASURES = [:ruby_red,:norn_stone,:pale_pearl,:opal_eye,:green_gem,:blue_flame,:palantir,:silmaril]
 
   attr_reader :race, :gender, :location, :armor, :weapon, :facing,
@@ -115,14 +115,14 @@ class Player
   def set_armor a
     raise "Unrecognized armor parameter" unless ARMORS.include?(a)
     @armor = a
-    @armor_value = [:nothing,:leather,:chainmail,:plate].index(a)
+    @armor_value = ARMORS.index(a)
     @armor_health = @armor_value*7
   end
 
   def set_weapon w
     raise "Unrecognized weapon parameter" unless WEAPONS.include?(w)
     @weapon = w
-    @weapon_value = [:nothing,:dagger,:mace,:sword].index(w)
+    @weapon_value = WEAPONS.index(w)
   end
 
   def flares n=0
@@ -255,20 +255,23 @@ class Player
 
   # combat
   def take_a_hit!(n,printer=nil)
-    # This screwy algorithm is taken directly from the BASIC.
-    # TODO rewrite take_a_hit!'s algorithm to not look drunk
+    if @armor==:nothing
+      self.str(-n)
+    else
+      if n >= @armor_value
+        loss = n-@armor_value
+        self.str(-loss)
+        @armor_health -= @armor_value
+      else
+        @armor_health -= n
+      end
 
-    damage = n - @armor_value
-    @armor_health -= @armor_value  # yeah, this seems weird, but...
-    if damage<0
-      @armor_health -= damage      # ...it's corrected here
-      damage=0
+      if @armor_health<=0
+        self.set_armor(:nothing)
+        printer.armor_destroyed if printer
+      end
     end
-    if @armor_health<=0
-      self.set_armor(:nothing)
-      printer.armor_destroyed if printer
-    end
-    self.str(-damage)
+    nil
   end
 
 
