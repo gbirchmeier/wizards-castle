@@ -751,6 +751,10 @@ END_HELP
     }
   end
 
+  def vendor_responds_to_attack
+    puts "YOU'LL BE SORRY THAT YOU DID THAT!"
+    puts
+  end
 
 private
   def player_race

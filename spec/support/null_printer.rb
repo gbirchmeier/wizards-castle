@@ -300,6 +300,8 @@ class NullPrinter
     {}
   end
 
+  def vendor_responds_to_attack
+  end
 
 end
 end

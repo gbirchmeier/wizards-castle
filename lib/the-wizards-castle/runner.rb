@@ -291,15 +291,18 @@ class Runner
       @printer.got_a_treasure(rc.symbol)
       @castle.set_in_room(*loc,:empty_room)
       return PlayerState::ACTION
-    elsif rc.monster? || (rc.symbol==:vendor && @player.vendor_rage?)
+    elsif rc.monster?
       return combat
     elsif rc.symbol==:vendor
+      return combat if @player.vendor_rage?
+
       case @prompter.ask(["T","A","I"], @printer.prompt_vendor_encounter)
       when "I"
         return PlayerState::ACTION
       when "A"
-        puts "TODO vendor attack not impl'd yet" #6220
-        return PlayerState::ACTION
+        @player.set_vendor_rage(true)
+        @printer.vendor_responds_to_attack
+        return combat
       when "T"
         puts "TODO vendor trade not impl'd yet"  #6220
         return PlayerState::ACTION
