@@ -303,5 +303,8 @@ class NullPrinter
   def vendor_responds_to_attack
   end
 
+  def vendor_loot
+  end
+
 end
 end

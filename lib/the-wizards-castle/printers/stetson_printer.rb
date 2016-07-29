@@ -756,6 +756,17 @@ END_HELP
     puts
   end
 
+  def vendor_loot(n)
+    puts "YOU GET ALL HIS WARES :"
+    puts "PLATE ARMOR"
+    puts "A SWORD"
+    puts "A STRENGTH POTION"
+    puts "AN INTELLIGENCE POTION"
+    puts "A DEXTERITY POTION"
+    puts "A LAMP" unless @player.lamp?
+    puts
+  end
+
 private
   def player_race
     @player.race.to_s.upcase

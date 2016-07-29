@@ -1,6 +1,6 @@
 module TheWizardsCastle
 describe Runner do
-context "encounter a vendor and" do
+context "vendor" do
 
   before(:each) do
     @prompter = TestPrompter.new
@@ -32,10 +32,27 @@ context "encounter a vendor and" do
   end
 
   context "combat scenarios:" do
-#    it "attack and kill him and get his loot" do
-#      @prompter.push "A"
-#      allow(@runner).to receive(:combat).and_return 
-#    end
+    it "kill him and get his loot" do
+      @runner.player.set_weapon(:dagger)
+      @runner.player.set_armor(:leather)
+      expect(@runner.player.gp).to eq 60
+      @runner.player.set_lamp(false)
+      @runner.player.str(+8)
+      @runner.player.int(+8)
+      @runner.player.dex(+8)
+
+      allow(@runner).to receive(:run_battle).and_return BattleRunner::Result::ENEMY_DEAD
+      expect(@runner.combat).to eq Runner::PlayerState::ACTION
+
+      expect(@runner.player.weapon).to eq :sword
+      expect(@runner.player.armor).to eq :plate
+      expect(@runner.player.gp).to be > 60
+      expect(@runner.player.str).to be > 8
+      expect(@runner.player.int).to be > 8
+      expect(@runner.player.dex).to be > 8
+      expect(@runner.player.lamp?).to eq true
+      expect(@runner.castle.room(2,2,2).symbol).to eq :empty_room
+    end
 
 #    it "get attacked and bribe him happy" do  #TODO
 #    end

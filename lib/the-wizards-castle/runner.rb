@@ -661,15 +661,24 @@ class Runner
       return PlayerState::DIED
     when BattleRunner::Result::ENEMY_DEAD
       eat_monster_maybe()
-      if rc.symbol==:runestaff_and_monster
-        @printer.you_got_the_runestaff
-        @player.set_runestaff(true)
+      if rc.symbol==:vendor
+        @player.set_armor(:plate)
+        @player.set_weapon(:sword)
+        @player.str(+Random.rand(6)+1)
+        @player.int(+Random.rand(6)+1)
+        @player.dex(+Random.rand(6)+1)
+        @player.set_lamp(true)
+        @printer.vendor_loot
+      else
+        if rc.symbol==:runestaff_and_monster
+          @printer.you_got_the_runestaff
+          @player.set_runestaff(true)
+        end
       end
       gp_gain = monster_random_gp()
       @player.gp(+gp_gain)
       @printer.you_got_monster_gold(gp_gain)
       @castle.set_in_room(*loc,:empty_room)
-
       return PlayerState::ACTION
     when BattleRunner::Result::BRIBED
       return PlayerState::ACTION
