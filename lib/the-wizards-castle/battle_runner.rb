@@ -21,7 +21,8 @@ class BattleRunner
 
   def run
     if enemy_first_shot?
-      do_enemy_attack(enemy_power)
+      do_enemy_attack
+      return Result::PLAYER_DEAD if @player.dead?
     end
 
     loop do

@@ -32,6 +32,12 @@ describe BattleRunner do
       @brunner = BattleRunner.new(@player,:dragon,NullPrinter.new,@prompter)
     end
 
+    it "killed by enemy's pre-emptive attack" do
+      allow(@brunner).to receive(:enemy_first_shot?).and_return true
+      allow(@brunner).to receive(:enemy_hit_player?).and_return true
+      expect(@brunner.run).to eq BattleRunner::Result::PLAYER_DEAD
+    end
+
     context "attack:" do
       before(:each) do
         allow(@brunner).to receive(:enemy_first_shot?).and_return false
