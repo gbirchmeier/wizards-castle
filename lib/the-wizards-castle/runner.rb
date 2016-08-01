@@ -681,6 +681,7 @@ class Runner
       @castle.set_in_room(*loc,:empty_room)
       return PlayerState::ACTION
     when BattleRunner::Result::BRIBED
+      @player.set_vendor_rage(false) if rc.symbol==:vendor
       return PlayerState::ACTION
     else
       raise "illegal BattleRunner::Result '#{outcome}'"

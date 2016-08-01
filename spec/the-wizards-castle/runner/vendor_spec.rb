@@ -54,8 +54,12 @@ context "vendor" do
       expect(@runner.castle.room(2,2,2).symbol).to eq :empty_room
     end
 
-#    it "get attacked and bribe him happy" do  #TODO
-#    end
+    it "get attacked and bribe him happy" do
+      @runner.player.set_vendor_rage(true)
+      allow(@runner).to receive(:run_battle).and_return BattleRunner::Result::BRIBED
+      expect(@runner.combat).to eq Runner::PlayerState::ACTION
+      expect(@runner.player.vendor_rage?).to eq false
+    end
   end
 
 end
