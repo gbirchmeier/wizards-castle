@@ -131,5 +131,35 @@ describe ShoppingTrip do
     end
   end
 
+  context "#buy_lamp" do
+    it "can't afford" do
+      @trip.buy_lamp
+      expect(@player.lamp?).to eq false
+    end
+
+    it "already got one" do
+      @player.gp(+3333)
+      @player.set_lamp(true)
+      @trip.buy_lamp
+      expect(@player.gp).to eq 3333
+    end
+
+    it "refuse" do
+      @player.gp(+3333)
+      @prompter.push "N"
+      @trip.buy_lamp
+      expect(@player.lamp?).to eq false
+      expect(@player.gp).to eq 3333
+    end
+
+    it "buy it" do
+      @player.gp(+3333)
+      @prompter.push "Y"
+      @trip.buy_lamp
+      expect(@player.lamp?).to eq true
+      expect(@player.gp).to eq 2333
+    end
+  end
+
 end
 end

@@ -154,7 +154,7 @@ class ShoppingTrip
   end
 
   def buy_lamp
-    return if (@player.gb<1000 || @player.lamp?)
+    return if (@player.gp<1000 || @player.lamp?)
     answer = @prompter.ask(["Y","N"],@printer.prompt_vendor_buy_lamp)
     if answer=="Y"
       @player.gp(-1000)
