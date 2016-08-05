@@ -306,5 +306,72 @@ class NullPrinter
   def vendor_loot
   end
 
+  def prompt_sell_treasure(treasure_symbol,amount)
+    {}
+  end
+
+  def too_poor_to_trade
+  end
+
+  def gold_and_armor_report
+  end
+
+  def vendor_armors
+  end
+
+  def prompt_vendor_armor
+    {}
+  end
+
+  def cannot_afford_chainmail
+  end
+
+  def cannot_afford_plate
+  end
+
+  def gold_and_weapon_report
+  end
+
+  def vendor_weapons
+  end
+
+  def prompt_vendor_weapons
+    {}
+  end
+
+  def cannot_afford_a_mace
+  end
+
+  def cannot_afford_a_sword
+  end
+
+  def prompt_vendor_str_potion
+    {}
+  end
+
+  def str_report
+  end
+
+  def prompt_vendor_int_potion
+    {}
+  end
+
+  def int_report
+  end
+
+  def prompt_vendor_dex_potion
+    {}
+  end
+
+  def dex_report
+  end
+
+  def prompt_vendor_buy_lamp
+    {}
+  end
+
+  def you_bought_a_lamp
+  end
+
 end
 end

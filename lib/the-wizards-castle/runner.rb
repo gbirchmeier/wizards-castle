@@ -304,7 +304,7 @@ class Runner
         @printer.vendor_responds_to_attack
         return combat
       when "T"
-        puts "TODO vendor trade not impl'd yet"  #6220
+        ShoppingTrip.new(@player,@printer,@prompter).run()
         return PlayerState::ACTION
       end
     end

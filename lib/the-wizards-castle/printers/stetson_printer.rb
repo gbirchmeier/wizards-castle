@@ -756,7 +756,7 @@ END_HELP
     puts
   end
 
-  def vendor_loot(n)
+  def vendor_loot
     puts "YOU GET ALL HIS WARES :"
     puts "PLATE ARMOR"
     puts "A SWORD"
@@ -766,6 +766,135 @@ END_HELP
     puts "A LAMP" unless @player.lamp?
     puts
   end
+
+  def prompt_sell_treasure(treasure_symbol,amount)
+    treasure_text = RoomContent::ROOM_THINGS[treasure_symbol][:text]
+    { prompt: "DO YOU WANT TO SELL #{treasure_text} FOR #{amount} GP'S? ",
+      success: "\n",
+      error: "** PLEASE ANSWER YES OR NO\n\n"
+    }
+  end
+
+  def too_poor_to_trade
+    puts "YOU'RE TOO POOR TO TRADE, #{player_race}."
+    puts #TODO confirm this newline
+  end
+
+  def gold_and_armor_report
+    # If no armor, it will say "[...] AN NO ARMOR ARMOR."
+    # This error is authentic to the original.
+    armor = @player.armor==:nothing ? "NO ARMOR" : @player.armor.to_s.upcase
+    puts "OK, HUMAN, YOU HAVE #{@player.gp} GP'S AND #{armor} ARMOR."
+    puts
+    puts
+  end
+
+  def vendor_armors
+    s = "NOTHING<0> LEATHER<1250>"
+    s += " CHAINMAIL<1500>" if @player.gp>1499
+    s += " PLATE<2000>" if @player.gp>1999
+    puts s
+  end
+
+  def prompt_vendor_armor
+    { prompt: "YOUR CHOICE? ",
+      success: "\n\n",
+      error: "\n\n** DON'T BE SILLY. CHOOSE A SELECTION.\n\n"
+    }
+  end
+
+  def cannot_afford_chainmail
+    puts "** YOU HAVEN'T GOT THAT MUCH CASH ON HAND!"
+    puts
+    puts
+  end
+
+  def cannot_afford_plate
+    puts "** YOU CAN'T AFFORD PLATE ARMOR!"
+    puts
+    puts
+  end
+
+  def gold_and_weapon_report
+    puts "YOU HAVE #{@player.gp} GP'S LEFT WITH #{@player.weapon.upcase} IN HAND."
+    puts
+    puts
+  end
+
+  def vendor_weapons
+    s = "NOTHING<0> DAGGER<1250>"
+    s += " MACE<1500>" if @player.gp>1499
+    s += " SWORD<2000>" if @player.gp>1999
+    puts s
+  end
+
+  def prompt_vendor_weapons
+    { prompt: "YOUR CHOICE? ",
+      success: "\n\n",
+      error: "\n** TRY CHOOSING A SELECTION!\n\n"
+    }
+  end
+
+  def cannot_afford_a_mace
+    puts "** SORRY SIR, I'M AFRAID I DON'T GIVE CREDIT!"
+    puts
+    puts
+  end
+
+  def cannot_afford_a_sword
+    puts "** YOUR DUNGEON EXPRESS CARD - YOU LEFT HOME WITHOUT IT!"
+    puts
+    puts
+  end
+
+  def prompt_vendor_str_potion
+    { prompt: "DO YOU WANT TO BUY A POTION OF STRENGTH FOR 1000 GP'S? ",
+      success: "\n",
+      error: "** PLEASE ANSWER YES OR NO\n\n"
+    }
+  end
+
+  def str_report
+    puts "YOUR STRENGTH IS NOW #{player.str} ."
+    puts
+  end
+
+  def prompt_vendor_int_potion
+    { prompt: "DO YOU WANT TO BUY A POTION OF INTELLIGENCE FOR 1000 GP'S? ",
+      success: "\n",
+      error: "** PLEASE ANSWER YES OR NO\n\n"
+    }
+  end
+
+  def int_report
+    puts "YOUR INTELLIGENCE IS NOW #{player.int} ."
+    puts
+  end
+
+  def prompt_vendor_dex_potion
+    { prompt: "DO YOU WANT TO BUY A POTION OF DEXTERITY FOR 1000 GP'S? ",
+      success: "\n",
+      error: "** PLEASE ANSWER YES OR NO\n\n"
+    }
+  end
+
+  def dex_report
+    puts "YOUR DEXTERITY IS NOW #{player.dex} ."
+    puts
+  end
+
+  def prompt_vendor_buy_lamp
+    { prompt: "DO YOU WANT TO BUY A LAMP FOR 1000 GP'S? ",
+      success: "\n",
+      error: "** PLEASE ANSWER YES OR NO\n\n"
+    }
+  end
+
+  def you_bought_a_lamp
+    puts "IT'S GUARANTEED TO OUTLIVE YOU!"
+    puts
+  end
+
 
 private
   def player_race
