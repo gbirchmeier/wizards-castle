@@ -161,5 +161,22 @@ describe ShoppingTrip do
     end
   end
 
+  context "#run" do
+    it "shopping spree" do
+      @player.gp(+20000)
+      @prompter.push ["P","S","Y","N","Y","N","Y","N","Y"]
+      # ^^ that's plate, sword, str x1, int x1, dex x1, and a lamp
+      allow(@trip).to receive(:random_stat_gain).and_return(2,3,4)
+      @trip.run
+      expect(@player.armor).to eq :plate
+      expect(@player.weapon).to eq :sword
+      expect(@player.str).to eq 3
+      expect(@player.int).to eq 4
+      expect(@player.dex).to eq 5
+      expect(@player.lamp?).to eq true
+      expect(@player.gp).to eq 12000
+    end
+  end
+
 end
 end
