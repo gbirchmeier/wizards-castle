@@ -335,7 +335,7 @@ class NullPrinter
   def vendor_weapons
   end
 
-  def prompt_vendor_weapons
+  def prompt_vendor_weapon
     {}
   end
 

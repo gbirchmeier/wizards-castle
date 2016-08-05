@@ -828,7 +828,7 @@ END_HELP
     puts s
   end
 
-  def prompt_vendor_weapons
+  def prompt_vendor_weapon
     { prompt: "YOUR CHOICE? ",
       success: "\n\n",
       error: "\n** TRY CHOOSING A SELECTION!\n\n"

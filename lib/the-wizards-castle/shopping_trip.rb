@@ -21,12 +21,16 @@ class ShoppingTrip
     buy_lamp
   end
 
+  def random_treasure_offer(i)
+    Random.rand((i+1)*1500) + 1
+  end
+
   def sell_treasures
     a = [:ruby_red,:norn_stone,:pale_pearl,:opal_eye,:green_gem,:blue_flame,:palantir,:silmaril]
     a.each_with_index do |treasure,i|
       if @player.have_treasure?(treasure)
-        offer = Random.rand((i+1)*1500) + 1
-        answer = @prompter.ask(["Y","N"], @printer.prompt_race)
+        offer = random_treasure_offer(i)
+        answer = @prompter.ask(["Y","N"], @printer.prompt_sell_treasure(treasure,offer))
         if answer=="Y"
           @player.remove_treasure(treasure)
           @player.gp(+offer)
@@ -41,7 +45,7 @@ class ShoppingTrip
     @printer.vendor_armors
 
     loop do
-      answer = @prompter.ask(["N","L","C","P"],@printer.prompt)
+      answer = @prompter.ask(["N","L","C","P"],@printer.prompt_vendor_armor)
       case answer
       when "N"
         return
@@ -75,7 +79,7 @@ class ShoppingTrip
     @printer.vendor_armors
 
     loop do
-      answer = @prompter.ask(["N","D","M","S"],@printer.prompt)
+      answer = @prompter.ask(["N","D","M","S"],@printer.prompt_vendor_weapon)
       case answer
       when "N"
         return
@@ -91,7 +95,7 @@ class ShoppingTrip
           @player.set_weapon(:mace)
           return
         end
-      when "P"
+      when "S"
         if @player.gp < 2000
           @printer.cannot_afford_a_sword
         else
