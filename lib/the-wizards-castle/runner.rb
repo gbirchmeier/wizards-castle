@@ -65,9 +65,6 @@ class Runner
     @player.set_location(1,4,1) #entrance
     @printer.entering_the_castle
 
-    # TODO probably can deduce NEW_ROOM vs ACTION
-    #      instead of explicitly returning from within each action
-
     status = PlayerState::NEW_ROOM
     loop do
       case status
