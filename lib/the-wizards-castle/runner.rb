@@ -189,8 +189,6 @@ class Runner
 
 
   def ask_armor
-    #TODO (armor buy) this is only correct for char creation when you can afford everything
-    # unaffordable choices should not be shown or allowed
     allowed = Player::ARMORS.collect{|x| [x.to_s[0].upcase,x]}.to_h
     costs = { plate: 30, chainmail: 20, leather: 10, nothing: 0 }
     answer = @prompter.ask(allowed.keys, @printer.prompt_armor)
@@ -200,8 +198,6 @@ class Runner
   end
 
   def ask_weapon
-    #TODO (weapon buy) this is only correct for char creation when you can afford everything
-    # unaffordable choices should not be shown or allowed
     allowed = Player::WEAPONS.collect{|x| [x.to_s[0].upcase,x]}.to_h
     costs = { sword: 30, mace: 20, dagger: 10, nothing: 0 }
     answer = @prompter.ask(allowed.keys, @printer.prompt_weapon)
