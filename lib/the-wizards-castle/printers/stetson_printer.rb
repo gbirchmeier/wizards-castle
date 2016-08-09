@@ -158,6 +158,7 @@ END_STAT_BLOCK
 
   def here_you_find(symbol)
     puts "HERE YOU FIND #{RoomContent::ROOM_THINGS[symbol][:text]}."
+    sleep(0.4) if [:warp,:sinkhole].include?(symbol)
     puts
   end
 
