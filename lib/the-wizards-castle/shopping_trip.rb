@@ -76,7 +76,7 @@ class ShoppingTrip
   def buy_weapon
     return if @player.gp < 1250
     @printer.gold_and_weapon_report
-    @printer.vendor_armors
+    @printer.vendor_weapons
 
     loop do
       answer = @prompter.ask(["N","D","M","S"],@printer.prompt_vendor_weapon)

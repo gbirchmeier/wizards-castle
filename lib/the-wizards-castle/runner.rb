@@ -275,6 +275,7 @@ class Runner
         @castle.set_in_room(*loc,:empty_room)
       else
         @player.set_location *Castle.move(@player.facing.to_s.upcase,*loc)
+#TODO zot shunt is not quite right
       end
       return PlayerState::ACTION
     end
@@ -286,6 +287,7 @@ class Runner
       return PlayerState::ACTION
     elsif rc.monster?
       return combat
+# TODO missing notification for dead monster
     elsif rc.symbol==:vendor
       return combat if @player.vendor_rage?
 
@@ -399,9 +401,11 @@ class Runner
     when 'O'
       if rc.symbol==:book
         book
+        @castle.set_in_room(*loc,:empty_room)
         return PlayerState::ACTION
       elsif rc.symbol==:chest
         chest_effect = chest()
+        @castle.set_in_room(*loc,:empty_room)
         return PlayerState::DIED if @player.dead?
         return PlayerState::NEW_ROOM if chest_effect==:gas
         return PlayerState::ACTION
@@ -549,7 +553,6 @@ class Runner
     else
       raise "unrecognized book effect '#{effect.to_s}'"
     end
-
     @printer.book_effect(effect)
   end
 
@@ -653,6 +656,7 @@ class Runner
     when BattleRunner::Result::PLAYER_DEAD
       return PlayerState::DIED
     when BattleRunner::Result::ENEMY_DEAD
+      @printer.monster_is_dead
       eat_monster_maybe()
       if rc.symbol==:vendor
         @player.set_armor(:plate)
@@ -682,7 +686,7 @@ class Runner
   end
 
   def run_battle(monster_symbol)
-    br = BattleRunner.new(@player,rc.monster_symbol,@printer,@prompter)
+    br = BattleRunner.new(@player,monster_symbol,@printer,@prompter)
     br.run()
   end
 

@@ -68,6 +68,13 @@ describe Castle do
       loc = castle.curse_location_forgetfulness
       expect(castle.room(*loc).cursed_with_forgetfulness?).to eq true
     end
+
+    it "runestaff-and-monster" do
+      castle.set_in_room(2,2,2,:runestaff_and_monster)
+      rc = castle.room(2,2,2)
+      expect(rc.symbol).to eq :runestaff_and_monster
+      expect(rc.monster_symbol).to eq castle.runestaff_monster
+    end
   end
 
   it "#set_in_room" do

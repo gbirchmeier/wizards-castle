@@ -39,6 +39,7 @@ context "combat:" do
       @runner.player.set_location(2,2,2)
       allow(@runner).to receive(:run_battle).and_return BattleRunner::Result::ENEMY_DEAD
       allow(@runner).to receive(:monster_random_gp).and_return 500
+      expect(@runner.printer).to receive(:monster_is_dead)
     end
     after(:each) do
       expect(@runner.player.gp).to eq 560

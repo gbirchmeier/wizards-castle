@@ -9,6 +9,7 @@ class BattleRunner
   end
 
   def initialize(player,enemy_symbol,printer,prompter)
+    raise "BattleRunner initialized with not-a-monster: #{enemy_symbol}" unless Castle::MONSTERS.include?(enemy_symbol)
     @player = player
     @enemy_symbol = enemy_symbol
     @printer = printer
@@ -111,7 +112,7 @@ class BattleRunner
 
   def player_hit_enemy?
     n = Random.rand(20)+1
-    n += 3 if blind?
+    n += 3 if @player.blind?
     @player.dex >= n
   end
 

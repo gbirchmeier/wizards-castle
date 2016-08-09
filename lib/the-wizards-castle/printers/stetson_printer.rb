@@ -320,9 +320,9 @@ END_HELP
           lines.last << " #{c}   "
         end
       end
+      lines.last << "\n\n"
     end
     puts lines
-    puts
     self.you_are_here
   end
 
@@ -576,7 +576,7 @@ END_HELP
   end
 
   def prompt_retreat_direction
-    { prompt: "DO YOU WANT TO GO NORTH, SOUTH, EAST, OR WEST?",
+    { prompt: "DO YOU WANT TO GO NORTH, SOUTH, EAST, OR WEST? ",
       error: "\n** DON'T PRESS YOUR LUCK, #{player_race}!\n\n",
       success: "\n"
     }
@@ -649,7 +649,7 @@ END_HELP
   end
 
   def you_hit_him
-    puts "YOU HIT THE EVIL #{room_monster}!"
+    puts "YOU HIT THE EVIL #{room_monster_no_article}!"
     puts
   end
 
@@ -747,7 +747,7 @@ END_HELP
   def prompt_vendor_encounter
     { prompt: "YOU MAY TRADE WITH, ATTACK, OR IGNORE THE VENDOR.\n\nYOUR CHOICE? ",
       success: "\n",
-      error: "** NICE SHOT, #{player_race}!\n\n"
+      error: "\n** NICE SHOT, #{player_race}!\n\n"
     }
   end
 
@@ -777,7 +777,7 @@ END_HELP
 
   def too_poor_to_trade
     puts "YOU'RE TOO POOR TO TRADE, #{player_race}."
-    puts #TODO confirm this newline
+    puts
   end
 
   def gold_and_armor_report
@@ -790,16 +790,18 @@ END_HELP
   end
 
   def vendor_armors
-    s = "NOTHING<0> LEATHER<1250>"
+    s  = "THESE ARE THE TYPES OF ARMOR YOU CAN BUY :\n"
+    s += "NOTHING<0> LEATHER<1250>"
     s += " CHAINMAIL<1500>" if @player.gp>1499
     s += " PLATE<2000>" if @player.gp>1999
     puts s
+    puts
   end
 
   def prompt_vendor_armor
     { prompt: "YOUR CHOICE? ",
       success: "\n\n",
-      error: "\n\n** DON'T BE SILLY. CHOOSE A SELECTION.\n\n"
+      error: "\n\n** DON'T BE SILLY. CHOOSE A SELECTION.\n\n\n"
     }
   end
 
@@ -822,16 +824,18 @@ END_HELP
   end
 
   def vendor_weapons
-    s = "NOTHING<0> DAGGER<1250>"
+    s  = "THESE ARE THE TYPES OF WEAPON YOU CAN BUY :\n"
+    s += "NOTHING<0> DAGGER<1250>"
     s += " MACE<1500>" if @player.gp>1499
     s += " SWORD<2000>" if @player.gp>1999
     puts s
+    puts
   end
 
   def prompt_vendor_weapon
     { prompt: "YOUR CHOICE? ",
       success: "\n\n",
-      error: "\n** TRY CHOOSING A SELECTION!\n\n"
+      error: "\n** TRY CHOOSING A SELECTION!\n\n\n"
     }
   end
 
@@ -855,7 +859,7 @@ END_HELP
   end
 
   def str_report
-    puts "YOUR STRENGTH IS NOW #{player.str} ."
+    puts "YOUR STRENGTH IS NOW #{@player.str} ."
     puts
   end
 
@@ -867,7 +871,7 @@ END_HELP
   end
 
   def int_report
-    puts "YOUR INTELLIGENCE IS NOW #{player.int} ."
+    puts "YOUR INTELLIGENCE IS NOW #{@player.int} ."
     puts
   end
 
@@ -879,7 +883,7 @@ END_HELP
   end
 
   def dex_report
-    puts "YOUR DEXTERITY IS NOW #{player.dex} ."
+    puts "YOUR DEXTERITY IS NOW #{@player.dex} ."
     puts
   end
 

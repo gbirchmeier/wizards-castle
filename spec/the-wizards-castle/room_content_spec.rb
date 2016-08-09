@@ -57,6 +57,10 @@ describe RoomContent do
       rc = RoomContent.new(25)
       expect(rc.monster_symbol).to eq :vendor
     end
+    it "runestaff monster" do
+      rc = RoomContent.new(35,false,false,false,:kobold)
+      expect(rc.monster_symbol).to eq :kobold
+    end
   end
 
 end

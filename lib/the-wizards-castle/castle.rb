@@ -40,7 +40,7 @@ class Castle
     @curse_location_forgetfulness = set_in_random_room(:empty_room)
 
     set_in_random_room(:runestaff_and_monster)
-    @runestaff_monster = MONSTERS[Random.rand(MONSTERS.length)]
+    @runestaff_monster = MONSTERS.sample
 
     @orb_of_zot_location = set_in_random_room(:orb_of_zot)
   end
@@ -116,7 +116,7 @@ class Castle
     leech         = [row,col,floor]==@curse_location_leech
     forgetfulness = [row,col,floor]==@curse_location_forgetfulness
     monster_type  = [row,col,floor]==@runestaff_location ? @runestaff_monster : nil
-    RoomContent.new(@rooms[Castle.room_index(row,col,floor)],lethargy,leech,forgetfulness)
+    RoomContent.new(@rooms[Castle.room_index(row,col,floor)],lethargy,leech,forgetfulness,monster_type)
   end
 
   def set_in_room(row,col,floor,symbol)

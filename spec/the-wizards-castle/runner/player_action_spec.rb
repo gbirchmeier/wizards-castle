@@ -254,6 +254,10 @@ context "#player_action" do
       @prompter.push "O"
     end
 
+    after(:each) do
+      expect(@runner.castle.room(2,2,2).symbol).to eq :empty_room
+    end
+
     it "flash" do
       allow(@runner).to receive(:random_book_effect).and_return :flash
       expect(@runner.player_action).to eq Runner::PlayerState::ACTION
@@ -289,6 +293,10 @@ context "#player_action" do
       expect(@runner.player.gp).to eq 60
       expect(@runner.player.turns).to eq 1
       @prompter.push "O"
+    end
+
+    after(:each) do
+      expect(@runner.castle.room(2,2,2).symbol).to eq :empty_room
     end
 
     context "kaboom" do

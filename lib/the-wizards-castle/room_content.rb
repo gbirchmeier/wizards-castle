@@ -72,7 +72,7 @@ class RoomContent
   def initialize(intcode,curse_lethargy=false,curse_leech=false,curse_forget=false,monster_type=nil)
     raise "Unrecognized intcode #{intcode}" unless RoomContent.valid_intcode?(intcode)
     @symbol = RoomContent.to_symbol(intcode)
-    raise "Param monster_type is only valid on the runestaff room" if (@symbol==:runestaff_and_monster && monster_type)
+    raise "Param monster_type is only valid on the runestaff room" if (monster_type && @symbol!=:runestaff_and_monster)
     @cursed_with_lethargy = curse_lethargy
     @cursed_with_leech = curse_leech
     @cursed_with_forgetfulness = curse_forget
