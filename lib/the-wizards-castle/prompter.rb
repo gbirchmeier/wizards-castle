@@ -5,7 +5,7 @@ class Prompter
     # prompt_hash is {:prompt,:success,:error}
     loop do
       emit prompt_hash[:prompt]
-      input = gets.strip.upcase
+      input = gets.to_s.strip.upcase
 
       rv = nil
       if allowed_array.include?("DR") && input[0..1]=="DR"
@@ -29,7 +29,7 @@ class Prompter
     # Negative ints are treated as errors.
     loop do
       emit prompt_hash[:prompt]
-      input = gets.strip
+      input = gets.to_s.strip
 
       if input.match(/^\d+$/)
         i = input.to_i
@@ -46,7 +46,7 @@ class Prompter
 
   def ask_for_anything(prompt_hash)
     emit prompt_hash[:prompt]
-    rv = gets.strip.upcase
+    rv = gets.to_s.strip.upcase
     emit_with_arg(prompt_hash[:success],rv)
     rv
   end
@@ -54,8 +54,8 @@ class Prompter
 
   def confirm(target,prompt_hash)
     emit prompt_hash[:prompt]
-    input = gets.strip.upcase
-    if target.start_with?(input)
+    input = gets.to_s.strip.upcase
+    if input.start_with?(target)
       emit prompt_hash[:confirmed]
       return true
     else

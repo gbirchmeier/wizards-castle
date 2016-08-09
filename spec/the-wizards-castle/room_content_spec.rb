@@ -63,5 +63,20 @@ describe RoomContent do
     end
   end
 
+  describe "#text" do
+    it "gold" do
+      rc = RoomContent.new(7)
+      expect(rc.text).to eq "GOLD PIECES"
+    end
+    it "regular monster" do
+      rc = RoomContent.new(13)
+      expect(rc.text).to eq "A KOBOLD"
+    end
+    it "runestaff monster" do
+      rc = RoomContent.new(35,false,false,false,:kobold)
+      expect(rc.text).to eq "A KOBOLD"
+    end
+  end
+
 end
 end

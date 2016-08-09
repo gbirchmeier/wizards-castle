@@ -97,7 +97,7 @@ class RoomContent
 
   def text
     sym = (@symbol==:runestaff_and_monster && @monster_type) ? @monster_type : @symbol
-    ROOM_THINGS[@symbol][:text].dup
+    ROOM_THINGS[sym][:text].dup
   end
 
   def monster?

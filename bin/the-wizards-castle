@@ -3,5 +3,7 @@ require 'the-wizards-castle'
 
 # run this with "ruby -Ilib ./bin/the-wizards-castle"
 
+# TODO catch a ctrl-c and exit gracefully
+
 TheWizardsCastle::Runner.run
 

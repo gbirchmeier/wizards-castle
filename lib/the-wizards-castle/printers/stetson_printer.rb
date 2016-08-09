@@ -547,7 +547,7 @@ END_HELP
 
   def prompt_play_again
     { prompt: "ARE YOU FOOLISH ENOUGH TO WANT TO PLAY AGAIN? ",
-      error: "** PLEASE ANSWER YES OR NO\n",
+      error: "\n** PLEASE ANSWER YES OR NO\n",
       success: "\n"
     }
   end

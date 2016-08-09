@@ -287,7 +287,6 @@ class Runner
       return PlayerState::ACTION
     elsif rc.monster?
       return combat
-# TODO missing notification for dead monster
     elsif rc.symbol==:vendor
       return combat if @player.vendor_rage?
 
