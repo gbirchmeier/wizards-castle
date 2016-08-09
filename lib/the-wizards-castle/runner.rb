@@ -273,11 +273,11 @@ class Runner
         @player.set_runestaff(false)
         @player.set_orb_of_zot(true)
         @castle.set_in_room(*loc,:empty_room)
+        return PlayerState::ACTION
       else
         @player.set_location *Castle.move(@player.facing.to_s.upcase,*loc)
-#TODO zot shunt is not quite right
+        return PlayerState::NEW_ROOM
       end
-      return PlayerState::ACTION
     end
 
     if rc.treasure?

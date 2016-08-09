@@ -59,7 +59,7 @@ context "#enter_room" do
     end
     it "via other means" do
       @runner.player.set_teleported(false)
-      expect(@runner.enter_room).to eq Runner::PlayerState::ACTION
+      expect(@runner.enter_room).to eq Runner::PlayerState::NEW_ROOM
       expect(@runner.player.location).to eq [3,2,2]
       expect(@runner.player.orb_of_zot?).to eq false
       expect(@runner.castle.room(2,2,2).symbol).to eq :orb_of_zot
