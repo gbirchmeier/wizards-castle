@@ -39,3 +39,6 @@ build/
 *.*~
 *.sw?
 .sw?
+
+
+Gemfile.lock
