@@ -18,8 +18,14 @@ I'm not really looking for contributors right now.
 
 ## Bugs!
 
-If you see a crash, please copy/paste your recent lines into a new Git issue,
-and tell me what version you're running.
+If you see a crash, please:
+* copy the most recent 100+ lines of your game
+* note the version you are running
+Then report those via
+* [Github issue](https://github.com/gbirchmeier/wizards-castle/issues)
+* Twitter @GrantBirchmeier
+* email via the address you'll find at http://grantb.net
 
-Alternately, contact me via Twitter @GrantBirchmeier or at the email address
-you'll find at http://grantb.net
+**Note:** Please do not report grammar errors.  This is a faithful port of
+the original game, and the grammar errors are probably authentically preserved.
+
