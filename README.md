@@ -21,7 +21,8 @@ I'm not really looking for contributors right now.
 If you see a crash, please:
 * copy the most recent 100+ lines of your game
 * note the version you are running
-Then report those via
+
+then report those via
 * [Github issue](https://github.com/gbirchmeier/wizards-castle/issues)
 * Twitter @GrantBirchmeier
 * email via the address you'll find at http://grantb.net
