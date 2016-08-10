@@ -1,0 +1,1 @@
+* Use Random.rand(1..6) instead of Random.rand(6+1) (for example)
