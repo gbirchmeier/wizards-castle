@@ -29,7 +29,7 @@ EOF
                   Dir['lib/*rb'] +
                   Dir['lib/wizards-castle/*rb'] +
                   Dir['lib/wizards-castle/printers/*rb']
-  s.executables = 'wizards-castle'                 
+  s.executables = 'wizards-castle'
   s.homepage    = 'http://github.com/gbirchmeier/wizards-castle'
   s.license     = 'MIT'
 end
