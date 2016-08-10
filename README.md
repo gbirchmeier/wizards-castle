@@ -1,7 +1,7 @@
 # wizards-castle
 A Ruby port of the classic BASIC game "Wizard's Castle"
 
-It's not done yet, but it's coming along.
+Feature complete.  I'm still testing, and I still need to write some docs and command-line options.
 
 Right now you can git-clone the repo and run with
 
