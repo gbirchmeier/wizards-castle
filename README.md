@@ -14,7 +14,7 @@ git-clone the repo and run with
 
     ruby -Ilib ./bin/wizards-castle
 
-My dev environment is Ruby 2.1, but it'll probably work in any 2.x.
+As mentioned above, any Ruby 2.x version should work.
 
 I'm not really looking for contributors right now.
 
