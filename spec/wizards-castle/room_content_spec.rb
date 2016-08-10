@@ -1,4 +1,4 @@
-module TheWizardsCastle
+module WizardsCastle
 describe RoomContent do
 
   describe "::valid_intcode?" do

@@ -1,4 +1,4 @@
-module TheWizardsCastle
+module WizardsCastle
 describe Runner do
 context "#enter_room" do
 

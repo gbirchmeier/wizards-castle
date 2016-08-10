@@ -1,4 +1,4 @@
-module TheWizardsCastle
+module WizardsCastle
 describe Player do
 
   class Player

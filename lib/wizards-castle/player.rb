@@ -1,4 +1,4 @@
-module TheWizardsCastle
+module WizardsCastle
 class Player
 
   RACES = [:elf,:dwarf,:human,:hobbit]

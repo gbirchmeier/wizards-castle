@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+require 'wizards-castle'
+
+# run this with "ruby -Ilib ./bin/wizards-castle"
+
+begin
+  WizardsCastle::Runner.run
+rescue Interrupt
+  puts
+  puts "Game ended by user."
+end
+

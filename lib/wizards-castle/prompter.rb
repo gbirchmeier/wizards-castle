@@ -1,4 +1,4 @@
-module TheWizardsCastle
+module WizardsCastle
 class Prompter
 
   def ask(allowed_array,prompt_hash)

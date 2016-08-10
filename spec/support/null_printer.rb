@@ -1,4 +1,4 @@
-module TheWizardsCastle
+module WizardsCastle
 class NullPrinter
 
   def intro

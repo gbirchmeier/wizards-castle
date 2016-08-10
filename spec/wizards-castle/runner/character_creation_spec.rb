@@ -1,4 +1,4 @@
-module TheWizardsCastle
+module WizardsCastle
 describe Runner do
 context "character creation" do
 

@@ -1,4 +1,4 @@
-module TheWizardsCastle
+module WizardsCastle
 describe ShoppingTrip do
 
   before(:each) do

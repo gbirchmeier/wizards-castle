@@ -1,5 +1,5 @@
 require 'pry'
-require 'the-wizards-castle'
+require 'wizards-castle'
 
 #includes everything in spec/support
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f }

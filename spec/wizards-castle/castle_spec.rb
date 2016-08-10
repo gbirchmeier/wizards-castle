@@ -1,4 +1,4 @@
-module TheWizardsCastle
+module WizardsCastle
 describe Castle do
 
   class Castle

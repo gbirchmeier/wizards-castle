@@ -1,4 +1,4 @@
-module TheWizardsCastle
+module WizardsCastle
 class Castle
 
   attr_reader :rooms, :runestaff_monster, :orb_of_zot_location

@@ -1,4 +1,4 @@
-module TheWizardsCastle
+module WizardsCastle
 describe BattleRunner do
 
   class BattleRunner

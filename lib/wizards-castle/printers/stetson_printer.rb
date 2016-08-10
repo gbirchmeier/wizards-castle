@@ -1,4 +1,4 @@
-module TheWizardsCastle
+module WizardsCastle
 class StetsonPrinter
 
   def initialize(player,castle)

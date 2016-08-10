@@ -1,4 +1,4 @@
-module TheWizardsCastle
+module WizardsCastle
 class ShoppingTrip
 
   def initialize(player,printer,prompter)
