@@ -17,7 +17,6 @@ class StetsonPrinter
     s =<<END_INTRO
 
 
-
 ****************************************************************
 
                * * * THE WIZARD'S CASTLE * * *
