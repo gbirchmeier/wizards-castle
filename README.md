@@ -1,4 +1,6 @@
 # wizards-castle
+[![Gem Version](https://badge.fury.io/rb/wizards-castle.svg)](https://badge.fury.io/rb/wizards-castle)
+
 A Ruby port of the classic BASIC game "Wizard's Castle".
 
 Current version is 0.0.2.  Needs more testing and also some docs and command-line options.
