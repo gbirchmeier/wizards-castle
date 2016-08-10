@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.date        = WizardsCastle::VERSION_DATE
   s.summary     = "Explore the Wizard's Castle and seek treasure, defeat monsters, and try to locate the incredible ORB OF ZOT!"
   s.description = <<-EOF
+== Wizard's Castle
 A Ruby port of a classic BASIC game, this is a text-based adventure
 through a randomly-generated castle full of monsters, traps, and
 treasure.
@@ -28,7 +29,7 @@ EOF
                   Dir['lib/*rb'] +
                   Dir['lib/wizards-castle/*rb'] +
                   Dir['lib/wizards-castle/printers/*rb']
-                  
+  s.executables = 'wizards-castle'                 
   s.homepage    = 'http://github.com/gbirchmeier/wizards-castle'
   s.license     = 'MIT'
 end
