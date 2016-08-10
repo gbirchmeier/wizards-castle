@@ -32,4 +32,5 @@ EOF
   s.executables = 'wizards-castle'
   s.homepage    = 'http://github.com/gbirchmeier/wizards-castle'
   s.license     = 'MIT'
+  s.required_ruby_version = '>= 2'
 end
