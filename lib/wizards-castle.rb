@@ -6,4 +6,4 @@ require 'wizards-castle/prompter'
 require 'wizards-castle/room_content'
 require 'wizards-castle/runner'
 require 'wizards-castle/shopping_trip'
-
+require 'wizards-castle/version'

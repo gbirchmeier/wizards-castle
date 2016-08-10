@@ -13,7 +13,11 @@ class StetsonPrinter
 
 
   def intro
+    puts "Wizard's Castle (Ruby) v#{WizardsCastle::VERSION} #{WizardsCastle::VERSION_DATE}"
     s =<<END_INTRO
+
+
+
 ****************************************************************
 
                * * * THE WIZARD'S CASTLE * * *

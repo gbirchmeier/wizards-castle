@@ -23,6 +23,11 @@ This Ruby port is based on the Stetson version.
 
 It needs no Gem dependencies to run, and should work on all
 2.x versions of Ruby.
+
+*To play:* Just run +wizards-castle+ on your command line.
+
+Please report any crashes as {Github issues}[https://github.com/gbirchmeier/wizards-castle/issues]
+or contact me via Twitter @GrantBirchmeier. 
 EOF
   s.authors     = ["Grant Birchmeier"]
   s.files       = ['bin/wizards-castle'] +
