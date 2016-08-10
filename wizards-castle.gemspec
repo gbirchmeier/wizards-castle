@@ -14,7 +14,7 @@ A Ruby port of a classic BASIC game, this is a text-based adventure
 through a randomly-generated castle full of monsters, traps, and
 treasure.
 
-The original version was written my Joseph R. Power for
+The original version was written by Joseph R. Power for
 Exidy Sorcerer BASIC and published in the July/August 1980 issue
 of Recreational Computing magazine.  It was subsequently ported
 to Heath Microsoft Basic by J.F. Stetson.
