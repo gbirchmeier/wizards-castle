@@ -24,7 +24,7 @@ This Ruby port is based on the Stetson version.
 It needs no Gem dependencies to run, and should work on all
 2.x versions of Ruby.
 
-*To play*: Just run +wizards-castle+ on your command line.
+*To run*: Just run +wizards-castle+ on your command line.  Use <tt>--manual</tt> to see the game manual.
 
 Please report any crashes as {Github issues}[https://github.com/gbirchmeier/wizards-castle/issues]
 or contact me via Twitter @GrantBirchmeier. 
