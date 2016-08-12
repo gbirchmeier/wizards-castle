@@ -30,7 +30,7 @@ Please report any crashes as {Github issues}[https://github.com/gbirchmeier/wiza
 or contact me via Twitter @GrantBirchmeier. 
 EOF
   s.authors     = ["Grant Birchmeier"]
-  s.files       = ['bin/wizards-castle'] +
+  s.files       = ['bin/wizards-castle','docs/castle.txt'] +
                   Dir['lib/*rb'] +
                   Dir['lib/wizards-castle/*rb'] +
                   Dir['lib/wizards-castle/printers/*rb']

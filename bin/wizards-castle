@@ -1,9 +1,32 @@
 #!/usr/bin/env ruby
 require 'wizards-castle'
 
-# run this with "ruby -Ilib ./bin/wizards-castle"
+puts "Wizard's Castle (Ruby) v#{WizardsCastle::VERSION} #{WizardsCastle::VERSION_DATE}"
+
+def print_help
+  puts "Run with '--manual' for game instructions"
+end
+
+
+if ARGV.include?('--version') || ARGV.include?('-v')
+  exit(0)
+end
+
+if ARGV.include?('--help') || ARGV.include?('-h')
+  print_help
+  exit(0)
+end
+
+if ARGV.include?('--manual')
+  docs = File.expand_path('../../docs',__FILE__)
+  manual = File.join(docs,"castle.txt")
+  puts File.read(manual)
+  exit(0)
+end
 
 begin
+  print_help
+  ARGV.clear # this will mess with "gets" calls if not empty
   WizardsCastle::Runner.run
 rescue Interrupt
   puts
