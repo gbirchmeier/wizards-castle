@@ -3,7 +3,7 @@
 
 A Ruby port of the classic BASIC game "Wizard's Castle".
 
-Current version is 0.0.2.  Needs more testing and also some docs and command-line options.
+Version 1.0 is within striking distance.  Just some doc stuff, mostly.
 
 To play, install the `wizards-castle` gem and then run `wizards-castle`.
 
