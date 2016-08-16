@@ -33,3 +33,6 @@ This dir has some other neat docs that may be of interest:
 
 To see the entire July 1980 issue of *Recreational Computing*, visit   
 https://archive.org/details/1980-07-recreational-computing
+
+Here's a 2007 interview with Joseph R. Powers about the game:  
+http://www.armchairarcade.com/neo/node/1381
