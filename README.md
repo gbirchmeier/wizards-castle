@@ -3,11 +3,14 @@
 
 A Ruby port of the classic BASIC game "Wizard's Castle".
 
-Version 1.0 is within striking distance.  Just some doc stuff, mostly.
+To install, just `gem install wizards-castle`.  It should work fine in any 2.x Ruby,
+and has no dependencies on external gems.  It installs the `wizards-castle` script.
 
-To play, install the `wizards-castle` gem and then run `wizards-castle`.
+To play, just run `wizards-castle`.  Use `--manual` to see the manual,
+or `--help` to see more options.
 
-It should work fine in any 2.x Ruby.  It has no dependencies on external gems.
+For some historical documents and the original BASIC source, see the [docs](docs) directory.
+
 
 ## Running the latest version off of this Git repo
 git-clone the repo and run with
