@@ -14,7 +14,7 @@ these exceptions:
 2. It allows lower-case inputs instead of only caps
 3. You can actually scroll up (if your terminal allows)
 
-Post 1.0 versions may offer improvements.  In a future release, I intend to add options to
+I have plans for some improvements in post-1.0 versions.  I intend to add options to
 enable a few color enhancements, and perhaps to slow the scroll down so your eyes can follow
 along through warps/sinkhole chains.
 
