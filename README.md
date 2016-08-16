@@ -9,7 +9,8 @@ and has no dependencies on external gems.  It installs the `wizards-castle` scri
 To play, just run `wizards-castle`.  Use `--manual` to see the manual,
 or `--help` to see more options.
 
-For some historical documents and the original BASIC source, see the [docs](docs) directory.
+For more info, some historical documents, and the original BASIC source,
+see the [docs](docs) directory.
 
 
 ## Running the latest version off of this Git repo
