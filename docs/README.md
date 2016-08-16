@@ -10,9 +10,9 @@ This Ruby port is based on the Stetson version, which is the version that I play
 The initial 1.0 release is intended to be as faithful as possible to the Stetson version, with
 these exceptions:
 
-1) I can't reproduce the original BASIC "beep" sound, so it just uses your terminal's bell
-2) It allows lower-case inputs instead of only caps
-3) You can actually scroll up (if your terminal allows)
+1. I can't reproduce the original BASIC "beep" sound, so it just uses your terminal's bell
+2. It allows lower-case inputs instead of only caps
+3. You can actually scroll up (if your terminal allows)
 
 Post 1.0 versions may offer improvements.  In a future release, I intend to add options to
 enable a few color enhancements, and perhaps to slow the scroll down so your eyes can follow
