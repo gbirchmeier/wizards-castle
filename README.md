@@ -33,6 +33,6 @@ then report those via
 * Twitter [@GrantBirchmeier](https://twitter.com/GrantBirchmeier)
 * email to the address you'll find at http://grantb.net
 
-**Note:** Please do not report grammar errors.  This is a faithful port of
-the original game, and the grammar errors are probably authentically preserved.
+**Note:** Please do not report in-game grammar errors.  This is a faithful port of
+the original game, and the grammar errors are (probably) authentically preserved.
 
