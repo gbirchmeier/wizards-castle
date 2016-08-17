@@ -52,7 +52,7 @@ class BattleRunner
           return Result::PLAYER_DEAD if @player.dead?
         when "C"
           # Preserved authentic bug:
-          #   In both the Powers and Stetson versions,
+          #   In both the Power and Stetson versions,
           #   you can cast whenever you can bribe,
           #   even if your INT is under 14.
           #   You can die if this cast drops your INT to 0.
