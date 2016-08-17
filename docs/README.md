@@ -1,6 +1,6 @@
 # wizards-castle documentation
 
-*Wizard's Castle* was originally written by Joseph R. Powers for Exidy Sorcerer Basic
+*Wizard's Castle* was originally written by Joseph R. Power for Exidy Sorcerer Basic
 and published in the July 1980 issue of *Recreational Computing Magazine*.
 
 This was later adapted by J.F. Stetson for Heath Microsoft Basic.  More than just a port,
@@ -23,16 +23,14 @@ This dir has some other neat docs that may be of interest:
 * [castle.txt](castle.txt) - What is displayed when you run `wizards-castle --manual`.
   Aside from the obvious addition about my Ruby port, this is exactly what was distributed
   with J.F. Stetson's version.
-* [WIZARD.BAS](WIZARD.BAS) - original J.F. Stetson source (or, the best one I could find).
+* [WIZARD.BAS](WIZARD.BAS) - original J.F. Stetson source (or, the best one I could find)
 * [original-article.pdf](original-article.pdf) - This is a scan of the original article
   from *Recreational Computing* magazine (July 1980) where *Wizard's Castle* first premiered.
   `castle.txt` is adapted from this.
-* [original-source.pdf](original-code.pdf) - The Joseph R. Powers-authored source code from
+* [original-source.pdf](original-code.pdf) - The Joseph R. Power-authored source code from
   that same article.  (I am unable to find this source in text-file form.)
-
+* [interview.md](interview.pd) - a 2007 interview with Joseph R. Power about the game
 
 To see the entire July 1980 issue of *Recreational Computing*, visit   
 https://archive.org/details/1980-07-recreational-computing
 
-Here's a 2007 interview with Joseph R. Powers about the game:  
-http://www.armchairarcade.com/neo/node/1381
