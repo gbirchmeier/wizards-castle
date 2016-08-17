@@ -9,8 +9,8 @@ but I won't be surprised if it disappears at some point,
 thus I'm preserving a copy here.*
 
 *[Dr. Matt Barton](http://mattchat.us) is a professor of English at St. Cloud State University in Minnesota,
-and has written or co-written 3 books about videogame history.  One of these books,
-[Dungeons & Desktops: The History of Computer Role-Playing Games](http://www.amazon.com/Dungeons-Desktops-History-Computer-Role-Playing/dp/1568814119/),
+and has written or co-written 3 books about videogame history.  One of these,
+[*Dungeons & Desktops: The History of Computer Role-Playing Games*](http://www.amazon.com/Dungeons-Desktops-History-Computer-Role-Playing/dp/1568814119/),
 covers some history about *Wizard's Castle* and similar games.  He is the producer
 of “Matt Chat,” a weekly YouTube program featuring interviews with noted videogame
 developers and in-depth retrospectives of great videogames.*
