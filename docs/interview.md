@@ -1,12 +1,19 @@
-This interview was conducted by Matt Barton and reprinted
-[with permission](https://twitter.com/mattbarton/status/765611908623765504)
+*This interview was conducted by [Dr. Matt Barton](http://mattchat.us) and reprinted
+[with permission](https://twitter.com/mattbarton/status/765611908623765504).
 It originally appeared at his blog on ArmchairArcade.com,
-a site which appears to be under new management.
+a site which appears to have come under different management since then.*
 
-As the time of this writing, the original post is still up at
+*As the time of this writing, the original post is still up at
 [this URL](http://www.armchairarcade.com/neo/node/1381),
 but I won't be surprised if it disappears at some point,
-thus I'm preserving a copy here.
+thus I'm preserving a copy here.*
+
+*[Dr. Matt Barton](http://mattchat.us) is a professor of English at St. Cloud State University in Minnesota,
+and has written or co-written 3 books about videogame history.  One of these books,
+[Dungeons & Desktops: The History of Computer Role-Playing Games](http://www.amazon.com/Dungeons-Desktops-History-Computer-Role-Playing/dp/1568814119/),
+covers some history about *Wizard's Castle* and similar games.  He is the producer
+of “Matt Chat,” a weekly YouTube program featuring interviews with noted videogame
+developers and in-depth retrospectives of great videogames.*
 
 # The Story of The Wizard's Castle
 
@@ -25,7 +32,7 @@ Power and others). Eventually it was played by Derell L.,
 who prefers to go by his nickname "Derelict." Derelict
 converted the game for Windows and added sprite-based
 graphics (you can download it 
-[here](http://home.comcast.net/~derelict/winwiz.html).
+[here](http://home.comcast.net/~derelict/winwiz.html)).
 Anyway, I had the chance to talk to both Joe and Derelict
 about their games, and have decided to print them here for
 your enjoyment! Note that I haven't edited these
@@ -69,8 +76,8 @@ First, Joe:
 > entry-level machine. I, however, wasn't satisfied with it.
 > 
 > The problem, for me, was that there simply weren't enough
-> ways to interact with the program and it became repetitive
-> - wander around, kill monsters, get treasures, lather,
+> ways to interact with the program and it became
+> repetitive - wander around, kill monsters, get treasures, lather,
 > rinse, repeat. By then I was playing Dungeons & Dragons (the
 > original 3 book set and the Greyhawk supplement) so I was
 > used to a much richer game experience.
