@@ -16,7 +16,7 @@ these exceptions:
 
 I have plans for some improvements in post-1.0 versions.  I intend to add options to
 enable a few color enhancements, and perhaps to slow the scroll down so your eyes can follow
-along through warps/sinkhole chains.
+along through warp/sinkhole chains.
 
 This dir has some other neat docs that may be of interest:
 
@@ -29,7 +29,7 @@ This dir has some other neat docs that may be of interest:
   `castle.txt` is adapted from this.
 * [original-source.pdf](original-code.pdf) - The Joseph R. Power-authored source code from
   that same article.  (I am unable to find this source in text-file form.)
-* [interview.md](interview.pd) - a 2007 interview with Joseph R. Power about the game
+* [interview.md](interview.md) - a 2007 interview with Joseph R. Power about the game
 
 To see the entire July 1980 issue of *Recreational Computing*, visit   
 https://archive.org/details/1980-07-recreational-computing
