@@ -20,7 +20,7 @@ git-clone the repo and run with
 
 As mentioned above, any Ruby 2.x version should work.
 
-I'm not really looking for contributors right now.
+I'm not really looking for outside contributons or enhancements right now.
 
 ## Bugs!
 
