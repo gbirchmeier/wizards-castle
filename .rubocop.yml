@@ -1,0 +1,14 @@
+Layout/EmptyLines:
+  Enabled: false
+
+Layout/IndentHeredoc:
+  Enabled: false
+
+Layout/SpaceInsideBlockBraces:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false

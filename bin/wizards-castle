@@ -5,7 +5,7 @@ puts "Wizard's Castle (Ruby) v#{WizardsCastle::VERSION} #{WizardsCastle::VERSION
 
 def print_help
   puts "Run with '--manual' for game instructions"
-  puts "Visit https://github.com/gbirchmeier/wizards-castle for vintage source and other info."
+  puts 'Visit https://github.com/gbirchmeier/wizards-castle for vintage source and other info.'
 end
 
 
@@ -17,8 +17,8 @@ elsif ARGV.include?('--help') || ARGV.include?('-h')
   exit(0)
 
 elsif ARGV.include?('--manual') || ARGV.include?('-m')
-  docs = File.expand_path('../../docs',__FILE__)
-  manual = File.join(docs,"castle.txt")
+  docs = File.expand_path('../../docs', __FILE__)
+  manual = File.join(docs, 'castle.txt')
   puts File.read(manual)
   exit(0)
 end
@@ -29,6 +29,5 @@ begin
   WizardsCastle::Runner.run
 rescue Interrupt
   puts
-  puts "Game ended by user."
+  puts 'Game ended by user.'
 end
-

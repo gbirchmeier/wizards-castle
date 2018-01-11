@@ -1,5 +1,4 @@
-# coding: utf-8
-lib = File.expand_path('../lib',__FILE__)
+lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'wizards-castle/version'
 
@@ -8,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = WizardsCastle::VERSION
   s.date        = WizardsCastle::VERSION_DATE
   s.summary     = "Explore the Wizard's Castle and seek treasure, defeat monsters, and try to locate the incredible ORB OF ZOT!"
-  s.description = <<-EOF
+  s.description = <<-DESCRIPTION
 == Wizard's Castle
 A Ruby port of a classic BASIC game, this is a text-based adventure
 through a randomly-generated castle full of monsters, traps, and
@@ -27,10 +26,10 @@ It needs no Gem dependencies to run, and should work on all
 *To* *run*: Just run +wizards-castle+ on your command line.  Use +--manual+ to see the game manual.
 
 Please report any crashes as {Github issues}[https://github.com/gbirchmeier/wizards-castle/issues]
-or contact me via Twitter @GrantBirchmeier. 
-EOF
-  s.authors     = ["Grant Birchmeier"]
-  s.files       = ['bin/wizards-castle','docs/castle.txt'] +
+or contact me via Twitter @GrantBirchmeier.
+DESCRIPTION
+  s.authors     = ['Grant Birchmeier']
+  s.files       = ['bin/wizards-castle', 'docs/castle.txt'] +
                   Dir['lib/*rb'] +
                   Dir['lib/wizards-castle/*rb'] +
                   Dir['lib/wizards-castle/printers/*rb']
