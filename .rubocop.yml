@@ -1,6 +1,9 @@
 Layout/EmptyLines:
   Enabled: false
 
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+
 Layout/IndentHeredoc:
   Enabled: false
 

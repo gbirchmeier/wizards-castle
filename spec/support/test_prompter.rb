@@ -1,6 +1,7 @@
 class TestPrompter
+  # matches interface of WizardsCastle::Prompter
 
-  def initialize(seeds=[])
+  def initialize(seeds = [])
     @seeds = seeds
   end
 
@@ -12,24 +13,24 @@ class TestPrompter
     end
   end
 
-  def ask(allowed_array,prompt_hash)
-    raise "out of seeds" if @seeds.length<1
+  def ask(_allowed_array, _prompt_hash)
+    raise 'out of seeds' if @seeds.empty?
     @seeds.shift
   end
 
-  def ask_integer(blah,blah2,blah3)
-    raise "out of seeds" if @seeds.length<1
+  def ask_integer(_blah, _blah2, _blah3)
+    raise 'out of seeds' if @seeds.empty?
     @seeds.shift.to_i
   end
 
-  def ask_for_anything(prompt_hash)
-    raise "out of seeds" if @seeds.length<1
+  def ask_for_anything(_prompt_hash)
+    raise 'out of seeds' if @seeds.empty?
     @seeds.shift
   end
 
-  def confirm(blah,blah2)
+  def confirm(_blah, _blah2)
     # you should push booleans for this one
-    raise "out of seeds" if @seeds.length<1
+    raise 'out of seeds' if @seeds.empty?
     @seeds.shift
   end
 
