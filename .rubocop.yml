@@ -4,6 +4,9 @@ Layout/EmptyLineBetweenDefs:
 Layout/EmptyLines:
   Enabled: false
 
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+
 Layout/EmptyLinesAroundClassBody:
   Enabled: false
 
@@ -22,8 +25,17 @@ Metrics/ClassLength:
 Metrics/LineLength:
   Enabled: false
 
+Metrics/ModuleLength:
+  Enabled: false
+
 Style/ClassAndModuleChildren:
   Enabled: false
 
 Style/EmptyMethod:
   Enabled: false
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/WordArray:
+  MinSize: 5
