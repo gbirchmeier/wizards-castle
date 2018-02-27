@@ -10,22 +10,43 @@ Layout/EmptyLinesAroundBlockBody:
 Layout/EmptyLinesAroundClassBody:
   Enabled: false
 
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: false
+
 Layout/IndentHeredoc:
+  Enabled: false
+
+Layout/LeadingCommentSpace:
   Enabled: false
 
 Layout/SpaceInsideBlockBraces:
   Enabled: false
 
+Metrics/AbcSize:
+  Enabled: false
+
 Metrics/BlockLength:
+  Enabled: false
+
+Metrics/BlockNesting:
   Enabled: false
 
 Metrics/ClassLength:
   Enabled: false
 
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
 Metrics/LineLength:
   Enabled: false
 
+Metrics/MethodLength:
+  Enabled: false
+
 Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
   Enabled: false
 
 Style/ClassAndModuleChildren:
@@ -35,6 +56,12 @@ Style/EmptyMethod:
   Enabled: false
 
 Style/NumericLiterals:
+  Enabled: false
+
+Style/SymbolArray:
+  MinSize: 5
+
+Style/TernaryParentheses:
   Enabled: false
 
 Style/WordArray:

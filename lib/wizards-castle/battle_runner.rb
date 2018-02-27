@@ -8,14 +8,14 @@ class BattleRunner
     PLAYER_DEAD = :player_dead
   end
 
-  def initialize(player,enemy_symbol,printer,prompter)
+  def initialize(player, enemy_symbol, printer, prompter)
     raise "BattleRunner initialized with not-a-monster: #{enemy_symbol}" unless Castle::MONSTERS.include?(enemy_symbol)
     @player = player
     @enemy_symbol = enemy_symbol
     @printer = printer
     @prompter = prompter
 
-    @enemy_power,@enemy_str = BattleRunner.enemy_stats(enemy_symbol)
+    @enemy_power, @enemy_str = BattleRunner.enemy_stats(enemy_symbol)
     @bribable = true
     @web_counter = 0
   end
@@ -31,26 +31,26 @@ class BattleRunner
       @printer.combat_menu(@bribable)
       @printer.your_battle_stats
 
-      allowed = ["A","R","C"]
-      allowed << "B" if @bribable
+      allowed = ['A', 'R', 'C']
+      allowed << 'B' if @bribable
 
       action = @prompter.ask_for_anything(@printer.prompt_combat)[0]
       if allowed.include?(action)
         case action
-        when "A"
+        when 'A'
           @bribeable = false
           do_player_attack
-          return Result::ENEMY_DEAD if @enemy_str<1
+          return Result::ENEMY_DEAD if @enemy_str < 1
           do_enemy_attack
           return Result::PLAYER_DEAD if @player.dead?
-        when "R" #retreat
+        when 'R' #retreat
           do_enemy_attack
           return @player.dead? ? Result::PLAYER_DEAD : Result::RETREAT
-        when "B"
+        when 'B'
           return Result::BRIBED if do_bribe?
           do_enemy_attack
           return Result::PLAYER_DEAD if @player.dead?
-        when "C"
+        when 'C'
           # Preserved authentic bug:
           #   In both the Power and Stetson versions,
           #   you can cast whenever you can bribe,
@@ -60,7 +60,7 @@ class BattleRunner
           if (@player.int > 14) || @bribable
             do_cast
             return Result::PLAYER_DEAD if @player.dead? #due to cast-cost
-            return Result::ENEMY_DEAD if @enemy_str<1
+            return Result::ENEMY_DEAD if @enemy_str < 1
             do_enemy_attack
             return Result::PLAYER_DEAD if @player.dead?
           else
@@ -75,16 +75,18 @@ class BattleRunner
   end
 
   def self.enemy_stats(sym)
-    code = sym==:vendor ? 13 : Castle::MONSTERS.index(sym)+1
-    return [ (1+(code/2)), code+2 ]
+    code = (sym == :vendor) ? 13 : (Castle::MONSTERS.index(sym) + 1)
+    [(1 + (code / 2)), code + 2]
   end
 
   def enemy_first_shot?
-    @player.lethargic? || @player.blind? || (@player.dex < (Random.rand(9)+Random.rand(9)+2))
+    @player.lethargic? ||
+      @player.blind? ||
+      @player.dex < (Random.rand(9) + Random.rand(9) + 2)
   end
 
   def enemy_hit_player?
-    n = Random.rand(7)+Random.rand(7)+Random.rand(7)+3
+    n = Random.rand(7) + Random.rand(7) + Random.rand(7) + 3
     n += 3 if @player.blind?
     @player.dex < n
   end
@@ -102,7 +104,7 @@ class BattleRunner
     else
       @printer.the_monster_attacks
       if enemy_hit_player?
-        @player.take_a_hit!(@enemy_power,@printer)
+        @player.take_a_hit!(@enemy_power, @printer)
         @printer.he_hit_you
       else
         @printer.he_missed_you
@@ -111,33 +113,31 @@ class BattleRunner
   end
 
   def player_hit_enemy?
-    n = Random.rand(20)+1
+    n = Random.rand(20) + 1
     n += 3 if @player.blind?
     @player.dex >= n
   end
 
   def do_player_attack
-    if @player.weapon==:nothing
+    if @player.weapon == :nothing
       @printer.unarmed_attack
     elsif @player.stickybook?
       @printer.book_attack
-    else
-      if player_hit_enemy?
-        @printer.you_hit_him
-        @enemy_str -= @player.weapon_value
+    elsif player_hit_enemy?
+      @printer.you_hit_him
+      @enemy_str -= @player.weapon_value
 
-        if [:gargoyle,:dragon].include?(@enemy_symbol)
-          if broken_weapon?
-            @printer.your_weapon_broke
-            @player.set_weapon(:nothing)
-          end
+      if [:gargoyle, :dragon].include?(@enemy_symbol)
+        if broken_weapon?
+          @printer.your_weapon_broke
+          @player.set_weapon(:nothing)
         end
       end
     end
   end
 
   def broken_weapon?
-    Random.rand(8)==0 # 1/8 chance
+    Random.rand(8).zero? # 1/8 chance
   end
 
 
@@ -146,8 +146,8 @@ class BattleRunner
       @printer.bribe_refused
     else
       desired_treasure = @player.random_treasure
-      answer = @prompter.ask(['Y','N'],@printer.prompt_bribe_request(desired_treasure))
-      if answer=='Y'
+      answer = @prompter.ask(['Y', 'N'], @printer.prompt_bribe_request(desired_treasure))
+      if answer == 'Y'
         @player.remove_treasure(desired_treasure)
         @printer.bribe_accepted
         return true
@@ -160,18 +160,16 @@ class BattleRunner
   def do_cast
     spell = @prompter.ask_for_anything(@printer.prompt_cast)[0]
     case spell
-    when "W"
+    when 'W'
       @player.str(-1)
       @web_counter = random_web_duration
-    when "F"
+    when 'F'
       @player.str(-1)
       @player.int(-1)
       dmg = random_fireball_damage
       @enemy_str -= dmg
-      unless @player.dead?
-        @printer.fireball_damage_report(dmg)
-      end
-    when "D"
+      @printer.fireball_damage_report(dmg) unless @player.dead?
+    when 'D'
       if deathspell_kills_player?
         @printer.deathspell_kills_player
         @player.int(-20)
@@ -194,7 +192,7 @@ class BattleRunner
   end
 
   def deathspell_kills_player?
-    @player.int < (Random.rand(4)+1+15)
+    @player.int < (Random.rand(4) + 1 + 15)
   end
 
 end
