@@ -85,11 +85,11 @@ module WizardsCastle
     def enemy_first_shot?
       @player.lethargic? ||
         @player.blind? ||
-        @player.dex < (Random.rand(9) + Random.rand(9) + 2)
+        @player.dex < (Random.rand(1..9) + Random.rand(1..9))
     end
 
     def enemy_hit_player?
-      n = Random.rand(7) + Random.rand(7) + Random.rand(7) + 3
+      n = Random.rand(1..7) + Random.rand(1..7) + Random.rand(1..7)
       n += 3 if @player.blind?
       @player.dex < n
     end
@@ -189,7 +189,7 @@ module WizardsCastle
     end
 
     def random_fireball_damage
-      Random.rand(7) + Random.rand(7) + 2
+      Random.rand(1..7) + Random.rand(1..7)
     end
 
     def deathspell_kills_player?
