@@ -19,6 +19,9 @@ Layout/IndentHeredoc:
 Layout/LeadingCommentSpace:
   Enabled: false
 
+Layout/SpaceBeforeBlockBraces:
+  Enabled: false
+
 Layout/SpaceInsideBlockBraces:
   Enabled: false
 
