@@ -52,6 +52,11 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Enabled: false
 
+Naming/HeredocDelimiterNaming:
+  Blacklist:
+    - !ruby/regexp '/^END$/'
+    - !ruby/regexp '/^EO[A-Z]{1}$/'
+
 Style/ClassAndModuleChildren:
   Enabled: false
 
