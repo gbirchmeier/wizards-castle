@@ -228,7 +228,13 @@ END_STAT_BLOCK
       {
         prompt:  'ENTER YOUR COMMAND : ',
         error:   "\n** SILLY #{player_race}, THAT WASN'T A VALID COMMAND!\n\n",
-        success: proc {|x| x[0] == 'F' ? '' : x == 'T' ? "\n\n" : "\n" }
+        success: proc do |x|
+                   if x[0] == 'F'
+                     ''
+                   else
+                     x == 'T' ? "\n\n" : "\n"
+                   end
+                 end
       }
     end
 
