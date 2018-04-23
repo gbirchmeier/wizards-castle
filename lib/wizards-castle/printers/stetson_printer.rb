@@ -195,7 +195,7 @@ END_STAT_BLOCK
 
 
     def player_action_flavor_text
-      rnd = 1 + Random.rand(7)
+      rnd = Random.rand(1..7)
       rnd += 1 if @player.blind?
       rnd = 4 if rnd > 7
       # ^^ pretty stupid, right?  But that's just how the BASIC impl does it.
@@ -282,28 +282,27 @@ END_HELP
     end
 
     def drink_effect(effect)
-      s = 'YOU TAKE A DRINK AND '
-      case effect
-      when :stronger
-        s += 'FEEL STRONGER.'
-      when :weaker
-        s += 'FEEL WEAKER'
-      when :smarter
-        s += 'FEEL SMARTER.'
-      when :dumber
-        s += 'FEEL DUMBER.'
-      when :nimbler
-        s += 'FEEL NIMBLER.'
-      when :clumsier
-        s += 'FEEL CLUMSIER.'
-      when :change_race
-        s += "BECOME A #{player_race}."
-      when :change_gender
-        s += "TURN INTO A #{player_gender} #{player_race}!"
-      else
-        s += "<ERROR - unrecognized effect '#{effect}.to_s'>"
-      end
-      puts s
+      s = case effect
+          when :stronger
+            'FEEL STRONGER.'
+          when :weaker
+            'FEEL WEAKER'
+          when :smarter
+            'FEEL SMARTER.'
+          when :dumber
+            'FEEL DUMBER.'
+          when :nimbler
+            'FEEL NIMBLER.'
+          when :clumsier
+            'FEEL CLUMSIER.'
+          when :change_race
+            "BECOME A #{player_race}."
+          when :change_gender
+            "TURN INTO A #{player_gender} #{player_race}!"
+          else
+            "<ERROR - unrecognized effect '#{effect}.to_s'>"
+          end
+      puts "YOU TAKE A DRINK AND #{s}"
       puts
     end
 
@@ -319,12 +318,12 @@ END_HELP
       (1..8).each do |row|
         lines << ''
         (1..8).each do |col|
-          c = @player.knows_room?(row, col, floor) ? @castle.room(row, col, floor).display : '?'
-          if [row, col, floor] == @player.location
-            lines.last << "<#{c}>  "
-          else
-            lines.last << " #{c}   "
-          end
+          char = @player.knows_room?(row, col, floor) ? @castle.room(row, col, floor).display : '?'
+          lines.last << if @player.location == [row, col, floor]
+                          "<#{char}>  "
+                        else
+                          " #{char}   "
+                        end
         end
         lines.last << "\n\n"
       end
