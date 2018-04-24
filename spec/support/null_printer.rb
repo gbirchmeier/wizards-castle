@@ -1,5 +1,4 @@
-module WizardsCastle
-class NullPrinter
+class WizardsCastle::NullPrinter
 
   def intro
   end
@@ -66,7 +65,7 @@ class NullPrinter
   def stat_block
   end
 
-  def here_you_find(symbol)
+  def here_you_find(_symbol)
   end
 
   def new_gold_count
@@ -78,7 +77,7 @@ class NullPrinter
   def found_orb_of_zot
   end
 
-  def got_a_treasure(treasure_symbol)
+  def got_a_treasure(_treasure_symbol)
   end
 
   def player_action_flavor_text
@@ -128,19 +127,19 @@ class NullPrinter
   def no_lamp_error
   end
 
-  def lamp_shine(row,col,floor)
+  def lamp_shine(_row, _col, _floor)
   end
 
   def nothing_to_open_error
   end
 
-  def book_effect(effect)
+  def book_effect(_effect)
   end
 
-  def chest_effect(effect,gold_gain)
+  def chest_effect(_effect, _gold_gain)
   end
 
-  def gaze_effect(effect,effect_location)
+  def gaze_effect(_effect, _effect_location)
   end
 
   def no_crystal_orb_error
@@ -207,7 +206,7 @@ class NullPrinter
   def youre_facing_a_monster
   end
 
-  def combat_menu(can_bribe)
+  def combat_menu(_can_bribe)
   end
 
   def your_battle_stats
@@ -254,13 +253,13 @@ class NullPrinter
   def you_got_the_runestaff
   end
 
-  def you_got_monster_gold(n)
+  def you_got_monster_gold(_gp)
   end
 
   def bribe_refused
   end
 
-  def prompt_bribe_request(treasure_symbol)
+  def prompt_bribe_request(_treasure_symbol)
     {}
   end
 
@@ -284,7 +283,7 @@ class NullPrinter
   def monster_stuck_in_web
   end
 
-  def fireball_damage_report(n)
+  def fireball_damage_report(damage)
   end
 
   def deathspell_kills_enemy
@@ -306,7 +305,7 @@ class NullPrinter
   def vendor_loot
   end
 
-  def prompt_sell_treasure(treasure_symbol,amount)
+  def prompt_sell_treasure(_treasure_symbol, _amount)
     {}
   end
 
@@ -373,5 +372,4 @@ class NullPrinter
   def you_bought_a_lamp
   end
 
-end
 end
