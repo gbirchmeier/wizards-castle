@@ -253,7 +253,7 @@ class WizardsCastle::NullPrinter
   def you_got_the_runestaff
   end
 
-  def you_got_monster_gold(_n)
+  def you_got_monster_gold(_gp)
   end
 
   def bribe_refused
@@ -283,7 +283,7 @@ class WizardsCastle::NullPrinter
   def monster_stuck_in_web
   end
 
-  def fireball_damage_report(n)
+  def fireball_damage_report(damage)
   end
 
   def deathspell_kills_enemy

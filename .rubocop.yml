@@ -52,6 +52,11 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Enabled: false
 
+Naming/FileName:
+  Enabled: true
+  Exclude:
+    - lib/wizards-castle.rb
+
 Naming/HeredocDelimiterNaming:
   Blacklist:
     - !ruby/regexp '/^END$/'

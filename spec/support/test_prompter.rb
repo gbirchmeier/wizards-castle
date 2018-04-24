@@ -5,11 +5,11 @@ class TestPrompter
     @seeds = seeds
   end
 
-  def push(a)
-    if a.is_a? Array
-      @seeds.concat(a)
+  def push(thing)
+    if thing.is_a? Array
+      @seeds.concat(thing)
     else
-      @seeds.push(a)
+      @seeds.push(thing)
     end
   end
 

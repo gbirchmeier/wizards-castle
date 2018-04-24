@@ -17,7 +17,7 @@ elsif ARGV.include?('--help') || ARGV.include?('-h')
   exit(0)
 
 elsif ARGV.include?('--manual') || ARGV.include?('-m')
-  docs = File.expand_path('../../docs', __FILE__)
+  docs = File.expand_path('../docs', __dir__)
   manual = File.join(docs, 'castle.txt')
   puts File.read(manual)
   exit(0)
