@@ -277,7 +277,8 @@ module WizardsCastle
     end
 
 
-private
+    private
+
     def check_bool(bool)
       raise "Parameter is not a boolean: #{bool.inspect}" unless [true,false].include?(bool)
     end

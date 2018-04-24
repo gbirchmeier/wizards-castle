@@ -1,5 +1,4 @@
 module WizardsCastle
-
   # Contains the internal state of the wizard's castle.
   class Castle
 
