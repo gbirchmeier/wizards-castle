@@ -79,7 +79,7 @@ module WizardsCastle
 
     it "#set_in_room" do
       castle.set_in_room(8,8,1,:warp)
-      expect(castle.rooms[63]).to eq 9 
+      expect(castle.rooms[63]).to eq 9
     end
 
     context "@runestaff_location" do
@@ -103,7 +103,6 @@ module WizardsCastle
         [3,1,2], [3,2,2], [3,3,2]
       ]
       expect(locs).to eq expectation
-        
     end
 
   end

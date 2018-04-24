@@ -229,7 +229,7 @@ module WizardsCastle
       check_bool(bool)
       @stickybook=bool
     end
-    
+
     def forgetful?
       @forgetful
     end

@@ -440,7 +440,7 @@ module WizardsCastle
 
       PlayerState::ACTION
     end
- 
+
 
     def display_map
       floor = @player.location.last
