@@ -1,6 +1,6 @@
 module WizardsCastle
   describe Runner do
-    context "endgame" do
+    context 'endgame' do
 
       before(:each) do
         @prompter = TestPrompter.new
@@ -11,30 +11,30 @@ module WizardsCastle
         @runner.player.dex(+1)
       end
 
-      it "quit, no replay" do
-        @prompter.push ["Q","Y","N"]
+      it 'quit, no replay' do
+        @prompter.push %w[Q Y N]
         expect(@runner.printer).to receive(:quit)
         expect(@runner.printer).to receive(:shut_down)
         expect(@runner.play).to eq false
       end
 
-      it "quit, yes replay" do
-        @prompter.push ["Q","Y","Y"]
+      it 'quit, yes replay' do
+        @prompter.push %w[Q Y Y]
         expect(@runner.printer).to receive(:quit)
         expect(@runner.printer).to receive(:play_again)
         expect(@runner.play).to eq true
       end
 
-      it "exit castle, no replay" do
-        @prompter.push ["N","N"]
+      it 'exit castle, no replay' do
+        @prompter.push %w[N N]
         expect(@runner.printer).to receive(:exit_castle)
         expect(@runner.printer).to receive(:shut_down)
         expect(@runner.play).to eq false
       end
 
-      it "death (by gaze STR loss), no replay" do
-        @prompter.push ["W","G","N"]
-        @runner.castle.set_in_room(1,3,1,:crystal_orb)
+      it 'death (by gaze STR loss), no replay' do
+        @prompter.push %w[W G N]
+        @runner.castle.set_in_room(1, 3, 1, :crystal_orb)
         allow(@runner).to receive(:random_gaze_effect).and_return :bloody_heap
 
         expect(@runner.printer).to receive(:death)
