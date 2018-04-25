@@ -26,12 +26,12 @@ module WizardsCastle
     end
 
     def sell_treasures
-      a = [:ruby_red,:norn_stone,:pale_pearl,:opal_eye,:green_gem,:blue_flame,:palantir,:silmaril]
+      a = %i[ruby_red norn_stone pale_pearl opal_eye green_gem blue_flame palantir silmaril]
       a.each_with_index do |treasure,i|
         if @player.have_treasure?(treasure)
           offer = random_treasure_offer(i)
-          answer = @prompter.ask(["Y","N"], @printer.prompt_sell_treasure(treasure,offer))
-          if answer=="Y"
+          answer = @prompter.ask(['Y', 'N'], @printer.prompt_sell_treasure(treasure, offer))
+          if answer == 'Y'
             @player.remove_treasure(treasure)
             @player.gp(+offer)
           end
@@ -45,15 +45,15 @@ module WizardsCastle
       @printer.vendor_armors
 
       loop do
-        answer = @prompter.ask(["N","L","C","P"],@printer.prompt_vendor_armor)
+        answer = @prompter.ask(%w[N L C P], @printer.prompt_vendor_armor)
         case answer
-        when "N"
+        when 'N'
           return
-        when "L"
+        when 'L'
           @player.gp(-1250)
           @player.set_armor(:leather)
           return
-        when "C"
+        when 'C'
           if @player.gp < 1500
             @printer.cannot_afford_chainmail
           else
@@ -61,7 +61,7 @@ module WizardsCastle
             @player.set_armor(:chainmail)
             return
           end
-        when "P"
+        when 'P'
           if @player.gp < 2000
             @printer.cannot_afford_plate
           else
@@ -79,15 +79,15 @@ module WizardsCastle
       @printer.vendor_weapons
 
       loop do
-        answer = @prompter.ask(["N","D","M","S"],@printer.prompt_vendor_weapon)
+        answer = @prompter.ask(%w[N D M S],@printer.prompt_vendor_weapon)
         case answer
-        when "N"
+        when 'N'
           return
-        when "D"
+        when 'D'
           @player.gp(-1250)
           @player.set_weapon(:dagger)
           return
-        when "M"
+        when 'M'
           if @player.gp < 1500
             @printer.cannot_afford_a_mace
           else
@@ -95,7 +95,7 @@ module WizardsCastle
             @player.set_weapon(:mace)
             return
           end
-        when "S"
+        when 'S'
           if @player.gp < 2000
             @printer.cannot_afford_a_sword
           else
@@ -114,8 +114,8 @@ module WizardsCastle
     def buy_str_potions
       loop do
         return if @player.gp < 1000
-        answer = @prompter.ask(["Y","N"],@printer.prompt_vendor_str_potion)
-        if answer=="Y"
+        answer = @prompter.ask(['Y', 'N'],@printer.prompt_vendor_str_potion)
+        if answer == 'Y'
           @player.gp(-1000)
           @player.str(+random_stat_gain)
           @printer.str_report
@@ -128,8 +128,8 @@ module WizardsCastle
     def buy_int_potions
       loop do
         return if @player.gp < 1000
-        answer = @prompter.ask(["Y","N"],@printer.prompt_vendor_int_potion)
-        if answer=="Y"
+        answer = @prompter.ask(['Y', 'N'],@printer.prompt_vendor_int_potion)
+        if answer == 'Y'
           @player.gp(-1000)
           @player.int(+random_stat_gain)
           @printer.int_report
@@ -142,8 +142,8 @@ module WizardsCastle
     def buy_dex_potions
       loop do
         return if @player.gp < 1000
-        answer = @prompter.ask(["Y","N"],@printer.prompt_vendor_dex_potion)
-        if answer=="Y"
+        answer = @prompter.ask(['Y', 'N'],@printer.prompt_vendor_dex_potion)
+        if answer == 'Y'
           @player.gp(-1000)
           @player.dex(+random_stat_gain)
           @printer.dex_report
@@ -154,9 +154,9 @@ module WizardsCastle
     end
 
     def buy_lamp
-      return if (@player.gp<1000 || @player.lamp?)
-      answer = @prompter.ask(["Y","N"],@printer.prompt_vendor_buy_lamp)
-      if answer=="Y"
+      return if (@player.gp < 1000 || @player.lamp?)
+      answer = @prompter.ask(['Y', 'N'],@printer.prompt_vendor_buy_lamp)
+      if answer == 'Y'
         @player.gp(-1000)
         @player.set_lamp(true)
         @printer.you_bought_a_lamp
