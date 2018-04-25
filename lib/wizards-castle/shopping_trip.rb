@@ -1,13 +1,15 @@
 module WizardsCastle
+
+  # Functions for buying stuff at start or from vendor
   class ShoppingTrip
 
-    def initialize(player,printer,prompter)
+    def initialize(player, printer, prompter)
       @player = player
       @printer = printer
       @prompter = prompter
     end
 
-    def run()
+    def run
       sell_treasures
       if @player.gp < 1000
         @printer.too_poor_to_trade
@@ -21,20 +23,20 @@ module WizardsCastle
       buy_lamp
     end
 
-    def random_treasure_offer(i)
-      Random.rand((i+1)*1500) + 1
+    def random_treasure_offer(gps)
+      Random.rand((gps + 1) * 1500) + 1
     end
 
     def sell_treasures
       a = %i[ruby_red norn_stone pale_pearl opal_eye green_gem blue_flame palantir silmaril]
-      a.each_with_index do |treasure,i|
-        if @player.have_treasure?(treasure)
-          offer = random_treasure_offer(i)
-          answer = @prompter.ask(['Y', 'N'], @printer.prompt_sell_treasure(treasure, offer))
-          if answer == 'Y'
-            @player.remove_treasure(treasure)
-            @player.gp(+offer)
-          end
+      a.each_with_index do |treasure, i|
+        next unless @player.have_treasure?
+
+        offer = random_treasure_offer(i)
+        answer = @prompter.ask(['Y', 'N'], @printer.prompt_sell_treasure(treasure, offer))
+        if answer == 'Y'
+          @player.remove_treasure(treasure)
+          @player.gp(+offer)
         end
       end
     end
@@ -79,7 +81,7 @@ module WizardsCastle
       @printer.vendor_weapons
 
       loop do
-        answer = @prompter.ask(%w[N D M S],@printer.prompt_vendor_weapon)
+        answer = @prompter.ask(%w[N D M S], @printer.prompt_vendor_weapon)
         case answer
         when 'N'
           return
@@ -108,59 +110,49 @@ module WizardsCastle
     end
 
     def random_stat_gain
-      Random.rand(6)+1
+      Random.rand(1..6)
     end
 
     def buy_str_potions
       loop do
         return if @player.gp < 1000
-        answer = @prompter.ask(['Y', 'N'],@printer.prompt_vendor_str_potion)
-        if answer == 'Y'
-          @player.gp(-1000)
-          @player.str(+random_stat_gain)
-          @printer.str_report
-        else
-          return
-        end
+        answer = @prompter.ask(['Y', 'N'], @printer.prompt_vendor_str_potion)
+        return unless answer == 'Y'
+        @player.gp(-1000)
+        @player.str(+random_stat_gain)
+        @printer.str_report
       end
     end
 
     def buy_int_potions
       loop do
         return if @player.gp < 1000
-        answer = @prompter.ask(['Y', 'N'],@printer.prompt_vendor_int_potion)
-        if answer == 'Y'
-          @player.gp(-1000)
-          @player.int(+random_stat_gain)
-          @printer.int_report
-        else
-          return
-        end
+        answer = @prompter.ask(['Y', 'N'], @printer.prompt_vendor_int_potion)
+        return unless answer == 'Y'
+        @player.gp(-1000)
+        @player.int(+random_stat_gain)
+        @printer.int_report
       end
     end
 
     def buy_dex_potions
       loop do
         return if @player.gp < 1000
-        answer = @prompter.ask(['Y', 'N'],@printer.prompt_vendor_dex_potion)
-        if answer == 'Y'
-          @player.gp(-1000)
-          @player.dex(+random_stat_gain)
-          @printer.dex_report
-        else
-          return
-        end
+        answer = @prompter.ask(['Y', 'N'], @printer.prompt_vendor_dex_potion)
+        return unless answer == 'Y'
+        @player.gp(-1000)
+        @player.dex(+random_stat_gain)
+        @printer.dex_report
       end
     end
 
     def buy_lamp
-      return if (@player.gp < 1000 || @player.lamp?)
-      answer = @prompter.ask(['Y', 'N'],@printer.prompt_vendor_buy_lamp)
-      if answer == 'Y'
-        @player.gp(-1000)
-        @player.set_lamp(true)
-        @printer.you_bought_a_lamp
-      end
+      return if @player.gp < 1000 || @player.lamp?
+      answer = @prompter.ask(['Y', 'N'], @printer.prompt_vendor_buy_lamp)
+      return unless answer == 'Y'
+      @player.gp(-1000)
+      @player.set_lamp(true)
+      @printer.you_bought_a_lamp
     end
 
   end
