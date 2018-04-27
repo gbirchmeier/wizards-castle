@@ -30,7 +30,7 @@ module WizardsCastle
     def sell_treasures
       a = %i[ruby_red norn_stone pale_pearl opal_eye green_gem blue_flame palantir silmaril]
       a.each_with_index do |treasure, i|
-        next unless @player.have_treasure?
+        next unless @player.have_treasure?(treasure)
 
         offer = random_treasure_offer(i)
         answer = @prompter.ask(['Y', 'N'], @printer.prompt_sell_treasure(treasure, offer))
