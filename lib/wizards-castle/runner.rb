@@ -1,4 +1,6 @@
 module WizardsCastle
+
+  # The game runner.  Everything starts here.
   class Runner
 
     module PlayerState
@@ -10,14 +12,14 @@ module WizardsCastle
     end
 
     def self.run
-      n=0
+      n = 0
       loop do
         runner = Runner.new
         runner.setup
-        runner.intro if n==0
+        runner.intro if n.zero?
         runner.character_creation
         break unless runner.play
-        n+=1
+        n += 1
       end
     end
 
@@ -36,11 +38,12 @@ module WizardsCastle
       @printer.intro
     end
 
-    def setup(h={})
-      @prompter = h[:prompter] || Prompter.new
-      @castle = h[:castle] || Castle.new
-      @player = h[:player] || Player.new
-      @printer = h[:printer] || StetsonPrinter.new(@player,@castle)
+    # TODO: move test_input support to a spec-only monkeypatch
+    def setup(test_input = {})
+      @prompter = test_input[:prompter] || Prompter.new
+      @castle = test_input[:castle] || Castle.new
+      @player = test_input[:player] || Player.new
+      @printer = test_input[:printer] || StetsonPrinter.new(@player, @castle)
     end
 
     def character_creation
@@ -53,16 +56,15 @@ module WizardsCastle
       @printer.gold_report2
       ask_weapon
       ask_lamp
-      if @player.gp > 0
-        @printer.gold_report3
-        ask_flares
-      end
+      return if @player.gp < 1
+      @printer.gold_report3
+      ask_flares
     end
 
     def play
       # returns true if user wants to play again
 
-      @player.set_location(1,4,1) #entrance
+      @player.set_location(1, 4, 1) #entrance
       @printer.entering_the_castle
 
       status = PlayerState::NEW_ROOM
@@ -87,15 +89,15 @@ module WizardsCastle
       end
       @printer.endgame_possessions
 
-      answer = @prompter.ask(["Y","N"], @printer.prompt_play_again)
-      if answer=="Y"
+      answer = @prompter.ask(['Y', 'N'], @printer.prompt_play_again)
+      if answer == 'Y'
         @printer.play_again
         @printer.restock
         return true
       end
 
       @printer.shut_down
-      return false
+      false
     end
 
 
@@ -155,38 +157,38 @@ module WizardsCastle
     end
 
     def ask_strength
-      if @player.custom_attribute_points > 0
-        max = 18-@player.str
-        max = @player.custom_attribute_points if max>@player.custom_attribute_points
-        n = @prompter.ask_integer(0,max,@printer.prompt_add_to_strength)
-        @player.custom_attribute_points(-n)
-        @player.str(+n)
-      end
+      return if @player.custom_attribute_points < 1
+
+      max = 18 - @player.str
+      max = @player.custom_attribute_points if max > @player.custom_attribute_points
+      n = @prompter.ask_integer(0, max, @printer.prompt_add_to_strength)
+      @player.custom_attribute_points(-n)
+      @player.str(+n)
     end
 
     def ask_intelligence
-      if @player.custom_attribute_points > 0
-        max = 18-@player.int
-        max = @player.custom_attribute_points if max>@player.custom_attribute_points
-        n = @prompter.ask_integer(0,max,@printer.prompt_add_to_intelligence)
-        @player.custom_attribute_points(-n)
-        @player.int(+n)
-      end
+      return if @player.custom_attribute_points < 1
+
+      max = 18 - @player.int
+      max = @player.custom_attribute_points if max > @player.custom_attribute_points
+      n = @prompter.ask_integer(0, max, @printer.prompt_add_to_intelligence)
+      @player.custom_attribute_points(-n)
+      @player.int(+n)
     end
 
     def ask_dexterity
-      if @player.custom_attribute_points > 0
-        max = 18-@player.dex
-        max = @player.custom_attribute_points if max>@player.custom_attribute_points
-        n = @prompter.ask_integer(0,max,@printer.prompt_add_to_dexterity)
-        @player.custom_attribute_points(-n)
-        @player.dex(+n)
-      end
+      return if @player.custom_attribute_points < 1
+
+      max = 18 - @player.dex
+      max = @player.custom_attribute_points if max > @player.custom_attribute_points
+      n = @prompter.ask_integer(0, max, @printer.prompt_add_to_dexterity)
+      @player.custom_attribute_points(-n)
+      @player.dex(+n)
     end
 
 
     def ask_armor
-      allowed = Player::ARMORS.collect{|x| [x.to_s[0].upcase,x]}.to_h
+      allowed = Player::ARMORS.collect{|x| [x.to_s[0].upcase, x]}.to_h
       costs = { plate: 30, chainmail: 20, leather: 10, nothing: 0 }
       answer = @prompter.ask(allowed.keys, @printer.prompt_armor)
       armor = allowed[answer]
@@ -195,7 +197,7 @@ module WizardsCastle
     end
 
     def ask_weapon
-      allowed = Player::WEAPONS.collect{|x| [x.to_s[0].upcase,x]}.to_h
+      allowed = Player::WEAPONS.collect{|x| [x.to_s[0].upcase, x]}.to_h
       costs = { sword: 30, mace: 20, dagger: 10, nothing: 0 }
       answer = @prompter.ask(allowed.keys, @printer.prompt_weapon)
       weapon = allowed[answer]
@@ -206,13 +208,13 @@ module WizardsCastle
     def ask_lamp
       return if @player.gp < 20
 
-      answer = @prompter.ask(["Y","N"], @printer.prompt_lamp)
-      @player.gp(-20) if @player.set_lamp(answer=="Y")
+      answer = @prompter.ask(['Y', 'N'], @printer.prompt_lamp)
+      @player.gp(-20) if @player.set_lamp(answer == 'Y')
     end
 
     def ask_flares
       return if @player.gp < 1
-      n = @prompter.ask_integer(0,@player.gp,@printer.prompt_flares)
+      n = @prompter.ask_integer(0, @player.gp, @printer.prompt_flares)
       @player.flares(+n)
       @player.gp(-n)
     end
@@ -238,44 +240,44 @@ module WizardsCastle
 
       @printer.stat_block
 
-      @player.remember_room(*loc)  #remember even if blind
+      @player.remember_room(*loc) #remember even if blind
 
       symbol_for_text =
-        if rc.symbol==:runestaff_and_monster
+        if rc.symbol == :runestaff_and_monster
           @castle.runestaff_monster
         else
           rc.symbol
-      end
+        end
       @printer.here_you_find(symbol_for_text)
 
       case rc.symbol
       when :gold
-        n = Random.rand(10)+1
+        n = Random.rand(1..10)
         @player.gp(+n)
         @printer.new_gold_count
-        @castle.set_in_room(*loc,:empty_room)
+        @castle.set_in_room(*loc, :empty_room)
         return PlayerState::ACTION
       when :flares
-        n = Random.rand(5)+1
+        n = Random.rand(1..5)
         @player.flares(+n)
         @printer.new_flare_count
-        @castle.set_in_room(*loc,:empty_room)
+        @castle.set_in_room(*loc, :empty_room)
         return PlayerState::ACTION
       when :warp
-        @player.set_location *Castle.random_room
+        @player.set_location(*Castle.random_room)
         return PlayerState::NEW_ROOM
       when :sinkhole
-        @player.set_location *Castle.down(*loc)
+        @player.set_location(*Castle.down(*loc))
         return PlayerState::NEW_ROOM
       when :orb_of_zot
         if entered_via_teleport
           @printer.found_orb_of_zot
           @player.set_runestaff(false)
           @player.set_orb_of_zot(true)
-          @castle.set_in_room(*loc,:empty_room)
+          @castle.set_in_room(*loc, :empty_room)
           return PlayerState::ACTION
         else
-          @player.set_location *Castle.move(@player.facing.to_s.upcase,*loc)
+          @player.set_location(*Castle.move(@player.facing.to_s.upcase, *loc))
           return PlayerState::NEW_ROOM
         end
       end
@@ -283,22 +285,22 @@ module WizardsCastle
       if rc.treasure?
         @player.add_treasure(rc.symbol)
         @printer.got_a_treasure(rc.symbol)
-        @castle.set_in_room(*loc,:empty_room)
+        @castle.set_in_room(*loc, :empty_room)
         return PlayerState::ACTION
       elsif rc.monster?
         return combat
-      elsif rc.symbol==:vendor
+      elsif rc.symbol == :vendor
         return combat if @player.vendor_rage?
 
-        case @prompter.ask(["T","A","I"], @printer.prompt_vendor_encounter)
-        when "I"
+        case @prompter.ask(%w[T A I], @printer.prompt_vendor_encounter)
+        when 'I'
           return PlayerState::ACTION
-        when "A"
+        when 'A'
           @player.set_vendor_rage(true)
           @printer.vendor_responds_to_attack
           return combat
-        when "T"
-          ShoppingTrip.new(@player,@printer,@prompter).run()
+        when 'T'
+          ShoppingTrip.new(@player, @printer, @prompter).run
           return PlayerState::ACTION
         end
       end
@@ -307,11 +309,11 @@ module WizardsCastle
     end
 
     def leech_gp_loss
-      1+Random.rand(5)
+      Random.rand(1..5)
     end
 
     def do_random_flavor_text?
-      Random.rand(5) == 0  # 20% chance
+      Random.rand(5).zero? # 20% chance
     end
 
     def player_action
@@ -345,49 +347,45 @@ module WizardsCastle
       end
 
 
-      valid_cmds = ["H","N","S","E","W","U","D","DR","M","F","L","O","G","T","Q"]
+      valid_cmds = %w[H N S E W U D DR M F L O G T Q]
       cmd = @prompter.ask(valid_cmds, @printer.prompt_standard_action)
 
-      if ['M','F','L','G'].include?(cmd) && @player.blind?
+      if %w[M F L G].include?(cmd) && @player.blind?
         @printer.blind_command_error
         return PlayerState::ACTION
       end
 
       case cmd
-      when "H"
+      when 'H'
         @printer.help_message
         return PlayerState::ACTION
-      when "N","S","E","W"
-        if cmd=="N" && rc.symbol==:entrance
-          return PlayerState::EXITED
-        else
-          @player.set_location *Castle.move(cmd,*loc)
-          @player.set_facing(cmd.downcase.to_sym)
-          return PlayerState::NEW_ROOM
-        end
+      when 'N', 'S', 'E', 'W'
+        return PlayerState::EXITED if cmd == 'N' && rc.symbol == :entrance
+        @player.set_location(*Castle.move(cmd, *loc))
+        @player.set_facing(cmd.downcase.to_sym)
+        return PlayerState::NEW_ROOM
       when 'U'
-        if rc.symbol==:stairs_up
-          @player.set_location *Castle.up(*loc)
+        if rc.symbol == :stairs_up
+          @player.set_location(*Castle.up(*loc))
           return PlayerState::NEW_ROOM
         end
         @printer.stairs_up_error
         return PlayerState::ACTION
       when 'D'
-        if rc.symbol==:stairs_down
-          @player.set_location *Castle.down(*loc)
+        if rc.symbol == :stairs_down
+          @player.set_location(*Castle.down(*loc))
           return PlayerState::NEW_ROOM
         end
         @printer.stairs_down_error
         return PlayerState::ACTION
       when 'DR'
-        if rc.symbol==:magic_pool
+        if rc.symbol == :magic_pool
           drink
           return PlayerState::DIED if @player.dead?
-          return PlayerState::ACTION
         else
           @printer.no_pool_error
-          return PlayerState::ACTION
         end
+        return PlayerState::ACTION
       when 'M'
         @printer.display_map
         return PlayerState::ACTION
@@ -398,29 +396,26 @@ module WizardsCastle
         shine_lamp
         return PlayerState::ACTION
       when 'O'
-        if rc.symbol==:book
+        if rc.symbol == :book
           book
-          @castle.set_in_room(*loc,:empty_room)
-          return PlayerState::ACTION
-        elsif rc.symbol==:chest
-          chest_effect = chest()
-          @castle.set_in_room(*loc,:empty_room)
+          @castle.set_in_room(*loc, :empty_room)
+        elsif rc.symbol == :chest
+          chest_effect = chest
+          @castle.set_in_room(*loc, :empty_room)
           return PlayerState::DIED if @player.dead?
-          return PlayerState::NEW_ROOM if chest_effect==:gas
-          return PlayerState::ACTION
+          return PlayerState::NEW_ROOM if chest_effect == :gas
         else
           @printer.nothing_to_open_error
-          return PlayerState::ACTION
         end
+        return PlayerState::ACTION
       when 'G'
-        if rc.symbol==:crystal_orb
+        if rc.symbol == :crystal_orb
           gaze
           return PlayerState::DIED if @player.dead?
-          return PlayerState::ACTION
         else
           @printer.no_crystal_orb_error
-          return PlayerState::ACTION
         end
+        return PlayerState::ACTION
       when 'T'
         if @player.runestaff?
           teleport
@@ -430,32 +425,29 @@ module WizardsCastle
           return PlayerState::ACTION
         end
       when 'Q'
-        if @prompter.confirm("Y",@printer.prompt_confirm_quit)
+        if @prompter.confirm('Y', @printer.prompt_confirm_quit)
           return PlayerState::QUIT
         end
         return PlayerState::ACTION
       else
-        puts "UNRECOGNIZED COMMAND <#{cmd}>"  # should never happen
+        puts "UNRECOGNIZED COMMAND <#{cmd}>" # should never happen
       end
 
       PlayerState::ACTION
     end
 
-
-    def display_map
+    # This function was used during dev.
+    # For some reason I'm hesitant to delete it, even though it's not used by anything.
+    def debug_display_map
       floor = @player.location.last
       lines = []
       (1..8).each do |row|
         lines << ''
         (1..8).each do |col|
-          c = @player.knows_room?(row,col,floor) ? @castle.room(row,col,floor).display : "?"
-          if [row,col,floor]==@player.location
-            lines.last << "<#{c}>  "
-          else
-            lines.last << " #{c}   "
-          end
+          c = @player.knows_room?(row, col, floor) ? @castle.room(row, col, floor).display : '?'
+          lines.last << (@player.location == [row, col, floor]) ? "<#{c}>  " : " #{c}   "
         end
-        lines << ""
+        lines << ''
       end
       lines << Strings.you_are_here(@player)
       puts lines
@@ -464,11 +456,11 @@ module WizardsCastle
 
 
     def random_drink_effect
-      [:stronger,:weaker,:smarter,:dumber,:nimbler,:clumsier,:change_race,:change_gender].sample
+      %i[stronger weaker smarter dumber nimbler clumsier change_race change_gender].sample
     end
 
     def random_drink_attr_change
-      1+Random.rand(3)
+      Random.rand(1..3)
     end
 
     def random_drink_race_change
@@ -476,7 +468,7 @@ module WizardsCastle
     end
 
     def drink
-      effect = random_drink_effect()
+      effect = random_drink_effect
       case effect
       when :stronger
         @player.str(random_drink_attr_change)
@@ -491,13 +483,13 @@ module WizardsCastle
       when :clumsier
         @player.dex(-1 * random_drink_attr_change)
       when :change_race
-        newrace = random_drink_race_change()
+        newrace = random_drink_race_change
         @player.set_race(newrace)
       when :change_gender
-        newgender = @player.gender==:male ? :female : :male
+        newgender = @player.gender == :male ? :female : :male
         @player.set_gender(newgender)
       else
-        raise "unrecognized drink effect '#{effect.to_s}'"
+        raise "unrecognized drink effect '#{effect}'"
       end
 
       @printer.drink_effect(effect)
@@ -525,24 +517,22 @@ module WizardsCastle
         @printer.no_lamp_error
         return
       end
-      dir = @prompter.ask(["N","E","W","S"], @printer.prompt_shine_lamp)
-      target_loc = Castle.move(dir,*@player.location)
+      dir = @prompter.ask(['N', 'E', 'W', 'S'], @printer.prompt_shine_lamp)
+      target_loc = Castle.move(dir, *@player.location)
       @player.remember_room(*target_loc)
       @printer.lamp_shine(*target_loc)
     end
 
 
     def random_book_effect
-      [:flash,:poetry,:magazine,:dex_manual,:str_manual,:sticky].sample
+      %i[flash poetry magazine dex_manual str_manual sticky].sample
     end
 
     def book
-      effect = random_book_effect()
+      effect = random_book_effect
       case effect
       when :flash
         @player.set_blind(true)
-      when :poetry,:magazine
-        # no effect
       when :dex_manual
         @player.dex(+18)
       when :str_manual
@@ -550,26 +540,28 @@ module WizardsCastle
       when :sticky
         @player.set_stickybook(true)
       else
-        raise "unrecognized book effect '#{effect.to_s}'"
+        raise "unrecognized book effect '#{effect}'"
       end
+      # no 'real' effect:
+      #   :poetry, :magazine
       @printer.book_effect(effect)
     end
 
 
     def random_chest_effect
-      [:kaboom,:gold,:gas,:gold].sample
+      %i[kaboom gold gas gold].sample
     end
 
     def chest_explosion_damage
-      1+Random.rand(6)
+      Random.rand(1..6)
     end
 
     def chest_gold
-      1+Random.rand(1000)
+      Random.rand(1..1000)
     end
 
     def chest_gas_random_direction
-      [:n,:e,:w,:s].sample
+      %i[n e w s].sample
     end
 
     def chest
@@ -578,62 +570,63 @@ module WizardsCastle
       case effect
       when :kaboom
         dmg = chest_explosion_damage
-        @player.take_a_hit!(dmg,@printer)
+        @player.take_a_hit!(dmg, @printer)
       when :gold
-        gold_gain = chest_gold()
+        gold_gain = chest_gold
         @player.gp(+gold_gain)
       when :gas
         dir = chest_gas_random_direction
         @player.turns(+20)
         @player.set_facing dir
-        @player.set_location *Castle.move(dir.to_s.upcase,*@player.location)
+        @player.set_location(*Castle.move(dir.to_s.upcase, *@player.location))
       else
-        raise "unrecognized chest effect '#{effect.to_s}'"
+        raise "unrecognized chest effect '#{effect}'"
       end
 
-      @printer.chest_effect(effect,gold_gain)
+      @printer.chest_effect(effect, gold_gain)
       effect
     end
 
 
     def random_gaze_effect
-      [:bloody_heap,:drink_and_become,:monster_gazing_back,:random_room,:zot_location,:soap_opera_rerun].sample
+      %i[bloody_heap drink_and_become monster_gazing_back random_room zot_location soap_opera_rerun].sample
     end
 
     def random_gaze_attr_change
-      1+Random.rand(2)
+      Random.rand(1..2)
     end
 
     def random_gaze_show_orb_of_zot?
-      Random.rand(2)==0
+      Random.rand(2).zero?
     end
 
     def gaze
-      effect = random_gaze_effect()
+      effect = random_gaze_effect
       effect_location = nil
       case effect
       when :bloody_heap
-        @player.str(-1*random_gaze_attr_change)
+        @player.str(-1 * random_gaze_attr_change)
       when :random_room
         effect_location = Castle.random_room
         @player.remember_room(*effect_location)
       when :zot_location
         effect_location = random_gaze_show_orb_of_zot? ? @castle.orb_of_zot_location : Castle.random_room
-      when :drink_and_become,:monster_gazing_back,:soap_opera_rerun
-        # no effect
       else
-        raise "unrecognized gaze effect '#{effect.to_s}'"
+        raise "unrecognized gaze effect '#{effect}'"
       end
 
-      @printer.gaze_effect(effect,effect_location)
+      # These gazes have no 'real' effects:
+      #   :drink_and_become, :monster_gazing_back, :soap_opera_rerun
+
+      @printer.gaze_effect(effect, effect_location)
     end
 
 
     def teleport
-      row   = @prompter.ask_integer(1,8,@printer.prompt_teleport_row)
-      col   = @prompter.ask_integer(1,8,@printer.prompt_teleport_column)
-      floor = @prompter.ask_integer(1,8,@printer.prompt_teleport_floor)
-      @player.set_location(row,col,floor)
+      row   = @prompter.ask_integer(1, 8, @printer.prompt_teleport_row)
+      col   = @prompter.ask_integer(1, 8, @printer.prompt_teleport_column)
+      floor = @prompter.ask_integer(1, 8, @printer.prompt_teleport_floor)
+      @player.set_location(row, col, floor)
       @player.set_teleported(true)
     end
 
@@ -648,36 +641,34 @@ module WizardsCastle
 
       when BattleRunner::Result::RETREAT
         @printer.you_have_escaped
-        dir = @prompter.ask(['N','S','E','W'], @printer.prompt_retreat_direction)
-        @player.set_location *Castle.move(dir,*loc)
+        dir = @prompter.ask(['N', 'S', 'E', 'W'], @printer.prompt_retreat_direction)
+        @player.set_location(*Castle.move(dir, *loc))
         @player.set_facing(dir.downcase.to_sym)
         return PlayerState::NEW_ROOM
       when BattleRunner::Result::PLAYER_DEAD
         return PlayerState::DIED
       when BattleRunner::Result::ENEMY_DEAD
         @printer.monster_is_dead
-        eat_monster_maybe()
-        if rc.symbol==:vendor
+        eat_monster_maybe
+        if rc.symbol == :vendor
           @player.set_armor(:plate)
           @player.set_weapon(:sword)
-          @player.str(+Random.rand(6)+1)
-          @player.int(+Random.rand(6)+1)
-          @player.dex(+Random.rand(6)+1)
+          @player.str(+Random.rand(1..6))
+          @player.int(+Random.rand(1..6))
+          @player.dex(+Random.rand(1..6))
           @player.set_lamp(true)
           @printer.vendor_loot
-        else
-          if rc.symbol==:runestaff_and_monster
-            @printer.you_got_the_runestaff
-            @player.set_runestaff(true)
-          end
+        elsif rc.symbol == :runestaff_and_monster
+          @printer.you_got_the_runestaff
+          @player.set_runestaff(true)
         end
-        gp_gain = monster_random_gp()
+        gp_gain = monster_random_gp
         @player.gp(+gp_gain)
         @printer.you_got_monster_gold(gp_gain)
-        @castle.set_in_room(*loc,:empty_room)
+        @castle.set_in_room(*loc, :empty_room)
         return PlayerState::ACTION
       when BattleRunner::Result::BRIBED
-        @player.set_vendor_rage(false) if rc.symbol==:vendor
+        @player.set_vendor_rage(false) if rc.symbol == :vendor
         return PlayerState::ACTION
       else
         raise "illegal BattleRunner::Result '#{outcome}'"
@@ -685,19 +676,18 @@ module WizardsCastle
     end
 
     def run_battle(monster_symbol)
-      br = BattleRunner.new(@player,monster_symbol,@printer,@prompter)
-      br.run()
+      br = BattleRunner.new(@player, monster_symbol, @printer, @prompter)
+      br.run
     end
 
     def monster_random_gp
-      Random.rand(1000)+1
+      Random.rand(1..1000)
     end
 
     def eat_monster_maybe
-      if @player.turns >= (@player.last_ate_turn+60)
-        @printer.eat_a_monster
-        @player.update_last_ate_turn!
-      end
+      return if @player.turns < @player.last_ate_turn + 60
+      @printer.eat_a_monster
+      @player.update_last_ate_turn!
     end
 
   end
