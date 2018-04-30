@@ -117,7 +117,7 @@ module WizardsCastle
       lethargy      = [row, col, floor] == @curse_location_lethargy
       leech         = [row, col, floor] == @curse_location_leech
       forgetfulness = [row, col, floor] == @curse_location_forgetfulness
-      runestaff_monster_type  = [row, col, floor] == @runestaff_location ? @runestaff_monster : nil
+      runestaff_monster_type = [row, col, floor] == @runestaff_location ? @runestaff_monster : nil
       # rubocop:enable Style/YodaCondition
       RoomContent.new(@rooms[Castle.room_index(row, col, floor)], lethargy, leech, forgetfulness, runestaff_monster_type)
     end

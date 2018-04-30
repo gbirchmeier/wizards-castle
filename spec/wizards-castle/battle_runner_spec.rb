@@ -107,7 +107,9 @@ module WizardsCastle
           expect(@brunner.run).to eq BattleRunner::Result::PLAYER_DEAD
         end
       end
-    end #run
+    end
+    # run
+
 
     context '#do_player_attack' do
       before(:each) do
@@ -158,7 +160,7 @@ module WizardsCastle
         @brunner.do_player_attack
         expect(@brunner.enemy_str).to eq 14 #unharmed
       end
-    end # do_player_attack
+    end
 
 
     context '#do_bribe?' do
@@ -242,7 +244,7 @@ module WizardsCastle
           expect(@brunner.enemy_str).to eq 14
         end
       end
-    end #do_cast
+    end
 
     context 'web effect' do
       before(:each) do

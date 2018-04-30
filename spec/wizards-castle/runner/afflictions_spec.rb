@@ -119,9 +119,10 @@ module WizardsCastle
               @runner.player.set_orb_of_zot(true)
             end
           end
+        end
 
-        end #turn-start curse effects
       end
+      #turn-start curse effects
 
       context 'cure' do
         before(:each) do
