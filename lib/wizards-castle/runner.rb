@@ -539,11 +539,11 @@ module WizardsCastle
         @player.str(+18)
       when :sticky
         @player.set_stickybook(true)
+      when :poetry, :magazine # rubocop:disable Lint/EmptyWhen
+        # no effect
       else
         raise "unrecognized book effect '#{effect}'"
       end
-      # no 'real' effect:
-      #   :poetry, :magazine
       @printer.book_effect(effect)
     end
 
@@ -611,12 +611,11 @@ module WizardsCastle
         @player.remember_room(*effect_location)
       when :zot_location
         effect_location = random_gaze_show_orb_of_zot? ? @castle.orb_of_zot_location : Castle.random_room
+      when :drink_and_become, :monster_gazing_back, :soap_opera_rerun # rubocop:disable Lint/EmptyWhen
+        # do nothing
       else
         raise "unrecognized gaze effect '#{effect}'"
       end
-
-      # These gazes have no 'real' effects:
-      #   :drink_and_become, :monster_gazing_back, :soap_opera_rerun
 
       @printer.gaze_effect(effect, effect_location)
     end
