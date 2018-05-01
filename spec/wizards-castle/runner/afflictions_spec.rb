@@ -62,7 +62,7 @@ module WizardsCastle
               @runner.player.add_treasure(:ruby_red)
             end
             it 'with runestaff' do
-              @runner.player.set_runestaff(true)
+              @runner.player.runestaff = true
             end
             it 'with orb_of_zot' do
               @runner.player.set_orb_of_zot(true)
@@ -88,7 +88,7 @@ module WizardsCastle
               @runner.player.add_treasure(:pale_pearl)
             end
             it 'with runestaff' do
-              @runner.player.set_runestaff(true)
+              @runner.player.runestaff = true
             end
             it 'with orb_of_zot' do
               @runner.player.set_orb_of_zot(true)
@@ -113,7 +113,7 @@ module WizardsCastle
               @runner.player.add_treasure(:green_gem)
             end
             it 'with runestaff' do
-              @runner.player.set_runestaff(true)
+              @runner.player.runestaff = true
             end
             it 'with orb_of_zot' do
               @runner.player.set_orb_of_zot(true)

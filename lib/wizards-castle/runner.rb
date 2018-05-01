@@ -274,7 +274,7 @@ module WizardsCastle
       when :orb_of_zot
         if entered_via_teleport
           @printer.found_orb_of_zot
-          @player.set_runestaff(false)
+          @player.runestaff = false
           @player.set_orb_of_zot(true)
           @castle.set_in_room(*loc, :empty_room)
           return PlayerState::ACTION
@@ -661,7 +661,7 @@ module WizardsCastle
           @printer.vendor_loot
         elsif rc.symbol == :runestaff_and_monster
           @printer.you_got_the_runestaff
-          @player.set_runestaff(true)
+          @player.runestaff = true
         end
         gp_gain = monster_random_gp
         @player.gp(+gp_gain)

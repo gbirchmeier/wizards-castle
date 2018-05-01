@@ -34,7 +34,7 @@ module WizardsCastle
       @runestaff
     end
 
-    def set_runestaff(bool)
+    def runestaff=(bool)
       check_bool(bool)
       @runestaff = bool
     end

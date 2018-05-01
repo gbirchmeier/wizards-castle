@@ -50,7 +50,7 @@ module WizardsCastle
           @runner.player.set_facing(:s)
         end
         it 'via teleport' do
-          @runner.player.set_runestaff(true)
+          @runner.player.runestaff = true
           @runner.player.set_teleported(true)
           expect(@runner.enter_room).to eq Runner::PlayerState::ACTION
           expect(@runner.player.orb_of_zot?).to eq true

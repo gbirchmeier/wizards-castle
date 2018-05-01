@@ -380,7 +380,7 @@ module WizardsCastle
         end
 
         it 'no runestaff' do
-          @runner.player.set_runestaff(false)
+          @runner.player.runestaff = false
           @prompter.push 'T'
           expect(@runner.printer).to receive(:no_runestaff_error)
           expect(@runner.player_action).to eq Runner::PlayerState::ACTION
@@ -389,7 +389,7 @@ module WizardsCastle
         end
 
         it 'success' do
-          @runner.player.set_runestaff(true)
+          @runner.player.runestaff = true
           @prompter.push ['T', 3, 3, 3]
           expect(@runner.player_action).to eq Runner::PlayerState::NEW_ROOM
           expect(@runner.player.location).to eq [3, 3, 3]
