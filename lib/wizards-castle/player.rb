@@ -52,7 +52,7 @@ module WizardsCastle
       @teleported
     end
 
-    def set_teleported(bool)
+    def teleported=(bool)
       check_bool(bool)
       @teleported = bool
     end

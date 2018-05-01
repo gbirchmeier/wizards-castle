@@ -376,7 +376,7 @@ module WizardsCastle
       context 'T' do
         before(:each) do
           @runner.player.set_location(2, 2, 2)
-          @runner.player.set_teleported(false)
+          @runner.player.teleported = false
         end
 
         it 'no runestaff' do

@@ -232,7 +232,7 @@ module WizardsCastle
       rc = @castle.room(*loc)
 
       entered_via_teleport = @player.teleported?
-      @player.set_teleported(false)
+      @player.teleported = false
 
       if @player.blind?
         @printer.you_are_here_blind
@@ -628,7 +628,7 @@ module WizardsCastle
       col   = @prompter.ask_integer(1, 8, @printer.prompt_teleport_column)
       floor = @prompter.ask_integer(1, 8, @printer.prompt_teleport_floor)
       @player.set_location(row, col, floor)
-      @player.set_teleported(true)
+      @player.teleported = true
     end
 
 
