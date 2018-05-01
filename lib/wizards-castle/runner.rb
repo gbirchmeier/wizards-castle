@@ -209,7 +209,9 @@ module WizardsCastle
       return if @player.gp < 20
 
       answer = @prompter.ask(['Y', 'N'], @printer.prompt_lamp)
-      @player.gp(-20) if @player.set_lamp(answer == 'Y')
+      return unless answer == 'Y'
+      @player.lamp = true
+      @player.gp(-20)
     end
 
     def ask_flares
@@ -655,7 +657,7 @@ module WizardsCastle
           @player.str(+Random.rand(1..6))
           @player.int(+Random.rand(1..6))
           @player.dex(+Random.rand(1..6))
-          @player.set_lamp(true)
+          @player.lamp = true
           @printer.vendor_loot
         elsif rc.symbol == :runestaff_and_monster
           @printer.you_got_the_runestaff

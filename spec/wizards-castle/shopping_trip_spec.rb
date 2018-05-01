@@ -139,7 +139,7 @@ module WizardsCastle
 
       it 'already got one' do
         @player.gp(+3333)
-        @player.set_lamp(true)
+        @player.lamp = true
         @trip.buy_lamp
         expect(@player.gp).to eq 3333
       end

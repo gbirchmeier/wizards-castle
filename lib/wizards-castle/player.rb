@@ -16,7 +16,7 @@ module WizardsCastle
       @has_lamp
     end
 
-    def set_lamp(bool)
+    def lamp=(bool)
       check_bool(bool)
       @has_lamp = bool
     end

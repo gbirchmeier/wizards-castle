@@ -222,7 +222,7 @@ module WizardsCastle
           @prompter.push ['L', 'W']
         end
         it 'have lamp' do
-          @runner.player.set_lamp(true)
+          @runner.player.lamp = true
           expect(@runner.printer).to receive(:lamp_shine)
           expect(@runner.player_action).to eq Runner::PlayerState::ACTION
           expect(@runner.player.knows_room?(2, 1, 2)).to eq true

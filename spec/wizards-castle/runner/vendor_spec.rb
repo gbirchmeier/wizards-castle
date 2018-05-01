@@ -36,7 +36,7 @@ module WizardsCastle
           @runner.player.set_weapon(:dagger)
           @runner.player.set_armor(:leather)
           expect(@runner.player.gp).to eq 60
-          @runner.player.set_lamp(false)
+          @runner.player.lamp = false
           @runner.player.str(+8)
           @runner.player.int(+8)
           @runner.player.dex(+8)

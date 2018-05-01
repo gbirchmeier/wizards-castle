@@ -151,7 +151,7 @@ module WizardsCastle
       answer = @prompter.ask(['Y', 'N'], @printer.prompt_vendor_buy_lamp)
       return unless answer == 'Y'
       @player.gp(-1000)
-      @player.set_lamp(true)
+      @player.lamp = true
       @printer.you_bought_a_lamp
     end
 
