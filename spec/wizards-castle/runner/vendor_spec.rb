@@ -17,7 +17,7 @@ module WizardsCastle
         end
 
         it 'get attacked (and run away)' do
-          @runner.player.set_vendor_rage(true)
+          @runner.player.vendor_rage = true
           allow(@runner).to receive(:combat).and_return Runner::PlayerState::NEW_ROOM
           expect(@runner.enter_room).to eq Runner::PlayerState::NEW_ROOM
         end
@@ -55,7 +55,7 @@ module WizardsCastle
         end
 
         it 'get attacked and bribe him happy' do
-          @runner.player.set_vendor_rage(true)
+          @runner.player.vendor_rage = true
           allow(@runner).to receive(:run_battle).and_return BattleRunner::Result::BRIBED
           expect(@runner.combat).to eq Runner::PlayerState::ACTION
           expect(@runner.player.vendor_rage?).to eq false

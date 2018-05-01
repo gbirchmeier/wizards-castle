@@ -25,7 +25,7 @@ module WizardsCastle
       @vendor_rage
     end
 
-    def set_vendor_rage(bool)
+    def vendor_rage=(bool)
       check_bool(bool)
       @vendor_rage = bool
     end

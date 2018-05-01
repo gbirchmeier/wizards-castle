@@ -298,7 +298,7 @@ module WizardsCastle
         when 'I'
           return PlayerState::ACTION
         when 'A'
-          @player.set_vendor_rage(true)
+          @player.vendor_rage = true
           @printer.vendor_responds_to_attack
           return combat
         when 'T'
@@ -669,7 +669,7 @@ module WizardsCastle
         @castle.set_in_room(*loc, :empty_room)
         return PlayerState::ACTION
       when BattleRunner::Result::BRIBED
-        @player.set_vendor_rage(false) if rc.symbol == :vendor
+        @player.vendor_rage = false if rc.symbol == :vendor
         return PlayerState::ACTION
       else
         raise "illegal BattleRunner::Result '#{outcome}'"
