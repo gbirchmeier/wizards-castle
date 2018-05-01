@@ -113,7 +113,7 @@ module WizardsCastle
         'H' => :hobbit
       }
       answer = @prompter.ask(allowed.keys, @printer.prompt_race)
-      @player.set_race(allowed[answer])
+      @player.race = allowed[answer]
 
       case @player.race
       when :hobbit
@@ -145,7 +145,7 @@ module WizardsCastle
         'F' => :female
       }
       answer = @prompter.ask(allowed.keys, @printer.prompt_gender)
-      @player.set_gender(allowed[answer])
+      @player.gender = allowed[answer]
     end
 
 
@@ -364,7 +364,7 @@ module WizardsCastle
       when 'N', 'S', 'E', 'W'
         return PlayerState::EXITED if cmd == 'N' && rc.symbol == :entrance
         @player.set_location(*Castle.move(cmd, *loc))
-        @player.set_facing(cmd.downcase.to_sym)
+        @player.facing = cmd.downcase.to_sym
         return PlayerState::NEW_ROOM
       when 'U'
         if rc.symbol == :stairs_up
@@ -486,10 +486,10 @@ module WizardsCastle
         @player.dex(-1 * random_drink_attr_change)
       when :change_race
         newrace = random_drink_race_change
-        @player.set_race(newrace)
+        @player.race = newrace
       when :change_gender
         newgender = @player.gender == :male ? :female : :male
-        @player.set_gender(newgender)
+        @player.gender = newgender
       else
         raise "unrecognized drink effect '#{effect}'"
       end
@@ -579,7 +579,7 @@ module WizardsCastle
       when :gas
         dir = chest_gas_random_direction
         @player.turns(+20)
-        @player.set_facing dir
+        @player.facing = dir
         @player.set_location(*Castle.move(dir.to_s.upcase, *@player.location))
       else
         raise "unrecognized chest effect '#{effect}'"
@@ -644,7 +644,7 @@ module WizardsCastle
         @printer.you_have_escaped
         dir = @prompter.ask(['N', 'S', 'E', 'W'], @printer.prompt_retreat_direction)
         @player.set_location(*Castle.move(dir, *loc))
-        @player.set_facing(dir.downcase.to_sym)
+        @player.facing = dir.downcase.to_sym
         return PlayerState::NEW_ROOM
       when BattleRunner::Result::PLAYER_DEAD
         return PlayerState::DIED

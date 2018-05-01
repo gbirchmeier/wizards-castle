@@ -102,18 +102,18 @@ module WizardsCastle
       @location = [row, col, floor]
     end
 
-    def set_facing(dir)
+    def facing=(dir)
       raise "Illegal direction '#{dir.inspect}'" unless [:n, :s, :w, :e].include?(dir)
       @facing = dir
     end
 
 
-    def set_race(race)
+    def race=(race)
       raise "Unrecognized race parameter '#{race.inspect}'" unless RACES.include?(race)
       @race = race
     end
 
-    def set_gender(gen)
+    def gender=(gen)
       #maybe in a future version I'll allow non-binary genders
       raise 'Unrecognized gender parameter' unless GENDERS.include?(gen)
       @gender = gen

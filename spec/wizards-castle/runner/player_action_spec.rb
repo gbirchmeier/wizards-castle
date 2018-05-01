@@ -116,8 +116,8 @@ module WizardsCastle
           @runner.player.str(+8)
           @runner.player.int(+8)
           @runner.player.dex(+8)
-          @runner.player.set_race(:human)
-          @runner.player.set_gender(:male)
+          @runner.player.race = :human
+          @runner.player.gender = :male
           @runner.player.set_location(2, 2, 2)
           @runner.castle.set_in_room(2, 2, 2, :magic_pool)
           @prompter.push 'DR'
@@ -289,7 +289,7 @@ module WizardsCastle
           @runner.player.int(+8)
           @runner.player.dex(+8)
           @runner.player.set_armor(:nothing)
-          @runner.player.set_facing(:s)
+          @runner.player.facing = :s
           expect(@runner.player.gp).to eq 60
           expect(@runner.player.turns).to eq 1
           @prompter.push 'O'

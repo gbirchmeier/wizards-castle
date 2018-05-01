@@ -47,7 +47,7 @@ module WizardsCastle
         before(:each) do
           @runner.castle.set_in_room(2, 2, 2, :orb_of_zot)
           @runner.player.set_location(2, 2, 2)
-          @runner.player.set_facing(:s)
+          @runner.player.facing = :s
         end
         it 'via teleport' do
           @runner.player.runestaff = true
