@@ -65,7 +65,7 @@ module WizardsCastle
               @runner.player.runestaff = true
             end
             it 'with orb_of_zot' do
-              @runner.player.set_orb_of_zot(true)
+              @runner.player.orb_of_zot = true
             end
           end
         end
@@ -91,7 +91,7 @@ module WizardsCastle
               @runner.player.runestaff = true
             end
             it 'with orb_of_zot' do
-              @runner.player.set_orb_of_zot(true)
+              @runner.player.orb_of_zot = true
             end
           end
         end
@@ -116,7 +116,7 @@ module WizardsCastle
               @runner.player.runestaff = true
             end
             it 'with orb_of_zot' do
-              @runner.player.set_orb_of_zot(true)
+              @runner.player.orb_of_zot = true
             end
           end
         end

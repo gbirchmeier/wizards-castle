@@ -43,7 +43,7 @@ module WizardsCastle
       @orb_of_zot
     end
 
-    def set_orb_of_zot(bool)
+    def orb_of_zot=(bool)
       check_bool(bool)
       @orb_of_zot = bool
     end

@@ -275,7 +275,7 @@ module WizardsCastle
         if entered_via_teleport
           @printer.found_orb_of_zot
           @player.runestaff = false
-          @player.set_orb_of_zot(true)
+          @player.orb_of_zot = true
           @castle.set_in_room(*loc, :empty_room)
           return PlayerState::ACTION
         else
