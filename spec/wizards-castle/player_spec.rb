@@ -49,43 +49,43 @@ module WizardsCastle
       expect(player.knows_room?(3, 3, 3)).to eq true
     end
 
-    context '#set_weapon' do
+    context '#weapon=' do
       it ':nothing' do
-        player.set_weapon(:nothing)
+        player.weapon = :nothing
         expect(player.weapon_value).to eq 0
       end
       it ':dagger' do
-        player.set_weapon(:dagger)
+        player.weapon = :dagger
         expect(player.weapon_value).to eq 1
       end
       it ':mace' do
-        player.set_weapon(:mace)
+        player.weapon = :mace
         expect(player.weapon_value).to eq 2
       end
       it ':sword' do
-        player.set_weapon(:sword)
+        player.weapon = :sword
         expect(player.weapon_value).to eq 3
       end
     end
 
-    context '#set_armor' do
+    context '#armor=' do
       it ':nothing' do
-        player.set_armor(:nothing)
+        player.armor = :nothing
         expect(player.armor_value).to eq 0
         expect(player.armor_health).to eq 0
       end
       it ':leather' do
-        player.set_armor(:leather)
+        player.armor = :leather
         expect(player.armor_value).to eq 1
         expect(player.armor_health).to eq 7
       end
       it ':chainmail' do
-        player.set_armor(:chainmail)
+        player.armor = :chainmail
         expect(player.armor_value).to eq 2
         expect(player.armor_health).to eq 14
       end
       it ':plate' do
-        player.set_armor(:plate)
+        player.armor = :plate
         expect(player.armor_value).to eq 3
         expect(player.armor_health).to eq 21
       end
@@ -96,15 +96,15 @@ module WizardsCastle
         player.str(+18)
       end
 
-      it ':nothing' do
-        player.set_armor(:nothing)
+      it 'wearing :nothing' do
+        player.armor = :nothing
         player.take_a_hit!(5)
         expect(player.str).to eq 13
       end
 
-      context ':plate' do
+      context 'wearing :plate' do
         before(:each) do
-          player.set_armor(:plate)
+          player.armor = :plate
         end
         it 'high damage' do
           player.take_a_hit!(5)

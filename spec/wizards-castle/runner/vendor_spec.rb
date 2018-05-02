@@ -33,8 +33,8 @@ module WizardsCastle
 
       context 'combat scenarios:' do
         it 'kill him and get his loot' do
-          @runner.player.set_weapon(:dagger)
-          @runner.player.set_armor(:leather)
+          @runner.player.weapon = :dagger
+          @runner.player.armor = :leather
           expect(@runner.player.gp).to eq 60
           @runner.player.lamp = false
           @runner.player.str(+8)

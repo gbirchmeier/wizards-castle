@@ -53,14 +53,14 @@ module WizardsCastle
           return
         when 'L'
           @player.gp(-1250)
-          @player.set_armor(:leather)
+          @player.armor = :leather
           return
         when 'C'
           if @player.gp < 1500
             @printer.cannot_afford_chainmail
           else
             @player.gp(-1500)
-            @player.set_armor(:chainmail)
+            @player.armor = :chainmail
             return
           end
         when 'P'
@@ -68,7 +68,7 @@ module WizardsCastle
             @printer.cannot_afford_plate
           else
             @player.gp(-2000)
-            @player.set_armor(:plate)
+            @player.armor = :plate
             return
           end
         end
@@ -87,14 +87,14 @@ module WizardsCastle
           return
         when 'D'
           @player.gp(-1250)
-          @player.set_weapon(:dagger)
+          @player.weapon = :dagger
           return
         when 'M'
           if @player.gp < 1500
             @printer.cannot_afford_a_mace
           else
             @player.gp(-1500)
-            @player.set_weapon(:mace)
+            @player.weapon = :mace
             return
           end
         when 'S'
@@ -102,7 +102,7 @@ module WizardsCastle
             @printer.cannot_afford_a_sword
           else
             @player.gp(-2000)
-            @player.set_weapon(:sword)
+            @player.weapon = :sword
             return
           end
         end

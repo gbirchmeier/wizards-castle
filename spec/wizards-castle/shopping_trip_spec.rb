@@ -28,7 +28,7 @@ module WizardsCastle
 
     context '#buy_armor' do
       it 'have nothing, buy plate' do
-        @player.set_armor(:nothing)
+        @player.armor = :nothing
         @player.gp(+3333)
         @prompter.push('P')
         @trip.buy_armor
@@ -37,7 +37,7 @@ module WizardsCastle
       end
 
       it 'have plate, buy leather' do
-        @player.set_armor(:plate)
+        @player.armor = :plate
         @player.gp(+3333)
         @prompter.push('L')
         @trip.buy_armor
@@ -46,7 +46,7 @@ module WizardsCastle
       end
 
       it "have chainmail, don't change it" do
-        @player.set_armor(:chainmail)
+        @player.armor = :chainmail
         @player.gp(+3333)
         @prompter.push('N')
         @trip.buy_armor
@@ -57,7 +57,7 @@ module WizardsCastle
 
     context '#buy_weapon' do
       it 'have nothing, buy sword' do
-        @player.set_weapon(:nothing)
+        @player.weapon = :nothing
         @player.gp(+3333)
         @prompter.push('S')
         @trip.buy_weapon
@@ -66,7 +66,7 @@ module WizardsCastle
       end
 
       it 'have sword, buy dagger' do
-        @player.set_weapon(:sword)
+        @player.weapon = :sword
         @player.gp(+3333)
         @prompter.push('D')
         @trip.buy_weapon
@@ -75,7 +75,7 @@ module WizardsCastle
       end
 
       it "have mace, don't change it" do
-        @player.set_weapon(:mace)
+        @player.weapon = :mace
         @player.gp(+3333)
         @prompter.push('N')
         @trip.buy_weapon

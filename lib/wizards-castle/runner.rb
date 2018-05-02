@@ -192,7 +192,7 @@ module WizardsCastle
       costs = { plate: 30, chainmail: 20, leather: 10, nothing: 0 }
       answer = @prompter.ask(allowed.keys, @printer.prompt_armor)
       armor = allowed[answer]
-      @player.set_armor(armor)
+      @player.armor = armor
       @player.gp(-1 * costs[armor])
     end
 
@@ -201,7 +201,7 @@ module WizardsCastle
       costs = { sword: 30, mace: 20, dagger: 10, nothing: 0 }
       answer = @prompter.ask(allowed.keys, @printer.prompt_weapon)
       weapon = allowed[answer]
-      @player.set_weapon(weapon)
+      @player.weapon = weapon
       @player.gp(-1 * costs[weapon])
     end
 
@@ -652,8 +652,8 @@ module WizardsCastle
         @printer.monster_is_dead
         eat_monster_maybe
         if rc.symbol == :vendor
-          @player.set_armor(:plate)
-          @player.set_weapon(:sword)
+          @player.armor = :plate
+          @player.weapon = :sword
           @player.str(+Random.rand(1..6))
           @player.int(+Random.rand(1..6))
           @player.dex(+Random.rand(1..6))

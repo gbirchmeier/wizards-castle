@@ -288,7 +288,7 @@ module WizardsCastle
           @runner.player.str(+8)
           @runner.player.int(+8)
           @runner.player.dex(+8)
-          @runner.player.set_armor(:nothing)
+          @runner.player.armor = :nothing
           @runner.player.facing = :s
           expect(@runner.player.gp).to eq 60
           expect(@runner.player.turns).to eq 1

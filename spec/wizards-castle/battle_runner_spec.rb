@@ -122,13 +122,13 @@ module WizardsCastle
       end
 
       it 'without weapon' do
-        @player.set_weapon(:nothing)
+        @player.weapon = :nothing
         expect(@printer).to receive(:unarmed_attack)
         @brunner.do_player_attack
         expect(@brunner.enemy_str).to eq 14 #unharmed
       end
       it 'with book stuck to hands' do
-        @player.set_weapon(:sword)
+        @player.weapon = :sword
         @player.set_stickybook(true)
         expect(@printer).to receive(:book_attack)
         @brunner.do_player_attack
@@ -137,7 +137,7 @@ module WizardsCastle
 
       context 'hit' do
         before(:each) do
-          @player.set_weapon(:sword)
+          @player.weapon = :sword
           allow(@brunner).to receive(:player_hit_enemy?).and_return true
         end
         after(:each) do

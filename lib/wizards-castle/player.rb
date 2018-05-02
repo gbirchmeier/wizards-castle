@@ -119,14 +119,14 @@ module WizardsCastle
       @gender = gen
     end
 
-    def set_armor(armor)
+    def armor=(armor)
       raise 'Unrecognized armor parameter' unless ARMORS.include?(armor)
       @armor = armor
       @armor_value = ARMORS.index(armor)
       @armor_health = @armor_value * 7
     end
 
-    def set_weapon(weap)
+    def weapon=(weap)
       raise 'Unrecognized weapon parameter' unless WEAPONS.include?(weap)
       @weapon = weap
       @weapon_value = WEAPONS.index(weap)
@@ -279,7 +279,7 @@ module WizardsCastle
         end
 
         if @armor_health <= 0
-          set_armor(:nothing)
+          self.armor = :nothing
           printer.armor_destroyed if printer
         end
       end

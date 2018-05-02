@@ -133,7 +133,7 @@ module WizardsCastle
         if [:gargoyle, :dragon].include?(@enemy_symbol)
           if broken_weapon?
             @printer.your_weapon_broke
-            @player.set_weapon(:nothing)
+            @player.weapon = :nothing
           end
         end
       end
