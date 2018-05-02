@@ -247,8 +247,8 @@ module WizardsCastle
         before(:each) do
           @runner.player.set_location(2, 2, 2)
           @runner.castle.set_in_room(2, 2, 2, :book)
-          @runner.player.set_blind(false)
-          @runner.player.set_stickybook(false)
+          @runner.player.blind = false
+          @runner.player.stickybook = false
           expect(@runner.player.str).to eq 0
           expect(@runner.player.dex).to eq 0
           @prompter.push 'O'

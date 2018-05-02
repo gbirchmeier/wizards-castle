@@ -131,7 +131,7 @@ module WizardsCastle
 
         context 'blindness' do
           before(:each) do
-            @runner.player.set_blind(true)
+            @runner.player.blind = true
           end
           it 'with treasure' do
             @runner.player.add_treasure(:opal_eye)
@@ -148,7 +148,7 @@ module WizardsCastle
 
         context 'stickybook' do
           before(:each) do
-            @runner.player.set_stickybook(true)
+            @runner.player.stickybook = true
           end
           it 'with treasure' do
             @runner.player.add_treasure(:blue_flame)
@@ -167,7 +167,7 @@ module WizardsCastle
 
       context 'cannot when blind:' do
         before(:each) do
-          @runner.player.set_blind(true)
+          @runner.player.blind = true
         end
         after(:each) do
           expect(@runner.printer).to receive(:blind_command_error)

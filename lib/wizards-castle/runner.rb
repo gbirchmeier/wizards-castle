@@ -340,12 +340,12 @@ module WizardsCastle
 
       if @player.blind? && @player.have_treasure?(:opal_eye)
         @printer.cure_blindness
-        @player.set_blind(false)
+        @player.blind = false
       end
 
       if @player.stickybook? && @player.have_treasure?(:blue_flame)
         @printer.cure_stickybook
-        @player.set_stickybook(false)
+        @player.stickybook = false
       end
 
 
@@ -534,13 +534,13 @@ module WizardsCastle
       effect = random_book_effect
       case effect
       when :flash
-        @player.set_blind(true)
+        @player.blind = true
       when :dex_manual
         @player.dex(+18)
       when :str_manual
         @player.str(+18)
       when :sticky
-        @player.set_stickybook(true)
+        @player.stickybook = true
       when :poetry, :magazine # rubocop:disable Lint/EmptyWhen
         # no effect
       else

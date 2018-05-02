@@ -223,7 +223,7 @@ module WizardsCastle
       @blind
     end
 
-    def set_blind(bool)
+    def blind=(bool)
       check_bool(bool)
       @blind = bool
     end
@@ -232,7 +232,7 @@ module WizardsCastle
       @stickybook
     end
 
-    def set_stickybook(bool)
+    def stickybook=(bool)
       check_bool(bool)
       @stickybook = bool
     end

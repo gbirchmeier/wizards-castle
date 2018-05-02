@@ -129,7 +129,7 @@ module WizardsCastle
       end
       it 'with book stuck to hands' do
         @player.weapon = :sword
-        @player.set_stickybook(true)
+        @player.stickybook = true
         expect(@printer).to receive(:book_attack)
         @brunner.do_player_attack
         expect(@brunner.enemy_str).to eq 14 #unharmed
