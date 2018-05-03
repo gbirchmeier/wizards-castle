@@ -241,7 +241,7 @@ module WizardsCastle
       @forgetful
     end
 
-    def set_forgetful(bool)
+    def forgetful=(bool)
       check_bool(bool)
       @forgetful = bool
     end
@@ -250,7 +250,7 @@ module WizardsCastle
       @leech
     end
 
-    def set_leech(bool)
+    def leech=(bool)
       check_bool(bool)
       @leech = bool
     end
@@ -259,7 +259,7 @@ module WizardsCastle
       @lethargic
     end
 
-    def set_lethargic(bool)
+    def lethargic=(bool)
       check_bool(bool)
       @lethargic = bool
     end

@@ -47,7 +47,7 @@ module WizardsCastle
 
         context 'lethargy' do
           before(:each) do
-            @runner.player.set_lethargic(true)
+            @runner.player.lethargic = true
           end
           it 'succumb' do
             @runner.player_action
@@ -72,7 +72,7 @@ module WizardsCastle
 
         context 'leech' do
           before(:each) do
-            @runner.player.set_leech(true)
+            @runner.player.leech = true
           end
           it 'succumb' do
             allow(@runner).to receive(:leech_gp_loss).and_return 4
@@ -98,7 +98,7 @@ module WizardsCastle
 
         context 'forgetful' do
           before(:each) do
-            @runner.player.set_forgetful(true)
+            @runner.player.forgetful = true
           end
           it 'succumb' do
             expect(@runner.player).to receive(:forget_random_room)

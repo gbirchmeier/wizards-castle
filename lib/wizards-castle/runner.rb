@@ -329,9 +329,9 @@ module WizardsCastle
         @player.gp(-leech_gp_loss) if @player.leech? && !@player.have_treasure?(:pale_pearl)
         @player.forget_random_room if @player.forgetful? && !@player.have_treasure?(:green_gem)
 
-        @player.set_lethargic(true) if rc.cursed_with_lethargy?
-        @player.set_leech(true) if rc.cursed_with_leech?
-        @player.set_forgetful(true) if rc.cursed_with_forgetfulness?
+        @player.lethargic = true if rc.cursed_with_lethargy?
+        @player.leech = true if rc.cursed_with_leech?
+        @player.forgetful = true if rc.cursed_with_forgetfulness?
       end
 
 
