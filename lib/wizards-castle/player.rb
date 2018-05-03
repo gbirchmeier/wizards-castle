@@ -58,7 +58,7 @@ module WizardsCastle
     end
 
     def initialize
-      @room_memory = Array.new(8 * 8 * 8, false) #true means visited
+      @room_memory = Array.new(8 * 8 * 8, false) # true means visited
       @race = nil
       @gender = nil
       @gp = 60
@@ -103,7 +103,7 @@ module WizardsCastle
     end
 
     def facing=(dir)
-      raise "Illegal direction '#{dir.inspect}'" unless [:n, :s, :w, :e].include?(dir)
+      raise "Illegal direction '#{dir.inspect}'" unless %i[n s w e].include?(dir)
       @facing = dir
     end
 
@@ -114,7 +114,7 @@ module WizardsCastle
     end
 
     def gender=(gen)
-      #maybe in a future version I'll allow non-binary genders
+      # maybe in a future version I'll allow non-binary genders
       raise 'Unrecognized gender parameter' unless GENDERS.include?(gen)
       @gender = gen
     end

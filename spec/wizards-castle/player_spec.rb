@@ -108,20 +108,20 @@ module WizardsCastle
         end
         it 'high damage' do
           player.take_a_hit!(5)
-          expect(player.armor_health).to eq 18 #lost 3
-          expect(player.str).to eq 16 #lost 2
+          expect(player.armor_health).to eq 18 # lost 3
+          expect(player.str).to eq 16 # lost 2
           expect(player.armor).to eq :plate
         end
         it 'low damage' do
           player.take_a_hit!(1)
-          expect(player.armor_health).to eq 20 #lost 1
-          expect(player.str).to eq 18 #no loss
+          expect(player.armor_health).to eq 20 # lost 1
+          expect(player.str).to eq 18 # no loss
           expect(player.armor).to eq :plate
         end
         it 'low damage' do
           player.take_a_hit!(1)
-          expect(player.armor_health).to eq 20 #lost 1
-          expect(player.str).to eq 18 #no loss
+          expect(player.armor_health).to eq 20 # lost 1
+          expect(player.str).to eq 18 # no loss
           expect(player.armor).to eq :plate
         end
         it 'destroyed' do
@@ -130,7 +130,7 @@ module WizardsCastle
           expect(player.armor).to eq :nothing
           expect(player.armor_health).to eq 0
           expect(player.armor_value).to eq 0
-          expect(player.str).to eq 16 #armor still blocked 3, player takes 2
+          expect(player.str).to eq 16 # armor still blocked 3, player takes 2
         end
       end
     end

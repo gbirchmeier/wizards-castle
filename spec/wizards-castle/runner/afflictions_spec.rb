@@ -16,7 +16,7 @@ module WizardsCastle
         before(:each) do
           @runner.player.set_location(2, 2, 2)
           @runner.castle.set_in_room(2, 2, 2, :empty_room)
-          @prompter.push 'H'  #doesn't matter what this is
+          @prompter.push 'H'  # doesn't matter what this is
           expect(@runner.player.lethargic?).to eq false
           expect(@runner.player.leech?).to eq false
           expect(@runner.player.forgetful?).to eq false
@@ -40,7 +40,7 @@ module WizardsCastle
 
       context 'turn-start curse effects' do
         before(:each) do
-          @prompter.push 'H'  #doesn't matter what this is
+          @prompter.push 'H'  # doesn't matter what this is
           expect(@runner.player.turns).to eq 1
           expect(@runner.player.gp).to eq 60
         end
@@ -122,7 +122,7 @@ module WizardsCastle
         end
 
       end
-      #turn-start curse effects
+      # turn-start curse effects
 
       context 'cure' do
         before(:each) do

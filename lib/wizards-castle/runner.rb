@@ -64,7 +64,7 @@ module WizardsCastle
     def play
       # returns true if user wants to play again
 
-      @player.set_location(1, 4, 1) #entrance
+      @player.set_location(1, 4, 1) # entrance
       @printer.entering_the_castle
 
       status = PlayerState::NEW_ROOM
@@ -242,7 +242,7 @@ module WizardsCastle
 
       @printer.stat_block
 
-      @player.remember_room(*loc) #remember even if blind
+      @player.remember_room(*loc) # remember even if blind
 
       symbol_for_text =
         if rc.symbol == :runestaff_and_monster
@@ -519,7 +519,7 @@ module WizardsCastle
         @printer.no_lamp_error
         return
       end
-      dir = @prompter.ask(['N', 'E', 'W', 'S'], @printer.prompt_shine_lamp)
+      dir = @prompter.ask(%w[N E W S], @printer.prompt_shine_lamp)
       target_loc = Castle.move(dir, *@player.location)
       @player.remember_room(*target_loc)
       @printer.lamp_shine(*target_loc)
@@ -642,7 +642,7 @@ module WizardsCastle
 
       when BattleRunner::Result::RETREAT
         @printer.you_have_escaped
-        dir = @prompter.ask(['N', 'S', 'E', 'W'], @printer.prompt_retreat_direction)
+        dir = @prompter.ask(%w[N S E W], @printer.prompt_retreat_direction)
         @player.set_location(*Castle.move(dir, *loc))
         @player.facing = dir.downcase.to_sym
         return PlayerState::NEW_ROOM

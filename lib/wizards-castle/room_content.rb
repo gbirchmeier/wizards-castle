@@ -33,12 +33,12 @@ module WizardsCastle
 
       vendor:      { intcode: 25, mapchar: 'V', text: 'A VENDOR' },
 
-      ruby_red:    { intcode: 26, mapchar: 'T', text: 'THE RUBY RED' },    #lethargy
+      ruby_red:    { intcode: 26, mapchar: 'T', text: 'THE RUBY RED' },    # lethargy
       norn_stone:  { intcode: 27, mapchar: 'T', text: 'THE NORN STONE' },
-      pale_pearl:  { intcode: 28, mapchar: 'T', text: 'THE PALE PEARL' },  #leech
-      opal_eye:    { intcode: 29, mapchar: 'T', text: 'THE OPAL EYE' },    #blindness
-      green_gem:   { intcode: 30, mapchar: 'T', text: 'THE GREEN GEM' },   #forgetfulness
-      blue_flame:  { intcode: 31, mapchar: 'T', text: 'THE BLUE FLAME' },  #dissolves books
+      pale_pearl:  { intcode: 28, mapchar: 'T', text: 'THE PALE PEARL' },  # leech
+      opal_eye:    { intcode: 29, mapchar: 'T', text: 'THE OPAL EYE' },    # blindness
+      green_gem:   { intcode: 30, mapchar: 'T', text: 'THE GREEN GEM' },   # forgetfulness
+      blue_flame:  { intcode: 31, mapchar: 'T', text: 'THE BLUE FLAME' },  # dissolves books
       palantir:    { intcode: 32, mapchar: 'T', text: 'THE PALANTIR' },
       silmaril:    { intcode: 33, mapchar: 'T', text: 'THE SILMARIL' },
 

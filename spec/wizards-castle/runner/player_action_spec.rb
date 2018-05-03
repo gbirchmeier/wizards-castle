@@ -12,8 +12,8 @@ module WizardsCastle
         @runner = Runner.new
         @runner.setup(prompter: @prompter, player: Player.new, printer: NullPrinter.new)
 
-        #useful for debugging
-        #@runner.printer = StetsonPrinter.new(@runner.player)
+        # useful for debugging
+        # @runner.printer = StetsonPrinter.new(@runner.player)
       end
 
       it 'H' do
