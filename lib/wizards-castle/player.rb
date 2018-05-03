@@ -189,7 +189,7 @@ module WizardsCastle
       @treasures.delete(treasure)
     end
 
-    def have_treasure?(treasure)
+    def have_treasure?(treasure) # rubocop:disable Naming/PredicateName
       raise "invalid treasure #{treasure.inspect}" unless TREASURES.include?(treasure)
       @treasures.include?(treasure)
     end

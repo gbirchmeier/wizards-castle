@@ -47,7 +47,7 @@ module WizardsCastle
       runestaff_and_monster: { intcode: 35, mapchar: 'M', text: '<ERROR-NO-MONSTER>' }
     }.freeze
 
-    @@intcode_to_symbol_map = ROOM_THINGS.map{|k, h| [h[:intcode], k]}.to_h
+    @@intcode_to_symbol_map = ROOM_THINGS.map{|k, h| [h[:intcode], k]}.to_h # rubocop:disable Style/ClassVars
 
 
     def self.valid_intcode?(intcode)
