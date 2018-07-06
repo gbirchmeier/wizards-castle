@@ -137,9 +137,9 @@ module WizardsCastle
             expect(@runner.player.gp).to eq 35
           end
         end
-      end #buy stuff
+      end
 
 
-    end #character creation
+    end
   end
 end

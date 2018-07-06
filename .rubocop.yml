@@ -16,9 +16,6 @@ Layout/EmptyLinesAroundModuleBody:
 Layout/IndentHeredoc:
   Enabled: false
 
-Layout/LeadingCommentSpace:
-  Enabled: false
-
 Layout/SpaceBeforeBlockBraces:
   Enabled: false
 
@@ -62,9 +59,6 @@ Naming/HeredocDelimiterNaming:
     - !ruby/regexp '/^END$/'
     - !ruby/regexp '/^EO[A-Z]{1}$/'
 
-Style/ClassAndModuleChildren:
-  Enabled: false
-
 Style/EmptyMethod:
   Enabled: false
 
@@ -72,10 +66,10 @@ Style/NumericLiterals:
   Enabled: false
 
 Style/SymbolArray:
-  MinSize: 5
+  MinSize: 4
 
 Style/TernaryParentheses:
   Enabled: false
 
 Style/WordArray:
-  MinSize: 5
+  MinSize: 4

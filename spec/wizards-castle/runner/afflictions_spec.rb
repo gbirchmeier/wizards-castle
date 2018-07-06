@@ -16,7 +16,7 @@ module WizardsCastle
         before(:each) do
           @runner.player.set_location(2, 2, 2)
           @runner.castle.set_in_room(2, 2, 2, :empty_room)
-          @prompter.push 'H'  #doesn't matter what this is
+          @prompter.push 'H'  # doesn't matter what this is
           expect(@runner.player.lethargic?).to eq false
           expect(@runner.player.leech?).to eq false
           expect(@runner.player.forgetful?).to eq false
@@ -40,14 +40,14 @@ module WizardsCastle
 
       context 'turn-start curse effects' do
         before(:each) do
-          @prompter.push 'H'  #doesn't matter what this is
+          @prompter.push 'H'  # doesn't matter what this is
           expect(@runner.player.turns).to eq 1
           expect(@runner.player.gp).to eq 60
         end
 
         context 'lethargy' do
           before(:each) do
-            @runner.player.set_lethargic(true)
+            @runner.player.lethargic = true
           end
           it 'succumb' do
             @runner.player_action
@@ -62,17 +62,17 @@ module WizardsCastle
               @runner.player.add_treasure(:ruby_red)
             end
             it 'with runestaff' do
-              @runner.player.set_runestaff(true)
+              @runner.player.runestaff = true
             end
             it 'with orb_of_zot' do
-              @runner.player.set_orb_of_zot(true)
+              @runner.player.orb_of_zot = true
             end
           end
         end
 
         context 'leech' do
           before(:each) do
-            @runner.player.set_leech(true)
+            @runner.player.leech = true
           end
           it 'succumb' do
             allow(@runner).to receive(:leech_gp_loss).and_return 4
@@ -88,17 +88,17 @@ module WizardsCastle
               @runner.player.add_treasure(:pale_pearl)
             end
             it 'with runestaff' do
-              @runner.player.set_runestaff(true)
+              @runner.player.runestaff = true
             end
             it 'with orb_of_zot' do
-              @runner.player.set_orb_of_zot(true)
+              @runner.player.orb_of_zot = true
             end
           end
         end
 
         context 'forgetful' do
           before(:each) do
-            @runner.player.set_forgetful(true)
+            @runner.player.forgetful = true
           end
           it 'succumb' do
             expect(@runner.player).to receive(:forget_random_room)
@@ -113,15 +113,16 @@ module WizardsCastle
               @runner.player.add_treasure(:green_gem)
             end
             it 'with runestaff' do
-              @runner.player.set_runestaff(true)
+              @runner.player.runestaff = true
             end
             it 'with orb_of_zot' do
-              @runner.player.set_orb_of_zot(true)
+              @runner.player.orb_of_zot = true
             end
           end
+        end
 
-        end #turn-start curse effects
       end
+      # turn-start curse effects
 
       context 'cure' do
         before(:each) do
@@ -130,7 +131,7 @@ module WizardsCastle
 
         context 'blindness' do
           before(:each) do
-            @runner.player.set_blind(true)
+            @runner.player.blind = true
           end
           it 'with treasure' do
             @runner.player.add_treasure(:opal_eye)
@@ -147,7 +148,7 @@ module WizardsCastle
 
         context 'stickybook' do
           before(:each) do
-            @runner.player.set_stickybook(true)
+            @runner.player.stickybook = true
           end
           it 'with treasure' do
             @runner.player.add_treasure(:blue_flame)
@@ -166,7 +167,7 @@ module WizardsCastle
 
       context 'cannot when blind:' do
         before(:each) do
-          @runner.player.set_blind(true)
+          @runner.player.blind = true
         end
         after(:each) do
           expect(@runner.printer).to receive(:blind_command_error)

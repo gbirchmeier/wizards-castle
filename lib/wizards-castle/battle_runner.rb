@@ -46,7 +46,7 @@ module WizardsCastle
             return Result::ENEMY_DEAD if @enemy_str < 1
             do_enemy_attack
             return Result::PLAYER_DEAD if @player.dead?
-          when 'R' #retreat
+          when 'R' # retreat
             do_enemy_attack
             return @player.dead? ? Result::PLAYER_DEAD : Result::RETREAT
           when 'B'
@@ -62,7 +62,7 @@ module WizardsCastle
 
             if (@player.int > 14) || @bribable
               do_cast
-              return Result::PLAYER_DEAD if @player.dead? #due to cast-cost
+              return Result::PLAYER_DEAD if @player.dead? # due to cast-cost
               return Result::ENEMY_DEAD if @enemy_str < 1
               do_enemy_attack
               return Result::PLAYER_DEAD if @player.dead?
@@ -133,7 +133,7 @@ module WizardsCastle
         if [:gargoyle, :dragon].include?(@enemy_symbol)
           if broken_weapon?
             @printer.your_weapon_broke
-            @player.set_weapon(:nothing)
+            @player.weapon = :nothing
           end
         end
       end

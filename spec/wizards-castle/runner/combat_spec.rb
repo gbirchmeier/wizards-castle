@@ -69,13 +69,13 @@ module WizardsCastle
             expect(@runner.player.turns).to eq 1
           end
           it 'no' do
-            @runner.player.turns(+58) #turn 59
+            @runner.player.turns(+58) # turn 59
             expect(@runner.printer).not_to receive :eat_a_monster
             @runner.eat_monster_maybe
             expect(@runner.player.last_ate_turn).to eq 0
           end
           it 'yes' do
-            @runner.player.turns(+59) #turn 60
+            @runner.player.turns(+59) # turn 60
             expect(@runner.printer).to receive :eat_a_monster
             @runner.eat_monster_maybe
             expect(@runner.player.last_ate_turn).to eq 60
@@ -88,13 +88,13 @@ module WizardsCastle
             expect(@runner.player.turns).to eq 1
           end
           it 'no' do
-            @runner.player.turns(+158) #turn 159
+            @runner.player.turns(+158) # turn 159
             expect(@runner.printer).not_to receive :eat_a_monster
             @runner.eat_monster_maybe
             expect(@runner.player.last_ate_turn).to eq 100
           end
           it 'yes' do
-            @runner.player.turns(+159) #turn 160
+            @runner.player.turns(+159) # turn 160
             expect(@runner.printer).to receive :eat_a_monster
             @runner.eat_monster_maybe
             expect(@runner.player.last_ate_turn).to eq 160

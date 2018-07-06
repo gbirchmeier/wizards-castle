@@ -3,19 +3,20 @@ module WizardsCastle
   # Represents the player state
   class Player
 
-    RACES = [:elf,:dwarf,:human,:hobbit]
-    GENDERS = [:male,:female]
-    ARMORS = [:nothing,:leather,:chainmail,:plate]
-    WEAPONS = [:nothing,:dagger,:mace,:sword]
-    TREASURES = [:ruby_red,:norn_stone,:pale_pearl,:opal_eye,:green_gem,:blue_flame,:palantir,:silmaril]
+    RACES = %i[elf dwarf human hobbit].freeze
+    GENDERS = %i[male female].freeze
+    ARMORS = %i[nothing leather chainmail plate].freeze
+    WEAPONS = %i[nothing dagger mace sword].freeze
+    TREASURES = %i[ruby_red norn_stone pale_pearl opal_eye green_gem blue_flame palantir silmaril].freeze
 
     attr_reader :race, :gender, :location, :armor, :weapon, :facing,
-      :armor_value, :armor_health, :weapon_value, :last_ate_turn
+                :armor_value, :armor_health, :weapon_value, :last_ate_turn
 
     def lamp?
       @has_lamp
     end
-    def set_lamp bool
+
+    def lamp=(bool)
       check_bool(bool)
       @has_lamp = bool
     end
@@ -23,7 +24,8 @@ module WizardsCastle
     def vendor_rage?
       @vendor_rage
     end
-    def set_vendor_rage bool
+
+    def vendor_rage=(bool)
       check_bool(bool)
       @vendor_rage = bool
     end
@@ -31,7 +33,8 @@ module WizardsCastle
     def runestaff?
       @runestaff
     end
-    def set_runestaff(bool)
+
+    def runestaff=(bool)
       check_bool(bool)
       @runestaff = bool
     end
@@ -39,7 +42,8 @@ module WizardsCastle
     def orb_of_zot?
       @orb_of_zot
     end
-    def set_orb_of_zot(bool)
+
+    def orb_of_zot=(bool)
       check_bool(bool)
       @orb_of_zot = bool
     end
@@ -47,19 +51,20 @@ module WizardsCastle
     def teleported?
       @teleported
     end
-    def set_teleported(bool)
+
+    def teleported=(bool)
       check_bool(bool)
-      @teleported=bool
+      @teleported = bool
     end
 
     def initialize
-      @room_memory = Array.new(8*8*8,false) #true means visited
+      @room_memory = Array.new(8 * 8 * 8, false) # true means visited
       @race = nil
       @gender = nil
       @gp = 60
       @flares = 0
       @has_lamp = false
-      @location = [1,4,1]
+      @location = [1, 4, 1]
       @str = 0
       @int = 0
       @dex = 0
@@ -75,8 +80,8 @@ module WizardsCastle
       @vendor_rage = false
       @turns = 1
       @last_ate_turn = 0
-      @facing = :n  # needed by orb-of-zot shunt
-      @teleported = false  # so orb-of-zot room knows how you entered it
+      @facing = :n # needed by orb-of-zot shunt
+      @teleported = false # so orb-of-zot room knows how you entered it
 
       # afflictions
       @blind = false
@@ -87,119 +92,119 @@ module WizardsCastle
     end
 
     def dead?
-      @str<1 || @int<1 || @dex<1
+      @str < 1 || @int < 1 || @dex < 1
     end
 
-    def set_location(row,col,floor)
-      if row<1 || row>8 || col<1 || col>8 || floor<1 || floor>8
+    def set_location(row, col, floor)
+      if row < 1 || row > 8 || col < 1 || col > 8 || floor < 1 || floor > 8
         raise "Illegal location [#{row},#{col},#{floor}]"
       end
-      @location = [row,col,floor]
+      @location = [row, col, floor]
     end
 
-    def set_facing f
-      raise "Illegal direction '#{f.inspect}'" unless [:n,:s,:w,:e].include?(f)
-      @facing = f
+    def facing=(dir)
+      raise "Illegal direction '#{dir.inspect}'" unless %i[n s w e].include?(dir)
+      @facing = dir
     end
 
 
-    def set_race r
-      raise "Unrecognized race parameter '#{r.inspect}'" unless RACES.include?(r)
-      @race = r
+    def race=(race)
+      raise "Unrecognized race parameter '#{race.inspect}'" unless RACES.include?(race)
+      @race = race
     end
 
-    def set_gender g
-      #maybe in a future version I'll allow non-binary genders
-      raise "Unrecognized gender parameter" unless GENDERS.include?(g)
-      @gender = g
+    def gender=(gen)
+      # maybe in a future version I'll allow non-binary genders
+      raise 'Unrecognized gender parameter' unless GENDERS.include?(gen)
+      @gender = gen
     end
 
-    def set_armor a
-      raise "Unrecognized armor parameter" unless ARMORS.include?(a)
-      @armor = a
-      @armor_value = ARMORS.index(a)
-      @armor_health = @armor_value*7
+    def armor=(armor)
+      raise 'Unrecognized armor parameter' unless ARMORS.include?(armor)
+      @armor = armor
+      @armor_value = ARMORS.index(armor)
+      @armor_health = @armor_value * 7
     end
 
-    def set_weapon w
-      raise "Unrecognized weapon parameter" unless WEAPONS.include?(w)
-      @weapon = w
-      @weapon_value = WEAPONS.index(w)
+    def weapon=(weap)
+      raise 'Unrecognized weapon parameter' unless WEAPONS.include?(weap)
+      @weapon = weap
+      @weapon_value = WEAPONS.index(weap)
     end
 
-    def flares n=0
-      @flares += n.to_i
-      @flares=0 if @flares<0
+    def flares(increment = 0)
+      @flares += increment.to_i
+      @flares = 0 if @flares < 0
       @flares
     end
 
-    def gp n=0
-      @gp += n.to_i
-      @gp=0 if @gp<0
+    def gp(increment = 0)
+      @gp += increment.to_i
+      @gp = 0 if @gp < 0
       @gp
     end
 
-    def str n=0
-      @str += n.to_i
-      @str=0 if @str<0
-      @str=18 if @str>18
+    def str(increment = 0)
+      @str += increment.to_i
+      @str = 0 if @str < 0
+      @str = 18 if @str > 18
       @str
     end
 
-    def int n=0
-      @int += n.to_i
-      @int=0 if @int<0
-      @int=18 if @int>18
+    def int(increment = 0)
+      @int += increment.to_i
+      @int = 0 if @int < 0
+      @int = 18 if @int > 18
       @int
     end
 
-    def dex n=0
-      @dex += n.to_i
-      @dex=0 if @dex<0
-      @dex=18 if @dex>18
+    def dex(increment = 0)
+      @dex += increment.to_i
+      @dex = 0 if @dex < 0
+      @dex = 18 if @dex > 18
       @dex
     end
 
-    def turns n=0
-      @turns += n.to_i
+    def turns(increment = 0)
+      @turns += increment.to_i
     end
 
-    def custom_attribute_points n=0
-      @custom_attribute_points += n
+    def custom_attribute_points(increment = 0)
+      @custom_attribute_points += increment
     end
 
     def treasure_count
       @treasures.length
     end
 
-    def add_treasure(t)
-      raise "invalid treasure #{t.inspect}" unless TREASURES.include?(t)
-      raise "already have treasure #{t.inspect}" if @treasures.include?(t)
-      @treasures << t
+    def add_treasure(treasure)
+      raise "invalid treasure #{treasure.inspect}" unless TREASURES.include?(treasure)
+      raise "already have treasure #{treasure.inspect}" if @treasures.include?(treasure)
+      @treasures << treasure
     end
 
-    def remove_treasure(t)
-      raise "invalid treasure #{t.inspect}" unless TREASURES.include?(t)
-      raise "don't have treasure #{t.inspect}" unless @treasures.include?(t)
-      @treasures.delete(t)
+    def remove_treasure(treasure)
+      raise "invalid treasure #{treasure.inspect}" unless TREASURES.include?(treasure)
+      raise "don't have treasure #{treasure.inspect}" unless @treasures.include?(treasure)
+      @treasures.delete(treasure)
     end
 
-    def have_treasure?(t)
-      raise "invalid treasure #{t.inspect}" unless TREASURES.include?(t)
-      @treasures.include?(t)
+    def have_treasure?(treasure) # rubocop:disable Naming/PredicateName
+      raise "invalid treasure #{treasure.inspect}" unless TREASURES.include?(treasure)
+      @treasures.include?(treasure)
     end
 
     def random_treasure
-      return nil if treasure_count() < 1
+      return nil if treasure_count < 1
       @treasures.sample
     end
 
-    def knows_room?(col,row,floor)
-      @room_memory[Castle.room_index(col,row,floor)]
+    def knows_room?(col, row, floor)
+      @room_memory[Castle.room_index(col, row, floor)]
     end
 
-    def remember_room(col,row,floor)
-      @room_memory[Castle.room_index(col,row,floor)] = true
+    def remember_room(col, row, floor)
+      @room_memory[Castle.room_index(col, row, floor)] = true
     end
 
     def forget_random_room
@@ -217,7 +222,8 @@ module WizardsCastle
     def blind?
       @blind
     end
-    def set_blind(bool)
+
+    def blind=(bool)
       check_bool(bool)
       @blind = bool
     end
@@ -225,15 +231,17 @@ module WizardsCastle
     def stickybook?
       @stickybook
     end
-    def set_stickybook(bool)
+
+    def stickybook=(bool)
       check_bool(bool)
-      @stickybook=bool
+      @stickybook = bool
     end
 
     def forgetful?
       @forgetful
     end
-    def set_forgetful(bool)
+
+    def forgetful=(bool)
       check_bool(bool)
       @forgetful = bool
     end
@@ -241,7 +249,8 @@ module WizardsCastle
     def leech?
       @leech
     end
-    def set_leech(bool)
+
+    def leech=(bool)
       check_bool(bool)
       @leech = bool
     end
@@ -249,27 +258,28 @@ module WizardsCastle
     def lethargic?
       @lethargic
     end
-    def set_lethargic(bool)
+
+    def lethargic=(bool)
       check_bool(bool)
       @lethargic = bool
     end
 
 
     # combat
-    def take_a_hit!(n,printer=nil)
-      if @armor==:nothing
-        self.str(-n)
+    def take_a_hit!(damage, printer = nil)
+      if @armor == :nothing
+        str(-damage)
       else
-        if n >= @armor_value
-          loss = n-@armor_value
-          self.str(-loss)
+        if damage >= @armor_value
+          loss = damage - @armor_value
+          str(-loss)
           @armor_health -= @armor_value
         else
-          @armor_health -= n
+          @armor_health -= damage
         end
 
-        if @armor_health<=0
-          self.set_armor(:nothing)
+        if @armor_health <= 0
+          self.armor = :nothing
           printer.armor_destroyed if printer
         end
       end
@@ -280,7 +290,7 @@ module WizardsCastle
     private
 
     def check_bool(bool)
-      raise "Parameter is not a boolean: #{bool.inspect}" unless [true,false].include?(bool)
+      raise "Parameter is not a boolean: #{bool.inspect}" unless [true, false].include?(bool)
     end
 
   end

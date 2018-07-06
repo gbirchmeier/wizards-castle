@@ -47,18 +47,18 @@ module WizardsCastle
         before(:each) do
           @runner.castle.set_in_room(2, 2, 2, :orb_of_zot)
           @runner.player.set_location(2, 2, 2)
-          @runner.player.set_facing(:s)
+          @runner.player.facing = :s
         end
         it 'via teleport' do
-          @runner.player.set_runestaff(true)
-          @runner.player.set_teleported(true)
+          @runner.player.runestaff = true
+          @runner.player.teleported = true
           expect(@runner.enter_room).to eq Runner::PlayerState::ACTION
           expect(@runner.player.orb_of_zot?).to eq true
           expect(@runner.player.runestaff?).to eq false
           expect(@runner.castle.room(2, 2, 2).symbol).to eq :empty_room
         end
         it 'via other means' do
-          @runner.player.set_teleported(false)
+          @runner.player.teleported = false
           expect(@runner.enter_room).to eq Runner::PlayerState::NEW_ROOM
           expect(@runner.player.location).to eq [3, 2, 2]
           expect(@runner.player.orb_of_zot?).to eq false

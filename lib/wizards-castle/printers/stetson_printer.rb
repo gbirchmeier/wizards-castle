@@ -33,7 +33,7 @@ END_INTRO
     end
 
     def character_creation_header
-      sleep 3 #simulate BASIC's delay
+      sleep 3 # simulate BASIC's delay
       beep
       puts 'ALL RIGHT, BOLD ONE.'
     end

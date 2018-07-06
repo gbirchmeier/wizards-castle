@@ -17,7 +17,7 @@ module WizardsCastle
         end
 
         it 'get attacked (and run away)' do
-          @runner.player.set_vendor_rage(true)
+          @runner.player.vendor_rage = true
           allow(@runner).to receive(:combat).and_return Runner::PlayerState::NEW_ROOM
           expect(@runner.enter_room).to eq Runner::PlayerState::NEW_ROOM
         end
@@ -33,10 +33,10 @@ module WizardsCastle
 
       context 'combat scenarios:' do
         it 'kill him and get his loot' do
-          @runner.player.set_weapon(:dagger)
-          @runner.player.set_armor(:leather)
+          @runner.player.weapon = :dagger
+          @runner.player.armor = :leather
           expect(@runner.player.gp).to eq 60
-          @runner.player.set_lamp(false)
+          @runner.player.lamp = false
           @runner.player.str(+8)
           @runner.player.int(+8)
           @runner.player.dex(+8)
@@ -55,7 +55,7 @@ module WizardsCastle
         end
 
         it 'get attacked and bribe him happy' do
-          @runner.player.set_vendor_rage(true)
+          @runner.player.vendor_rage = true
           allow(@runner).to receive(:run_battle).and_return BattleRunner::Result::BRIBED
           expect(@runner.combat).to eq Runner::PlayerState::ACTION
           expect(@runner.player.vendor_rage?).to eq false
