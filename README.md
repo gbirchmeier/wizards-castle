@@ -21,7 +21,6 @@ If you see a crash, please:
 
 then report those via
 * [Github issue](https://github.com/gbirchmeier/wizards-castle/issues)
-* Twitter [@GrantBirchmeier](https://twitter.com/GrantBirchmeier)
 * email to the address you'll find at http://grantb.net
 
 **Note:** Please do not report in-game grammar errors.  This is a faithful port of
